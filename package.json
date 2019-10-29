@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/NicolaFolchi/comp426-webapp-project/issues"
   },
-  "homepage": "https://github.com/NicolaFolchi/comp426-webapp-project#readme"
+  "homepage": "https://github.com/NicolaFolchi/comp426-webapp-project#readme",
+  "dependencies": {
+    "bulma": "^0.8.0"
+  }
 }
