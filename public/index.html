@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Tuiter</title>
+
+    <!--  TODO AFTER DB: HAVE BULMA AND AXIOS LINKED BACK INTO NODE MODULES AGAIN -->
+    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="bulma.css" />
+
+</head>
+
+<body>
+    <nav class="navbar is-success is-fixed-top is-spaced" role="navigation" aria-label="main navigation">
+        <div class="navbar-brand">
+            <a class="navbar-item">
+                <h1 class="title">Tuiter</h1>
+            </a>
+            <a role="button" class="navbar-burger burger" aria-label="menu" aria-expanded="false"
+                data-target="navbarBasicExample">
+                <span aria-hidden="true"></span>
+                <span aria-hidden="true"></span>
+                <span aria-hidden="true"></span>
+            </a>
+        </div>
+        <div id="navbarBasicExample" class="navbar-menu">
+            <div class="navbar-start">
+                <a class="navbar-item">
+                    Home
+                </a>
+                <a class="navbar-item" id="tweetbutton">
+                    Tweet
+                </a>
+                <div class="navbar-item has-dropdown is-hoverable">
+                    <a class="navbar-link">
+                        More
+                    </a>
+                    <div class="navbar-dropdown">
+                        <a class="navbar-item">
+                            About
+                        </a>
+                        <a class="navbar-item">
+                            Jobs
+                        </a>
+                        <a class="navbar-item">
+                            Contact
+                        </a>
+                        <hr class="navbar-divider">
+                        <a class="navbar-item">
+                            Report an issue
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+    <br><br><br>
+
+    <div id="typearea"></div>
+    <div id="editarea"></div>
+
+    <div class="buttons" id="tweetbuttondiv">
+
+    </div>
+    <div class="columns is-centered">
+        <div class="column is-half">
+            <div class="bd-notification is-primary">
+                <div id="root"></div>
+            </div>
+        </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="axios.js"></script>
+    <script type="module" src="render.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,21 @@
+.true {
+    color: red;
+}
+
+.false {
+    
+}
+
+h1.title {
+    color: white;
+}
+
+body {
+    background: #fdfbf3;
+}
+
+@media screen and (min-width: 1024px){ /* for desktop mode */
+    .navbar.is-spaced {
+        padding: 0.5rem 5.22rem !important;
+    }
+}
