@@ -1,6 +1,56 @@
 [
   {
     "type": "tweet",
+    "body": "we gucci ;)",
+    "id": "04qVtFB9",
+    "author": "Nico",
+    "isLiked": false,
+    "retweetCount": 0,
+    "replyCount": 0,
+    "likeCount": 0,
+    "someLikes": 0,
+    "createdAt": "2019-12-05T04:40:23.901Z"
+  },
+  {
+    "type": "reply",
+    "parent": "Yvydgitt",
+    "body": "we should be good<br><strong>Reply to:</strong> @Nico<p>are we good?<br><strong>Retweet from:</strong> @Nico<p>test  to make sure everything is fine :3</p></p>",
+    "id": "Y6swXZXd",
+    "author": "Nico",
+    "isLiked": false,
+    "retweetCount": 0,
+    "replyCount": 0,
+    "likeCount": 0,
+    "someLikes": 0,
+    "createdAt": "2019-12-05T04:40:13.675Z"
+  },
+  {
+    "type": "retweet",
+    "parent": "bu7xnxvc",
+    "body": "are we good?<br><strong>Retweet from:</strong> @Nico<p>test  to make sure everything is fine :3</p>",
+    "id": "Yvydgitt",
+    "author": "Nico",
+    "isLiked": false,
+    "retweetCount": 0,
+    "replyCount": 1,
+    "likeCount": 0,
+    "someLikes": 0,
+    "createdAt": "2019-12-05T04:40:03.733Z"
+  },
+  {
+    "type": "tweet",
+    "body": "test  to make sure everything is fine :3",
+    "id": "bu7xnxvc",
+    "author": "Nico",
+    "isLiked": false,
+    "retweetCount": 1,
+    "replyCount": 0,
+    "likeCount": 0,
+    "someLikes": 0,
+    "createdAt": "2019-12-05T04:39:38.533Z"
+  },
+  {
+    "type": "tweet",
     "body": " mhhjh",
     "id": "NWMcBazV",
     "author": "Nico",

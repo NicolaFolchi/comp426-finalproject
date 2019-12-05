@@ -26,8 +26,11 @@ app.use(express.static("public"));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
-app.get('/tuits', sendTuits);
-
+// sending all of our posts data
+app.get('/tuits', function (request, response) {
+    response.send(db);
+});
+// sending all data from a specific post
 app.get('/tuits/:tuit', function (request, response) {
     let tuitID = request.params.tuit;
     for (let i = 0; i < db.length; i++) {
@@ -37,27 +40,8 @@ app.get('/tuits/:tuit', function (request, response) {
         }
     }
 })
-
-app.get('/tuits/:author/:msg', writeTuits);
-
-function writeTuits(request, response) {
-    let auth = request.params.author;
-    let message = request.params.msg;
-    db[auth] = message;
-
-    let reply = {
-        rep: "thank you for your input."
-    }
-    let data = JSON.stringify(db, null, 2);
-    fs.writeFile("data.js", data, function (err, result) {
-        if (err) console.log('error', err);
-    });
-    response.send(reply);
-}
-
-app.post('/tuits', makePost);
-
-function makePost(request, response) {
+// making a post to the feed
+app.post('/tuits', function (request, response) {
     let reply = {
         status: 'success',
         tuitData: request.body
@@ -99,14 +83,10 @@ function makePost(request, response) {
 
     // console.log(reply);
     response.send(reply);
-}
-
-function sendTuits(request, response) {
-    response.send(db);
-
-}
-
+});
+// signing up process
 app.post("/users", async function (request, response) {
+    // finding on user database if username or email already exist
     let checkExistingUsername = usrsDB.find(user => user.username == request.body.user);
     let checkExistingEmail = usrsDB.find(user => user.emailAddress == request.body.email);
     if (checkExistingUsername != null) {
@@ -136,17 +116,20 @@ app.post("/users", async function (request, response) {
         fs.writeFile("users.js", data, function (err, result) {
             if (err) console.log('error', err);
         });
+        // created
         response.status(201).send();
 
     } catch {
+        // server issue :/
         response.status(500).send();
     }
 });
-
+// login process and user authorization
 app.post('/login', async function (request, response) {
     let username = usrsDB.find(user => user.username === request.body.user);
     if (username != null) {
         try {
+            // comparing our stored hashed password with the password the user is trying to log in with
             if (await bcrypt.compare(request.body.password, username.password)) {
                 response.status(200).send('Success, you are now logged in');
 
@@ -162,7 +145,7 @@ app.post('/login', async function (request, response) {
     }
 });
 
-// --------------- SPOTIFY API ---------------------------
+// ------------------ SPOTIFY API INTEGRATION ---------------------------
 
 const request = require('request');
 const client_id = 'af2ce6ca8d05496ebde76dff70598354';
