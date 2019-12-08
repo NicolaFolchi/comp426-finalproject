@@ -7,11 +7,91 @@ export const renderSite = function () {
 
 }
 
+export const getTrack = async function (id, token) {
+    const result = await axios({
+        method: 'get',
+        url: `https://api.spotify.com/v1/tracks/${id}`,
+        headers: {
+            'Authorization': 'Bearer ' + token
+        },
+        json: true
+    });
+    return result;
+}
+
+export const getAlbum = async function (id, token) {
+    const result = await axios({
+        method: 'get',
+        url: `https://api.spotify.com/v1/albums/${id}`,
+        headers: {
+            'Authorization': 'Bearer ' + token
+        },
+        json: true
+    });
+    return result;
+}
+
+export const getSearch = async function (search, token) {
+    const result = await axios({
+        method: 'get',
+        url: `https://api.spotify.com/v1/search?q=${search}&type=track`,
+        headers: {
+            'Authorization': 'Bearer ' + token
+        },
+        json: true
+    });
+    return result;
+}
+
+export const renderPost = async function (id, token) {
+    let track_json = await getTrack(id, token);
+    let track = track_json.data;
+    let post = `
+        <a href="/track_page/index.html?id=${id}">
+        <div class="card">
+            <div class="card-image">
+                <figure class="image">
+                    <img src="${track.album.images[0].url}" height="100" width="100" alt="fuck">
+                </figure>
+            </div>
+            <div class="card-content">
+                <div class="media">
+                    <div class="media-content">
+                        <p class="title is-4">${track.name}</p>
+                        <p class="subtitle is-6">${track.album.name}</p>
+                        <p class="subtitle is-6">${track.artists[0].name}</p>
+                    </div>
+                </div>
+                <div class="content">
+                    <p>I like this song</p>
+                </div>
+            </div>
+        </div>
+        </a>
+        <br>
+    `;
+    $("#root").append(post);
+}
 async function renderTweet() {
+    //--------------------------- AUTHENTICATION ----------------------------
+    const auth = await axios({
+        method: 'get',
+        url: 'http://localhost:3000/getToken',
+        json: true
+    });
+    let token = auth["data"];
+
     const $root = $('#root');
     $root.append(`
-        <a href="/album_page/index.html?id=0bCAjiUamIFqKJsekOYuRw">TEST</a>
+        <a href="/album_page/index.html?id=6XYAPA3sDCNgBY5eMQt2vZ">Album</a>
+        <a href="/track_page/index.html?id=0hNhlwnzMLzZSlKGDCuHOo">Track</a>
     `)
+
+    let search = await getSearch("space", token);
+    let search_body = search.data.tracks.items;
+    search_body.forEach(element => {
+        renderPost(element.id, token);
+    });
     // getting all tweets from the server
     const result = await axios({
         method: 'get',
@@ -53,7 +133,7 @@ async function renderTweet() {
         //         </footer>
         //     </div>`;
         // } else {
-            tweets += `
+        tweets += `
             <br>
             <div class="card" id="${result.data[i]["id"]}">
                 <div class="card-content">

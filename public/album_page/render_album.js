@@ -6,6 +6,7 @@ $(function (){
 // - average rating
 // - relevant posts
 // - make pretty
+// - make post button functional
 // ###########################################
 
 export const renderAlbumPage = async function() {
@@ -52,14 +53,22 @@ export const renderAlbumPage = async function() {
         tracks += `
             <tr>
                 <td>${i+1}</td>
-                <td>${album.tracks.items[i].name}</td>
+                <td><a href="/track_page/index.html?id=${album.tracks.items[i].id}">${album.tracks.items[i].name}</a></td>
                 <td>${parseInt(album.tracks.items[i].duration_ms/60000)+":"+("0" + parseInt((album.tracks.items[i].duration_ms/1000) % 60)).slice(-2)}</td>
             </tr>
         `;
     }
     tracks += `</table>`;
     $root.append(tracks);
-    $root.append(`</div><br><br>`)
+    $root.append(`
+        <iframe src="https://open.spotify.com/embed/album/${album.id}" width="300" height="80" frameborder="0" allowtransparency="true" allow="encrypted-media"></iframe>
+        </div><br><br>
+    `)
+
+    //------------------------- SHARE ALBUM ------------------------------
+    $root.append(`
+        <button class="button">Share Album</button>
+    `);
 
     //------------------ DISPLAY POSTS ABOUT ALBUM -----------------------
     $root.append(`
