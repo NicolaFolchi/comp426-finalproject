@@ -9,6 +9,9 @@ export const renderSite = function () {
 
 async function renderTweet() {
     const $root = $('#root');
+    $root.append(`
+        <a href="/album_page/index.html?id=0bCAjiUamIFqKJsekOYuRw">TEST</a>
+    `)
     // getting all tweets from the server
     const result = await axios({
         method: 'get',

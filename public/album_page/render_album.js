@@ -18,7 +18,8 @@ export const renderAlbumPage = async function() {
     let token = result["data"];
 
     //--------------------------- GET ALBUM ---------------------------------
-    let id = "1sJzod7aGgZwu2ShYec8GQ";
+    let id = location.search.substring(4);
+    //let id = "1sJzod7aGgZwu2ShYec8GQ";
     let album_json = await getAlbum(id, token);
     let album = album_json.data;
 
@@ -41,7 +42,7 @@ export const renderAlbumPage = async function() {
         <p>Average Rating: a lot</p> 
     `);
     let tracks = `
-    <table class="table is-fullwidth is-bordered">
+    <table class="table is-striped is-fullwidth is-bordered">
         <tr>
             <th>Index</th>
             <th>Track</th>
