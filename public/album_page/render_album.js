@@ -7,11 +7,12 @@ export const renderAlbumPage = async function() {
     let id = "2BTZIqw0ntH9MvilQ3ewNY";
     let album = await getAlbum(id);
     const $root = $("#root");
-    $root.append(`
-        <img src="${album.images[0].url}">
-        <p class="title">${album.name}</p>
-        <p class="subtitle">${album.artists}</p>
-    `);
+    $root.append(`<p>Album</p>`)
+    // $root.append(`
+    //     <img src="${album.images[0].url}">
+    //     <p class="title">${album.name}</p>
+    //     <p class="subtitle">${album.artists}</p>
+    // `);
 }
 
 export const getAlbum = async function(id) {

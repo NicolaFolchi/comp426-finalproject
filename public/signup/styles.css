@@ -57,7 +57,7 @@
   font-size: 1.2rem;
   color: #4B9CD3;
   border-radius: 4rem;
-  display: block;
+  vertical-align: middle;
   width: 100%;
   background: transparent;
   border: 2px solid #4B9CD3;
