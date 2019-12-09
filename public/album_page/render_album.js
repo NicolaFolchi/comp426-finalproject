@@ -68,8 +68,17 @@ export const renderAlbumPage = async function() {
 
     //------------------------- SHARE ALBUM ------------------------------
     $root.append(`
-        <button class="button">Share Album</button>
+        <button class="button" id="share">Share Album</button>
+        <div id="modal" class="modal">
+            <div class="modal-header">
+                <h2>Share Album<h2>
+            </div>
+            <div class="modal-content">
+                
+            </div>
+        </div>
     `);
+    $("#share").click(handleShare);
 
     //------------------ DISPLAY POSTS ABOUT ALBUM -----------------------
     $root.append(`
@@ -78,6 +87,10 @@ export const renderAlbumPage = async function() {
         </div>
         <br>
     `);
+}
+
+export const handleShare = function () {
+
 }
 
 export const getAlbum = async function(id, token) {

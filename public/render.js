@@ -4,7 +4,7 @@ export const renderSite = function () {
     $("#fixedbutton").on("click", postTweet);
     $("#tweetbutton").on("click", typeTweet);
     $("#submiteditbutton").on("click", submitEdit);
-
+    $("#make_search").click(makeSearch);
 }
 
 export const getTrack = async function (id, token) {
@@ -31,19 +31,7 @@ export const getAlbum = async function (id, token) {
     return result;
 }
 
-export const getSearch = async function (search, token) {
-    const result = await axios({
-        method: 'get',
-        url: `https://api.spotify.com/v1/search?q=${search}&type=track`,
-        headers: {
-            'Authorization': 'Bearer ' + token
-        },
-        json: true
-    });
-    return result;
-}
-
-export const renderPost = async function (id, token) {
+export const renderTrackPost = async function (id, token) {
     let track_json = await getTrack(id, token);
     let track = track_json.data;
     let post = `
@@ -70,8 +58,77 @@ export const renderPost = async function (id, token) {
         </a>
         <br>
     `;
-    $("#root").append(post);
+    $(".search_results").append(post);
 }
+
+export const renderAlbumPost = async function (id, token) {
+    let album_json = await getAlbum(id, token);
+    let album = album_json.data;
+    let post = `
+        <a href="/album_page/index.html?id=${id}">
+        <div class="card">
+            <div class="card-image">
+                <figure class="image">
+                    <img src="${album.images[0].url}" style="height: 50%; width: 50%;">
+                </figure>
+            </div>
+            <div class="card-content">
+                <div class="media">
+                    <div class="media-content">
+                        <p class="title is-4">${album.name}</p>
+                        <p class="subtitle is-6">${album.artists[0].name}</p>
+                    </div>
+                </div>
+                <div class="content">
+                    <p>I like this album</p>
+                </div>
+            </div>
+        </div>
+        </a>
+        <br>
+    `;
+    $(".search_results").append(post);
+}
+
+export const makeSearch = async function () {
+    let type = $("#search_type").val();
+    let search_text = $("#search_text").val();
+    const auth = await axios({
+        method: 'get',
+        url: 'http://localhost:3000/getToken',
+        json: true
+    });
+    let token = auth["data"];
+    let search = await axios({
+        method: 'get',
+        url: `https://api.spotify.com/v1/search?q=${search_text}&type=${type}`,
+        headers: {
+            'Authorization': 'Bearer ' + token
+        },
+        json: true
+    });
+    $(".search_results").html("");
+    $(".search_results").append(`
+        <p class="title" style="margin-bottom: 20px;">Showing ${type} results for "${search_text}":</p>
+        <button class="button" id="home" style="margin-bottom: 20px;">Return to Home Page</button>
+    `)
+    if(type == "track"){
+        let search_body = search.data.tracks.items;
+        search_body.forEach(element => {
+            renderTrackPost(element.id, token);
+        });
+    }
+    else {
+        let search_body = search.data.albums.items;
+        search_body.forEach(element => {
+            renderAlbumPost(element.id, token);
+        });
+    }
+    $("#search_text").val("");
+    $("#search_type").val("");
+    $("#home").click(renderTweet);
+}
+
 async function renderTweet() {
     //--------------------------- AUTHENTICATION ----------------------------
     const auth = await axios({
@@ -82,17 +139,14 @@ async function renderTweet() {
     let token = auth["data"];
 
     const $root = $('#root');
+    $root.html("");
     $root.append(`
         <a href="/album_page/index.html?id=6XYAPA3sDCNgBY5eMQt2vZ">Album</a>
         <a href="/track_page/index.html?id=0hNhlwnzMLzZSlKGDCuHOo">Track</a>
         <a href="/profile_page/index.html">Profile</a>
+        <div class="search_results"></div>
     `)
 
-    let search = await getSearch("space", token);
-    let search_body = search.data.tracks.items;
-    search_body.forEach(element => {
-        renderPost(element.id, token);
-    });
     // getting all tweets from the server
     const result = await axios({
         method: 'get',
