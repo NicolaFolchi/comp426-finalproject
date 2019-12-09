@@ -68,17 +68,9 @@ export const renderAlbumPage = async function() {
 
     //------------------------- SHARE ALBUM ------------------------------
     $root.append(`
-        <button class="button" id="share">Share Album</button>
-        <div id="modal" class="modal">
-            <div class="modal-header">
-                <h2>Share Album<h2>
-            </div>
-            <div class="modal-content">
-                
-            </div>
-        </div>
+    <button class="share button">Share Album</button>
     `);
-    $("#share").click(handleShare);
+    $(".share").on("click", renderEdit);
 
     //------------------ DISPLAY POSTS ABOUT ALBUM -----------------------
     $root.append(`
@@ -89,8 +81,53 @@ export const renderAlbumPage = async function() {
     `);
 }
 
-export const handleShare = function () {
 
+export function renderEdit() {
+    $(".button").replaceWith(`
+    <div class = "editform">
+    <textarea class="textarea" id="reviewtext" placeholder="Write a review"></textarea>
+    <div class="select">
+    <select id="reviewscore">
+    <option>0</option>
+    <option>1</option>
+    <option>2</option>
+    <option>3</option>
+    <option>4</option>
+    <option>5</option>
+    </select>
+    </div>
+    <div><button class="submit button">Submit</button><button class="cancel button">Cancel</button></div>
+    </div>`);
+    $(".cancel").on("click", cancelPost);
+    $(".submit").on("click", submitPost);
+
+
+}
+
+export function cancelPost(){
+    $(".editform").replaceWith(`<button class="share button">Share Album</button>`)
+    $(".share").on("click", renderEdit);
+}
+
+export async function submitPost() {
+    let posttext = document.getElementById("reviewtext").value;
+    let e = document.getElementById("reviewscore");
+    let postscore = e.options[e.selectedIndex].value;
+
+    console.log(posttext, postscore);
+
+    await axios({
+        method: 'post',
+        url: 'http://localhost:3000/tuits',
+        data: {
+            "type": "tweet",
+            "body": posttext
+        },
+        withCredentials: true,
+    });
+
+    $(".editform").replaceWith(`<button class="share button">Share Album</button>`)
+    $(".share").on("click", renderEdit);
 }
 
 export const getAlbum = async function(id, token) {
