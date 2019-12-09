@@ -51,7 +51,7 @@ export const renderPost = async function (id, token) {
         <div class="card">
             <div class="card-image">
                 <figure class="image">
-                    <img src="${track.album.images[0].url}" height="100" width="100" alt="fuck">
+                    <img src="${track.album.images[0].url}" style="height: 50%; width: 50%;">
                 </figure>
             </div>
             <div class="card-content">
@@ -85,6 +85,7 @@ async function renderTweet() {
     $root.append(`
         <a href="/album_page/index.html?id=6XYAPA3sDCNgBY5eMQt2vZ">Album</a>
         <a href="/track_page/index.html?id=0hNhlwnzMLzZSlKGDCuHOo">Track</a>
+        <a href="/profile_page/index.html">Profile</a>
     `)
 
     let search = await getSearch("space", token);

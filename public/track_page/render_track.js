@@ -21,7 +21,7 @@ export const renderTrackPage = async function () {
     const $root = $("#root");
     $root.append(`
         <div class="container">
-        <img src="${track.album.images[0].url}">
+        <img src="${track.album.images[0].url}" style="height: 40%; width: 40%;">
         <p class="title">${track.name}</p>
         <p class="subtitle">Artist(s): ${track.artists[0].name}
     `);

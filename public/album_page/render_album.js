@@ -7,6 +7,7 @@ $(function (){
 // - relevant posts
 // - make pretty
 // - make post button functional
+// - modal box for sharing album
 // ###########################################
 
 export const renderAlbumPage = async function() {
@@ -28,7 +29,7 @@ export const renderAlbumPage = async function() {
     const $root = $("#root");
     $root.append(`
         <div class="container">
-        <img src="${album.images[0].url}">
+        <img src="${album.images[0].url}" style="height: 40%; width: 40%;">
         <p class="title">${album.name}</p>
         <p class="subtitle">Artist(s): ${album.artists[0].name}
     `);
