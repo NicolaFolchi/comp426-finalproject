@@ -9,8 +9,8 @@
 
     <!--  TODO AFTER DB: HAVE BULMA AND AXIOS LINKED BACK INTO NODE MODULES AGAIN -->
     <link rel="stylesheet" href="style.css" />
-    <link rel="stylesheet" href="bulma.css" />
-
+    <link rel="stylesheet" href="./ref_modules/bulma.css" />
+    <link rel="stylesheet" href="./ref_modules/@fortawesome/fontawesome-free/css/all.css" />
 </head>
 
 <body>
@@ -39,20 +39,35 @@
                         More
                     </a>
                     <div class="navbar-dropdown">
-                        <a class="navbar-item">
-                            About
-                        </a>
-                        <a class="navbar-item">
-                            Jobs
-                        </a>
-                        <a class="navbar-item">
-                            Contact
-                        </a>
-                        <hr class="navbar-divider">
-                        <a class="navbar-item">
-                            Report an issue
+                        <a class="navbar-item" href="../album_page/index.html">
+                            Album
                         </a>
                     </div>
+                </div>
+                <input type="text" class="input" id="search_text" placeholder="Search...">
+                <div class="select">
+                    <select required id="search_type">
+                            <option value="" selected disabled hidden>--Select Type--</option>
+                            <option value="track">Track</option>
+                            <option value="album">Album</option>
+                    </select>
+                </div>
+                <button class="button is-link" id="make_search">
+                    <span class="icon is-small">
+                        <i class="fas fa-search"></i>
+                    </span>
+                </button>
+            </div>
+            <div class="navbar-end">
+                <div class="profile_buttons">
+                    <a class="button" href="./login/index.html">Log In</a>
+                    <a class="button is-link" href="./signup/index.html"><strong>Sign Up</strong></a>
+                    <a class="button">Log Out</a>
+                    <a class="button is-link" href="./profile_page/index.html">
+                        <span class="icon is-small">
+                            <i class="far fa-user-circle fa-lg" style="color: white;"></i>
+                        </span>
+                    </a>
                 </div>
             </div>
         </div>
@@ -73,7 +88,7 @@
         </div>
     </div>
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
-    <script src="axios.js"></script>
+    <script src="./ref_modules/axios.js"></script>
     <script type="module" src="render.js"></script>
 </body>
 

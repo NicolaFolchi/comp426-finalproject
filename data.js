@@ -1,6 +1,18 @@
 [
   {
     "type": "tweet",
+    "body": "k",
+    "id": "3fvuN6fz",
+    "author": "Nico",
+    "isLiked": false,
+    "retweetCount": 0,
+    "replyCount": 0,
+    "likeCount": 0,
+    "someLikes": 0,
+    "createdAt": "2019-12-08T03:58:44.692Z"
+  },
+  {
+    "type": "tweet",
     "body": "we gucci ;)",
     "id": "04qVtFB9",
     "author": "Nico",
