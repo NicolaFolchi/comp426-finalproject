@@ -1,5 +1,6 @@
 $(function (){
     renderAlbumPage();
+    $("#make_search").click(searchButtonClick);
 })
 
 // ################# TO DO ###################
@@ -9,6 +10,12 @@ $(function (){
 // - make post button functional
 // - home button for album and track and profile pages
 // ###########################################
+
+export const searchButtonClick = async function () {
+    let type = $("#search_type").val();
+    let search_text = $("#search_text").val();
+    document.location.href = `../search_page/index.html?q=${search_text}&t=${type}`;
+}
 
 export const renderAlbumPage = async function() {
     //--------------------------- AUTHENTICATION ----------------------------
@@ -153,11 +160,6 @@ export const renderAlbumPage = async function() {
 
 export function makePost() {
     $("#post_modal").attr("style", "display: block;");
-}
-
-export function cancelPost(){
-    $(".editform").replaceWith(`<button class="share button">Share Album</button>`)
-    $(".share").on("click", makePost);
 }
 
 export async function submitPost() {
