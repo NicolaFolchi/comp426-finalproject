@@ -134,7 +134,7 @@ export const renderAlbumPage = async function () {
     $root.append(`
     <div id="post_modal" class="modal">
         <div class="modal-content">
-        <br>
+        <br id="for-edit" class="">
             <div style="float: left; width: 50%; padding:5px;">
                 <img src="${album.images[0].url}">
             </div>
@@ -158,7 +158,8 @@ export const renderAlbumPage = async function () {
             </fieldset>
                 <br>
                 <br>
-                <button id="make_post_button" class="button is-success is-light">Submit</button>
+                <button id="make_post_button" class="button is-success is-light" style="display: relative;">Submit</button>
+                <button id="make_edit_button" class="button is-success is-light" style="display: none;">Edit</button>
                 <button id="cancel_post" class="button is-danger is-light">Cancel</textarea>
             </div>
         </div>
@@ -182,11 +183,16 @@ export const renderAlbumPage = async function () {
         $("#review").val("");
         $("#rating").prop("selectedIndex", 0);
     });
+    $("#make_edit_button").click(async function () {
+        await submitEdit(album);
+        $("#post_modal").attr("style", "display: none;");
+    });
     $(".share").on("click", makePost);
 
     //------------------ DISPLAY POSTS ABOUT ALBUM -----------------------
     $root.append(`
         <div class="container" id="album-reviews">
+            <p class="title">Reviews</p>
         </div>
         <br>
     `);
@@ -200,6 +206,8 @@ export async function makePost() {
         document.location.href = "../login/index.html";
     }
     else{
+        $("#make_post_button").attr("style", "display: relative;");
+        $("#make_edit_button").attr("style", "display: none;");
         $("#post_modal").attr("style", "display: block;");
     }
 }
@@ -222,7 +230,7 @@ export async function submitPost(album, id) {
         withCredentials: true,
     });
 
-    $("#album-reviews").append(await renderAlbumPosts(album));
+    (await renderAlbumPosts(album));
 }
 
 export const getAlbum = async function (id, token) {
@@ -246,7 +254,7 @@ export const getProfile = async function () {
 }
 
 const renderAlbumPosts = async function (album) {
-    $("#album-reviews").html("");
+    $("#album-reviews").html(`<p class="title">Reviews</p>`);
     let result = ((await axios({
         method: 'get',
         url: 'http://localhost:3000/tuits',
@@ -258,32 +266,146 @@ const renderAlbumPosts = async function (album) {
         sum += parseFloat(result[i].rating);
     };
     let avg_rating = sum / result.length;
-    $("#avg-rating").html(avg_rating.toFixed(2));
+    if(!isNaN(avg_rating)){
+        $("#avg-rating").html(avg_rating.toFixed(2));
+    }
+    else{
+        $("#avg-rating").html("No Ratings");
+    }
 
-    let posts = `<p class="title">Reviews</p>`;
+    let post = ``;
     for (let i = 0; i < result.length; i++) {
-        posts += `
+        let stars = ``;
+        switch (result[i].rating) {
+            case "0.5":
+            stars =`<i class="star fas fa-star-half"></i>`;
+            break;
+
+            case "1":
+            stars =`<i class="star fas fa-star"></i>`;
+            break;
+
+            case "1.5":
+            stars = `<i class="star fas fa-star"></i><i class="star fas fa-star-half"></i>`;
+            break;
+
+            case "2":
+            stars = `<i class="star fas fa-star"></i><i class="star fas fa-star"></i>`;
+            break;
+
+            case "2.5":
+            stars = `<i class="star fas fa-star"></i><i class="star fas fa-star"></i><i class="star fas fa-star-half"></i>`;
+            break;
+
+            case "3":
+                stars= `<i class="star fas fa-star"></i><i class="star fas fa-star"></i><i class="star fas fa-star"></i>`;
+                break;
+
+            case "3.5":
+                stars =`<i class="star fas fa-star"></i><i class="star fas fa-star"></i><i class="star fas fa-star"></i><i class="star fas fa-star-half"></i>`;
+                break;
+
+            case "4":
+                stars = `<i class="star fas fa-star"></i><i class="star fas fa-star"></i><i class="star fas fa-star"></i><i class="star fas fa-star"></i>`;
+                break;
+
+            case "4.5":
+                stars = `<i class="star fas fa-star"></i><i class="star fas fa-star"></i><i class="star fas fa-star"></i><i class="star fas fa-star"></i><i class="star fas fa-star-half"></i>`;
+                break;
+
+            case "5":
+                stars = `<i class="star fas fa-star"></i><i class="star fas fa-star"></i><i class="star fas fa-star"></i><i class="star fas fa-star"></i><i class="star fas fa-star"></i>`;
+                break;
+
+            default:
+                break;
+        }
+        post = ``;
+        post += `
             <div class="card" id="${result[i]["id"]}" style="width:60%; margin: auto; display: flex; flex-direction: column;">
                 <div class="card-content">
                     <div style="float: left; width: 50%; padding:5px; text-align:center;">
                         <img src="${album.images[0].url}"> 
                         <a href="/album_page/index.html?id=${result[i]["spotify-id"]}">See Album Page</a>                       
-                    </div>
-                    <div style="float: left; width: 50%; padding:5px;">
-                        <p class="title is-4">${result[i].authorFirstName} ${result[i].authorLastName}</p>
-                        <p class="subtitle is-6">@${result[i].authorUsername}</p><br>
-                        <p class="title is-4">${album.name}</p>
-                        <p class="subtitle is-6">${album.artists[0].name}</p>
-                        <p class="subtitle is-6">Released: ${album.release_date}</p><br>
-
-                        <div class="content">
-                            <p>${result[i].rating} Stars</p>
-                            <p>${result[i].review}</p> <br>
-                            <p>${new Date(result[i]["createdAt"]).toLocaleTimeString()}  --  ${new Date(result[i]["createdAt"]).toLocaleDateString()}<p>
-                        </div>
-                    </div>
+                    </div>`;
+        if((await getProfile()).data.username != result[i].authorUsername){
+            post += `
+                <div style="float: left; width: 50%; padding:5px;">
+                    <p class="title is-4">${result[i].authorFirstName} ${result[i].authorLastName}</p>
+                    <p class="subtitle is-6">@${result[i].authorUsername}</p><br>
+                </div>`;
+        }
+        else{
+            post += `
+                <div style="float: left; width: 40%; padding:5px;">
+                    <p class="title is-4">${result[i].authorFirstName} ${result[i].authorLastName}</p>
+                    <p class="subtitle is-6">@${result[i].authorUsername}</p><br>
                 </div>
-            </div><br>`;
+                <div style="float: left; width: 10%; padding:5px;">
+                    <a class="button" id="edit-post-${result[i].id}"><i class="fas fa-edit"></i></a>
+                    <a class="button" id="delete-post-${result[i].id}"><i class="fas fa-trash"></i></a>
+                </div>`;
+        }
+        post += `       
+            <div style="float: left; width: 50%; padding:5px;">
+                <p class="title is-4">${album.name}</p>
+                <p class="subtitle is-6">${album.artists[0].name}</p>
+                <p class="subtitle is-6">Released: ${album.release_date}</p><br>
+
+                <div class="content">
+                    <p>${result[i].rating} Stars</p>
+                    <p>${result[i].review}</p> <br>
+                    <p>${new Date(result[i]["createdAt"]).toLocaleTimeString()}  --  ${new Date(result[i]["createdAt"]).toLocaleDateString()}<p>
+                </div>
+            </div>
+        </div>
+        </div><br>`;
+        $("#album-reviews").append(post);
+        $(`#edit-post-${result[i].id}`).click(function() {
+            handleEditPost(result[i].id);
+        });
+        $(`#delete-post-${result[i].id}`).click(function() {
+            handleDeletePost(result[i].id, album);
+        });
     }
-    return posts;
+}
+
+const handleEditPost = async function (id){
+    let result = ((await axios({
+        method: 'get',
+        url: 'http://localhost:3000/tuits',
+        withCredentials: true,
+    })).data).filter(e => e["id"] == id);
+
+    $("#for-edit").attr("class", `${id}`);
+    $("#review").html(`${result[0].review}`);
+    $("#make_edit_button").attr("style", "display: relative;");
+    $("#make_post_button").attr("style", "display: none;");
+    $("#post_modal").attr("style", "display: block;");
+
+    alert("Edit");
+}
+
+const submitEdit = async function (album) {
+    let posttext = document.getElementById("review").value;
+    let postscore = $("input[name=rating]:checked", '#rating').val();
+    await axios({
+        method: 'put',
+        url: 'http://localhost:3000/tuits/' + $("#for-edit").attr("class"),
+        data: {
+            "review": posttext,
+            "rating": postscore
+        },
+        withCredentials: true,
+    });
+
+    await renderAlbumPosts(album);
+}
+
+const handleDeletePost = async function(id, album) {
+    await axios({
+        method: 'delete',
+        url: 'http://localhost:3000/tuits/' + id
+    })
+    await renderAlbumPosts(album);
 }
