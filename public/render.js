@@ -109,6 +109,8 @@ export const makeSearch = async function () {
 }
 
 async function renderTweet() {
+    $("#search_text").val("");
+    $("#search_type").val('track');
     //--------------------------- AUTHENTICATION ----------------------------
     const auth = await axios({
         method: 'get',

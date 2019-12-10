@@ -122,7 +122,7 @@ export const makeSearch = async function (token, query, type) {
         });
     }
     $("#search_text").val("");
-    $("#search_type").val('album');
+    $("#search_type").val('track');
     $("#home").click(function(){ document.location.href = "../index.html" });
 }
 

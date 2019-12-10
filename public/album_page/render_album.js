@@ -1,5 +1,8 @@
 $(function (){
     renderAlbumPage();
+    $("#make_search").click(searchButtonClick);
+    $("#search_text").val("");
+    $("#search_type").val('track');
 })
 
 // ################# TO DO ###################
@@ -9,6 +12,12 @@ $(function (){
 // - make post button functional
 // - home button for album and track and profile pages
 // ###########################################
+
+export const searchButtonClick = async function () {
+    let type = $("#search_type").val();
+    let search_text = $("#search_text").val();
+    document.location.href = `../search_page/index.html?q=${search_text}&t=${type}`;
+}
 
 export const renderAlbumPage = async function() {
     //--------------------------- AUTHENTICATION ----------------------------

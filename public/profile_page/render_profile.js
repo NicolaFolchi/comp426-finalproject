@@ -1,7 +1,16 @@
 $(function (){
     renderProfilePage();
     $("#log-out-button").click(handleLogOut);
+    $("#make_search").click(searchButtonClick);
+    $("#search_text").val("");
+    $("#search_type").val('track');
 })
+
+export const searchButtonClick = async function () {
+    let type = $("#search_type").val();
+    let search_text = $("#search_text").val();
+    document.location.href = `../search_page/index.html?q=${search_text}&t=${type}`;
+}
 
 export const getProfile = async function() {
     let result = await axios({

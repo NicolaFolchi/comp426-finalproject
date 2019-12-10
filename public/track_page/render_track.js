@@ -1,6 +1,8 @@
 $(function () {
     renderTrackPage();
     $("#make_search").click(searchButtonClick);
+    $("#search_text").val("");
+    $("#search_type").val('track');
 })
 
 export const searchButtonClick = async function () {
