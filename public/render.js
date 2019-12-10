@@ -130,11 +130,6 @@ async function renderTweet() {
 
     const $root = $('#root');
     $root.html("");
-    $root.append(`
-        <a href="/album_page/index.html?id=6XYAPA3sDCNgBY5eMQt2vZ">Album</a>
-        <a href="/track_page/index.html?id=0hNhlwnzMLzZSlKGDCuHOo">Track</a>
-        <a href="/profile_page/index.html">Profile</a>
-    `)
 
     // getting all tweets from the server
     const result = (await axios({
