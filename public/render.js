@@ -14,7 +14,7 @@ export const getProfile = async function() {
     });
     return result;
 }
-
+ 
 export const handleLogOut = async function () {
     await axios({
         method: 'post',
