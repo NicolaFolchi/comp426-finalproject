@@ -1,6 +1,5 @@
 $(function (){
     renderAlbumPage();
-    $("#make_search").click(searchButtonClick);
 })
 
 // ################# TO DO ###################
@@ -10,12 +9,6 @@ $(function (){
 // - make post button functional
 // - home button for album and track and profile pages
 // ###########################################
-
-export const searchButtonClick = async function () {
-    let type = $("#search_type").val();
-    let search_text = $("#search_text").val();
-    document.location.href = `../search_page/index.html?q=${search_text}&t=${type}`;
-}
 
 export const renderAlbumPage = async function() {
     //--------------------------- AUTHENTICATION ----------------------------
@@ -88,10 +81,10 @@ export const renderAlbumPage = async function() {
       </div>
     </div>
   </nav>
-    <iframe src="https://open.spotify.com/embed/album/${album.id}" width="1073" height="80" frameborder="0" allowtransparency="true" allow="encrypted-media"></iframe>
+    <iframe src="https://open.spotify.com/embed/album/${album.id}" width="100%" height="80" frameborder="0" allowtransparency="true" allow="encrypted-media"></iframe>
     `);
     let tracks = `
-    <table class="table is-striped is-fullwidth is-bordered">
+    <table class="table is-striped is-fullwidth">
         <tr>
             <th>Index</th>
             <th>Track</th>
@@ -173,6 +166,11 @@ export const renderAlbumPage = async function() {
 
 export function makePost() {
     $("#post_modal").attr("style", "display: block;");
+}
+
+export function cancelPost(){
+    $(".editform").replaceWith(`<button class="share button">Share Album</button>`)
+    $(".share").on("click", makePost);
 }
 
 export async function submitPost() {

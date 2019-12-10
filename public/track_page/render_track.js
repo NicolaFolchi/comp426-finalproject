@@ -27,10 +27,27 @@ export const renderTrackPage = async function () {
     //----------------------- DISPLAY TRACK INFO ----------------------------
     const $root = $("#root");
     $root.append(`
-        <div class="container">
-        <img src="${track.album.images[0].url}" style="height: 40%; width: 40%;">
-        <p class="title">${track.name}</p>
-        <p class="subtitle">Artist(s): ${track.artists[0].name}
+    <br>
+    <br>
+    <div class="container">
+    <h1 class="title is-1">
+    ${track.name}
+    </h1>
+    <h2 class="subtitle is-2">
+    By ${track.artists[0].name}
+    </h2>
+    </div>
+    <br>
+    <div class = "media">
+    <div class = "media-content">
+    <div class = "content">
+    <figure class = "image">
+    <img class= "is-centered" src="${track.album.images[0].url}" style="height: 45%; width: 45%;">
+    </figure>
+    </div>
+    </div>
+    </div>
+    <br>
     `);
     if (track.artists.length > 1) {
         for (let i = 1; i < track.artists.length; i++) {
@@ -38,16 +55,46 @@ export const renderTrackPage = async function () {
         }
     }
     $root.append(`
-        </p>
-        <p>Released: ${track.album.release_date}</p>
-        <p>Average Rating: a lot</p> 
-        <a class="button" href="/album_page/index.html?id=${track.album.id}">See full album</a>
-        <iframe src="https://open.spotify.com/embed/track/${track.id}" width="300" height="80" frameborder="0" allowtransparency="true" allow="encrypted-media"></iframe>
+    <nav class="level">
+    <div class="level-item has-text-centered">
+      <div>
+        <p class="heading">Average Rating</p>
+        <p class="title">5</p>
+      </div>
+    </div>
+    <div class="level-item has-text-centered">
+      <div>
+        <p class="heading">Popularity</p>
+        <p class="title">${track.popularity}</p>
+      </div>
+    </div>
+
+    <div class="level-item has-text-centered">
+      <div>
+        <p class="heading">Release Date</p>
+        <p class="title">${track.album.release_date}</p>
+      </div>
+    </div>
+  </nav>
+        <iframe src="https://open.spotify.com/embed/track/${track.id}" width="100%" height="80" frameborder="0" allowtransparency="true" allow="encrypted-media"></iframe>
     `);
 
     //------------------------- SHARE TRACK ------------------------------
     $root.append(`
-        <button class="button share">Share Track</button>
+    <nav class="level">
+    <div class="level-left">
+      <div class="level-item">
+      <button class="button share is-primary is-large">Share Track</button>
+      </div>
+    </div>
+    <div class="level-right">
+    <div class="level-item">
+    <a class="button is-primary is-large" href="/album_page/index.html?id=${track.album.id}">See full album</a>
+    </div>
+    </div>
+  </nav>
+    
+    <br>
         <div id="post_modal" class="modal">
         <div class="modal-content">
             <div style="float: left; width: 50%; padding:5px;">
@@ -93,7 +140,7 @@ export const renderTrackPage = async function () {
     //------------------ DISPLAY POSTS ABOUT ALBUM -----------------------
     $root.append(`
         <div class="container">
-            <p class="title">Relevant Posts</p>
+            <p class="title">Reviews</p>
         </div>
         <br>
     `);
