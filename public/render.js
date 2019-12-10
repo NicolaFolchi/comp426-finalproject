@@ -173,7 +173,7 @@ async function renderTweet() {
         //                 <a class="card-footer-item myDeleteButtons" data-id="${result.data[i]["id"]}">Delete</a>
         //         </footer>
         //     </div>`;
-        // } else {
+        // } else { 
             let stars = ``;
                 switch (result[i].rating) {
                     case "0.5":
