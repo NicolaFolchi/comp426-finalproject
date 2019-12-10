@@ -298,27 +298,6 @@ app.get('/getToken', function (req, res) {
         }
     });
 });
-// app.post('/tuitts', function (req, res) {
-//     request.post(authOptions, function (error, response, body) {
-//         if (!error && response.statusCode === 200) {
-
-//             // use the access token to access the Spotify Web API
-//             let token = body.access_token;
-//             let options = {
-//                 url: `https://api.spotify.com/v1/albums/${req.body.albumid}`,
-//                 headers: {
-//                     'Authorization': 'Bearer ' + token
-//                 },
-//                 json: true
-//             };
-//             console.log(req.body.albumid);
-//             // console.log(body);
-//             request.get(options, function (error, response, body) {
-//                 console.log(body);
-//             });
-//         }
-//     });
-// });
 
 app.use('/app', session_middleware);
 app.use('/app', router_app);
