@@ -205,8 +205,10 @@ export async function submitPost() {
         method: 'post',
         url: 'http://localhost:3000/tuits',
         data: {
-            "type": "tweet",
-            "body": posttext
+            "type": "album",
+            "spotify-id": id,
+            "review": posttext,
+            "rating": postscore
         },
         withCredentials: true,
     });
