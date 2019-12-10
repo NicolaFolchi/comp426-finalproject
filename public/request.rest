@@ -41,11 +41,19 @@ withCredentials: true
 
 ###
 
-PUT http://localhost:3000/tuits/RJmYfLol
+DELETE http://localhost:3000/tuits/DZKxd9sA
+Content-Type: application/json
+withCredentials: true
+
+
+###
+
+POST http://localhost:3000/changePassword
 Content-Type: application/json
 withCredentials: true
 
 {
-    "rating": 2,
-    "review": "sucked balls"
+    "previousPassword": "test123",
+    "newPassword": "test1234",
+    "username": "test1"
 }

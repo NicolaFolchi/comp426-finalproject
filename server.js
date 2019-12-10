@@ -204,7 +204,7 @@ app.post('/changePassword', async function (request, response) {
 
             if (await bcrypt.compare(request.body.previousPassword, userd[0].password)) {
 
-                User.findOneAndUpdate({ username: "test1" }, { $set: { password: newEncryptedPassword } }, { useFindAndModify: false }, function (err, doc) {
+                User.findOneAndUpdate({ username: request.body.username }, { $set: { password: newEncryptedPassword } }, { useFindAndModify: false }, function (err, doc) {
                     if (err) return res.send(500, { error: err });
                     return response.send('Succesfully saved.');
                 });
@@ -241,6 +241,22 @@ app.delete('/users', function (request, response) {
         }
         return response.status(200).send();
     });
+});
+
+// delete a post
+app.delete('/tuits/:postid', function (request, response) {
+    let tuitID = request.params.postid;
+    for (let i = 0; i < db.length; i++) {
+        if (db[i]['id'] == tuitID) {
+            db.splice(0, 1);
+            let data = JSON.stringify(db, null, 2);
+            fs.writeFile("data.json", data, function (err, result) {
+                if (err) console.log('error', err);
+            });
+            response.status(200).send();
+            break;
+        }
+    }
 });
 
 app.post('/logout', function (request, response) {
