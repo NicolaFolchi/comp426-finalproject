@@ -39,3 +39,13 @@ GET http://localhost:3000/tuits
 Content-Type: application/json
 withCredentials: true
 
+###
+
+PUT http://localhost:3000/tuits/RJmYfLol
+Content-Type: application/json
+withCredentials: true
+
+{
+    "rating": 2,
+    "review": "sucked balls"
+}

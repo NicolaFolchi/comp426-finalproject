@@ -163,6 +163,7 @@ app.post('/login', function (request, response) {
                 request.session.user_username = userd[0].username;
                 request.session.user_firstName = userd[0].firstName;
                 request.session.user_lastName = userd[0].lastName;
+                request.session.user_password = userd[0].password;
                 request.session.user_obj = userd[0];
                 console.log(request.session.user_id);
                 return response.redirect('/')
@@ -174,11 +175,48 @@ app.post('/login', function (request, response) {
             response.status(500).send("something weird happened  :s");
         }
     })
-    // User.find( {username: request.session.user_username}, function(err,usr){
-    //     console.log(usr);
-    //     console.log(request.session.user_username);
-    // })
 });
+
+// updating post user information of a specific post
+app.put('/tuits/:postid', function (request, response) {
+    let tuitID = request.params.postid;
+    for (let i = 0; i < db.length; i++) {
+        if (db[i]['id'] == tuitID) {
+            let previousEntry = db[i];
+            previousEntry['review'] = request.body['review'];
+            previousEntry['rating'] = request.body['rating'];
+
+            let data = JSON.stringify(db, null, 2);
+            fs.writeFile("data.json", data, function (err, result) {
+                if (err) console.log('error', err);
+            });
+            response.status(200).send();
+            break;
+        }
+    }
+});
+
+//updating user data on DB
+app.post('/changePassword', async function (request, response) {
+    try {
+        let newEncryptedPassword = await bcrypt.hash(request.body.newPassword, 10);
+        User.find({ username: request.body.username }, async function (err, userd) {
+
+            if (await bcrypt.compare(request.body.previousPassword, userd[0].password)) {
+
+                User.findOneAndUpdate({ username: "test1" }, { $set: { password: newEncryptedPassword } }, { useFindAndModify: false }, function (err, doc) {
+                    if (err) return res.send(500, { error: err });
+                    return response.send('Succesfully saved.');
+                });
+            } else {
+                return response.status(400).send('Previous password is incorrect')
+            }
+        });
+    } catch (e) {
+        console.log(String(e));
+    }
+
+})
 // sending logged in user info to front-end
 app.get('/getLoggedInUser', function (request, response) {
     response.send(request.session.user_obj);
@@ -205,7 +243,7 @@ app.delete('/users', function (request, response) {
     });
 });
 
-app.post('/logout', function(request, response){
+app.post('/logout', function (request, response) {
     response.sendFile(__dirname + '/public/index.html'); // not working on app
     // killing the cookie session
     request.session.destroy(function (err) {
@@ -215,7 +253,7 @@ app.post('/logout', function(request, response){
         }
         return response.status(200).send();
     });
-} )
+})
 // ------------------ SPOTIFY API INTEGRATION ---------------------------
 
 const request = require('request');

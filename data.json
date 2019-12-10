@@ -1,6 +1,72 @@
 [
   {
     "type": "album",
+    "spotify-id": "35vTE3hx3AAXtM6okpJIIt",
+    "review": "test",
+    "rating": "2.5",
+    "id": "aDGH6_ns",
+    "authorUsername": "1111",
+    "authorFirstName": "1",
+    "authorLastName": "1",
+    "createdAt": "2019-12-10T18:58:46.873Z"
+  },
+  {
+    "type": "album",
+    "spotify-id": "35vTE3hx3AAXtM6okpJIIt",
+    "review": "sadfsdag",
+    "rating": "5",
+    "id": "3RqPYJsF",
+    "authorUsername": "1111",
+    "authorFirstName": "1",
+    "authorLastName": "1",
+    "createdAt": "2019-12-10T18:57:48.140Z"
+  },
+  {
+    "type": "album",
+    "spotify-id": "35vTE3hx3AAXtM6okpJIIt",
+    "review": "a",
+    "rating": "1.5",
+    "id": "DZKxd9sA",
+    "authorUsername": "1111",
+    "authorFirstName": "1",
+    "authorLastName": "1",
+    "createdAt": "2019-12-10T18:57:27.559Z"
+  },
+  {
+    "type": "album",
+    "spotify-id": "35vTE3hx3AAXtM6okpJIIt",
+    "review": "this is good",
+    "rating": "2.5",
+    "id": "xE9GxJgB",
+    "authorUsername": "1111",
+    "authorFirstName": "1",
+    "authorLastName": "1",
+    "createdAt": "2019-12-10T18:54:19.110Z"
+  },
+  {
+    "type": "track",
+    "spotify-id": "0hNhlwnzMLzZSlKGDCuHOo",
+    "review": "a",
+    "rating": "3",
+    "id": "z3lEDya4",
+    "authorUsername": "1111",
+    "authorFirstName": "1",
+    "authorLastName": "1",
+    "createdAt": "2019-12-10T18:49:09.594Z"
+  },
+  {
+    "type": "track",
+    "spotify-id": "0hNhlwnzMLzZSlKGDCuHOo",
+    "review": "a",
+    "rating": "4 and a half",
+    "id": "okh_sI8z",
+    "authorUsername": "1111",
+    "authorFirstName": "1",
+    "authorLastName": "1",
+    "createdAt": "2019-12-10T18:01:01.153Z"
+  },
+  {
+    "type": "album",
     "spotify-id": "6XYAPA3sDCNgBY5eMQt2vZ",
     "review": "this is a 3 star album",
     "rating": "3",
@@ -77,6 +143,8 @@
   {
     "type": "tweet",
     "body": "i like this song",
+    "rating": 2,
+    "review": "sucked balls",
     "id": "RJmYfLol",
     "author": "9999",
     "isLiked": false,

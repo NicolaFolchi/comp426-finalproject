@@ -1,4 +1,4 @@
-$(function (){
+$(function () {
     renderAlbumPage();
     $("#make_search").click(searchButtonClick);
     $("#search_text").val("");
@@ -19,7 +19,7 @@ export const searchButtonClick = async function () {
     document.location.href = `../search_page/index.html?q=${search_text}&t=${type}`;
 }
 
-export const renderAlbumPage = async function() {
+export const renderAlbumPage = async function () {
     //--------------------------- AUTHENTICATION ----------------------------
     const result = await axios({
         method: 'get',
@@ -30,7 +30,7 @@ export const renderAlbumPage = async function() {
 
     let prof = await getProfile();
     let profile = prof.data;
-    if(profile.username == null) {
+    if (profile.username == null) {
         $("#logged-out-buttons").attr("style", "display: relative;");
         $("#logged-in-buttons").attr("style", "display: none;");
     }
@@ -69,8 +69,8 @@ export const renderAlbumPage = async function() {
         </div>
         <br>
     `);
-    if(album.artists.length > 1){
-        for(let i = 1; i < album.artists.length; i++){
+    if (album.artists.length > 1) {
+        for (let i = 1; i < album.artists.length; i++) {
             $(".subtitle").append(`, ${album.artists[i].name}`);
         }
     }
@@ -79,7 +79,7 @@ export const renderAlbumPage = async function() {
     <div class="level-item has-text-centered">
       <div>
         <p class="heading">Average Rating</p>
-        <p class="title">5</p>
+        <p class="title" id="avg-rating">5</p>
       </div>
     </div>
     <div class="level-item has-text-centered">
@@ -110,12 +110,12 @@ export const renderAlbumPage = async function() {
             <th>Track</th>
             <th>Length</th>
         </tr>`;
-    for(let i = 0; i < album.tracks.items.length; i++){
+    for (let i = 0; i < album.tracks.items.length; i++) {
         tracks += `
             <tr>
-                <td>${i+1}</td>
+                <td>${i + 1}</td>
                 <td><a href="/track_page/index.html?id=${album.tracks.items[i].id}">${album.tracks.items[i].name}</a></td>
-                <td>${parseInt(album.tracks.items[i].duration_ms/60000)+":"+("0" + parseInt((album.tracks.items[i].duration_ms/1000) % 60)).slice(-2)}</td>
+                <td>${parseInt(album.tracks.items[i].duration_ms / 60000) + ":" + ("0" + parseInt((album.tracks.items[i].duration_ms / 1000) % 60)).slice(-2)}</td>
             </tr>
         `;
     }
@@ -164,20 +164,20 @@ export const renderAlbumPage = async function() {
         </div>
     </div>
     `);
-    window.onclick = function(event) {
+    window.onclick = function (event) {
         if (event.target.id == "post_modal") {
             $("#post_modal").attr("style", "display: none;")
             $("#review").val("");
             $("#rating").prop("selectedIndex", 0);
         }
     }
-    $("#cancel_post").click(function() {
+    $("#cancel_post").click(function () {
         $("#post_modal").attr("style", "display: none;");
         $("#review").val("");
         $("#rating").prop("selectedIndex", 0);
     });
-    $("#make_post_button").click(async function(){
-        await submitPost(id);
+    $("#make_post_button").click(async function () {
+        await submitPost(album, id);
         $("#post_modal").attr("style", "display: none;");
         $("#review").val("");
         $("#rating").prop("selectedIndex", 0);
@@ -186,11 +186,12 @@ export const renderAlbumPage = async function() {
 
     //------------------ DISPLAY POSTS ABOUT ALBUM -----------------------
     $root.append(`
-        <div class="container">
-            <p class="title">Reviews</p>
+        <div class="container" id="album-reviews">
         </div>
         <br>
     `);
+
+    $("#album-reviews").append(await renderAlbumPosts(album));
 }
 
 
@@ -198,7 +199,7 @@ export function makePost() {
     $("#post_modal").attr("style", "display: block;");
 }
 
-export async function submitPost(id) {
+export async function submitPost(album, id) {
     let posttext = document.getElementById("review").value;
     let postscore = $("input[name=rating]:checked", '#rating').val();
 
@@ -215,9 +216,11 @@ export async function submitPost(id) {
         },
         withCredentials: true,
     });
+
+    $("#album-reviews").append(await renderAlbumPosts(album));
 }
 
-export const getAlbum = async function(id, token) {
+export const getAlbum = async function (id, token) {
     const result = await axios({
         method: 'get',
         url: `https://api.spotify.com/v1/albums/${id}`,
@@ -229,10 +232,53 @@ export const getAlbum = async function(id, token) {
     return result;
 }
 
-export const getProfile = async function() {
+export const getProfile = async function () {
     let result = await axios({
         method: 'get',
         url: 'http://localhost:3000/getLoggedInUser',
     });
     return result;
+}
+
+const renderAlbumPosts = async function (album) {
+    $("#album-reviews").html("");
+    let result = ((await axios({
+        method: 'get',
+        url: 'http://localhost:3000/tuits',
+        withCredentials: true,
+    })).data).filter(e => e["spotify-id"] == album.id);
+
+    let sum = 0;
+    for(let i = 0; i < result.length; i++){
+        sum += parseFloat(result[i].rating);
+    };
+    let avg_rating = sum / result.length;
+    $("#avg-rating").html(avg_rating.toFixed(2));
+
+    let posts = `<p class="title">Reviews</p>`;
+    for (let i = 0; i < result.length; i++) {
+        posts += `
+            <div class="card" id="${result[i]["id"]}" style="width:60%; margin: auto; display: flex; flex-direction: column;">
+                <div class="card-content">
+                    <div style="float: left; width: 50%; padding:5px; text-align:center;">
+                        <img src="${album.images[0].url}"> 
+                        <a href="/album_page/index.html?id=${result[i]["spotify-id"]}">See Album Page</a>                       
+                    </div>
+                    <div style="float: left; width: 50%; padding:5px;">
+                        <p class="title is-4">${result[i].authorFirstName} ${result[i].authorLastName}</p>
+                        <p class="subtitle is-6">@${result[i].authorUsername}</p><br>
+                        <p class="title is-4">${album.name}</p>
+                        <p class="subtitle is-6">${album.artists[0].name}</p>
+                        <p class="subtitle is-6">Released: ${album.release_date}</p><br>
+
+                        <div class="content">
+                            <p>${result[i].rating} Stars</p>
+                            <p>${result[i].review}</p> <br>
+                            <p>${new Date(result[i]["createdAt"]).toLocaleTimeString()}  --  ${new Date(result[i]["createdAt"]).toLocaleDateString()}<p>
+                        </div>
+                    </div>
+                </div>
+            </div><br>`;
+    }
+    return posts;
 }
