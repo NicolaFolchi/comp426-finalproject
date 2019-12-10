@@ -46,11 +46,10 @@ export const renderProfilePage = async function () {
     const $root = $("#root");
     $root.append(`
         <div class="container" id="profile_info" style="padding-top: 0.4in;">
-            <p class="title">Username: ${profile.username}</p>
-            <p class="subtitle">${profile.firstName} ${profile.lastName}</p>
-            <p>Email Address: ${profile.emailAddress}</p>
-            <p>Password: ${profile.password}</p>
+            <p class="title is-1">Username: ${profile.username}</p>
+            <p class="subtitle is-2">${profile.firstName} ${profile.lastName}</p>
         </div>
+        <br>
         <button class="button" id="change_password_button">Change Password</button>
         <button class="button is-danger is-light" id="delete_profile">Delete Account</button>
         <br><br>
