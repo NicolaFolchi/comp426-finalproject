@@ -4,6 +4,23 @@ export const renderSite = function () {
     $("#tweetbutton").on("click", typeTweet);
     $("#submiteditbutton").on("click", submitEdit);
     $("#make_search").click(makeSearch);
+    $("#log-out-button").click(handleLogOut);
+}
+
+export const getProfile = async function() {
+    let result = await axios({
+        method: 'get',
+        url: 'http://localhost:3000/getLoggedInUser',
+    });
+    return result;
+}
+
+export const handleLogOut = async function () {
+    await axios({
+        method: 'post',
+        url: 'http://localhost:3000/logout'
+    });
+    document.location.href = '../index.html';
 }
 
 export const getTrack = async function (id, token) {
@@ -99,6 +116,17 @@ async function renderTweet() {
         json: true
     });
     let token = auth["data"];
+
+    let prof = await getProfile();
+    let profile = prof.data;
+    if(profile.username == null) {
+        $("#logged-out-buttons").attr("style", "display: relative;");
+        $("#logged-in-buttons").attr("style", "display: none;");
+    }
+    else {
+        $("#logged-out-buttons").attr("style", "display: none;");
+        $("#logged-in-buttons").attr("style", "display: relative;");
+    }
 
     const $root = $('#root');
     $root.html("");

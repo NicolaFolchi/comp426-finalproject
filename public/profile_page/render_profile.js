@@ -1,5 +1,6 @@
 $(function (){
     renderProfilePage();
+    $("#log-out-button").click(handleLogOut);
 })
 
 export const getProfile = async function() {
@@ -117,4 +118,12 @@ export const handleDeleteProfileClick = async function () {
         });
         document.location.href = '../index.html';
     }
+}
+
+export const handleLogOut = async function () {
+    await axios({
+        method: 'post',
+        url: 'http://localhost:3000/logout'
+    });
+    document.location.href = '../index.html';
 }

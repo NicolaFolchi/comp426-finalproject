@@ -19,6 +19,17 @@ export const renderAlbumPage = async function() {
     });
     let token = result["data"];
 
+    let prof = await getProfile();
+    let profile = prof.data;
+    if(profile.username == null) {
+        $("#logged-out-buttons").attr("style", "display: relative;");
+        $("#logged-in-buttons").attr("style", "display: none;");
+    }
+    else {
+        $("#logged-out-buttons").attr("style", "display: none;");
+        $("#logged-in-buttons").attr("style", "display: relative;");
+    }
+
     //--------------------------- GET ALBUM ---------------------------------
     let id = location.search.substring(4);
     //let id = "1sJzod7aGgZwu2ShYec8GQ";
@@ -200,6 +211,14 @@ export const getAlbum = async function(id, token) {
             'Authorization': 'Bearer ' + token
         },
         json: true
+    });
+    return result;
+}
+
+export const getProfile = async function() {
+    let result = await axios({
+        method: 'get',
+        url: 'http://localhost:3000/getLoggedInUser',
     });
     return result;
 }
