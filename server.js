@@ -180,15 +180,27 @@ app.get('/getLoggedInUser', function (request, response) {
     response.send(request.session.user_obj);
 });
 
-app.delete('/users', function (request, response){
-    User.findByIdAndRemove({_id: request.session.user_id}, function(err){
-        if (err){
+app.delete('/users', function (request, response) {
+    // redirecting to home
+    response.sendFile(__dirname + '/public/index.html');
+    // deleting the user on the db
+    User.findByIdAndRemove({ _id: request.session.user_id }, function (err) {
+        if (err) {
             console.log(err);
             return response.status(500).send();
         }
         return response.status(200).send()
     });
-})
+    // killing the cookie session
+    request.session.destroy(function (err) {
+        if (err) {
+            console.log(err);
+            return response.status(500).send()
+        }
+        return response.status(200).send();
+    });
+    
+});
 // ------------------ SPOTIFY API INTEGRATION ---------------------------
 
 const request = require('request');
