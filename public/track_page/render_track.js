@@ -135,6 +135,12 @@ export const renderTrackPage = async function () {
         $("#review").val("");
         $("#rating").prop("selectedIndex", 0);
     });
+    $("#make_post_button").click(async function(){
+        await submitPost();
+        $("#post_modal").attr("style", "display: none;");
+        $("#review").val("");
+        $("#rating").prop("selectedIndex", 0);
+    });
     $(".share").on("click", makePost);
 
     //------------------ DISPLAY POSTS ABOUT ALBUM -----------------------
@@ -148,6 +154,24 @@ export const renderTrackPage = async function () {
 
 export function makePost() {
     $("#post_modal").attr("style", "display: block;");
+}
+
+export async function submitPost() {
+    let posttext = document.getElementById("review").value;
+    let e = document.getElementById("rating");
+    let postscore = e.options[e.selectedIndex].value;
+
+    console.log(posttext, postscore);
+
+    await axios({
+        method: 'post',
+        url: 'http://localhost:3000/tuits',
+        data: {
+            "type": "tweet",
+            "body": posttext
+        },
+        withCredentials: true,
+    });
 }
 
 export const getTrack = async function (id, token) {

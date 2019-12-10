@@ -152,6 +152,12 @@ export const renderAlbumPage = async function() {
         $("#review").val("");
         $("#rating").prop("selectedIndex", 0);
     });
+    $("#make_post_button").click(async function(){
+        await submitPost();
+        $("#post_modal").attr("style", "display: none;");
+        $("#review").val("");
+        $("#rating").prop("selectedIndex", 0);
+    });
     $(".share").on("click", makePost);
 
     //------------------ DISPLAY POSTS ABOUT ALBUM -----------------------
@@ -168,14 +174,9 @@ export function makePost() {
     $("#post_modal").attr("style", "display: block;");
 }
 
-export function cancelPost(){
-    $(".editform").replaceWith(`<button class="share button">Share Album</button>`)
-    $(".share").on("click", makePost);
-}
-
 export async function submitPost() {
-    let posttext = document.getElementById("reviewtext").value;
-    let e = document.getElementById("reviewscore");
+    let posttext = document.getElementById("review").value;
+    let e = document.getElementById("rating");
     let postscore = e.options[e.selectedIndex].value;
 
     console.log(posttext, postscore);
@@ -189,9 +190,6 @@ export async function submitPost() {
         },
         withCredentials: true,
     });
-
-    $(".editform").replaceWith(`<button class="share button">Share Album</button>`)
-    $(".share").on("click", makePost);
 }
 
 export const getAlbum = async function(id, token) {

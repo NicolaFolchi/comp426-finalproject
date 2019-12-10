@@ -100,12 +100,15 @@ export const handleCancelPassChange = function () {
 }
 
 export const handleDeleteProfileClick = async function () {
+    let prof = await getProfile();
+    alert(prof)
     if(confirm("Are you sure you want to delete your account?")){
         alert("Profile Deleted");
-        let result = await axios({
+        await axios({
             method: 'delete',
             url: 'http://localhost:3000/users',
         });
+        alert(prof)
         updateProfileInfo();
     }
 }
