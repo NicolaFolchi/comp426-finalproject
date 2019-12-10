@@ -111,7 +111,7 @@ export const renderTrackPage = async function () {
     <br>
     <div id="post_modal" class="modal">
     <div class="modal-content">
-    <br>
+    <br id="for-edit" class="">
         <div style="float: left; width: 50%; padding:5px;">
             <img src="${track.album.images[0].url}">
         </div>
@@ -135,7 +135,8 @@ export const renderTrackPage = async function () {
         </fieldset>
             <br>
             <br>
-            <button id="make_post_button" class="button is-success is-light">Submit</button>
+            <button id="make_post_button" class="button is-success is-light" style="display: relative;">Submit</button>
+            <button id="make_edit_button" class="button is-success is-light" style="display: none;">Edit</button>
             <button id="cancel_post" class="button is-danger is-light">Cancel</textarea>
         </div>
     </div>
@@ -159,6 +160,10 @@ export const renderTrackPage = async function () {
         $("#review").val("");
         $("#rating").prop("selectedIndex", 0);
     });
+    $("#make_edit_button").click(async function () {
+        await submitEdit(track);
+        $("#post_modal").attr("style", "display: none;");
+    });
     $(".share").on("click", makePost);
 
     //------------------ DISPLAY POSTS ABOUT ALBUM -----------------------
@@ -177,6 +182,8 @@ export async function makePost() {
         document.location.href = "../login/index.html";
     }
     else{
+        $("#make_post_button").attr("style", "display: relative;");
+        $("#make_edit_button").attr("style", "display: none;");
         $("#post_modal").attr("style", "display: block;");
     }
 }
@@ -223,7 +230,7 @@ export const getProfile = async function() {
 }
 
 const renderTrackPosts = async function (track) {
-    $("#track-reviews").html("");
+    $("#track-reviews").html(`<p class="title">Reviews</p>`);
     let result = ((await axios({
         method: 'get',
         url: 'http://localhost:3000/tuits',
@@ -237,7 +244,7 @@ const renderTrackPosts = async function (track) {
     let avg_rating = sum / result.length;
     $("#avg-rating").html(avg_rating.toFixed(2));
 
-    let posts = `<p class="title">Reviews</p>`;
+    let post = ``;
     for(let i = 0; i < result.length; i++){
         let stars = ``;
         switch (result[i].rating) {
@@ -284,7 +291,8 @@ const renderTrackPosts = async function (track) {
             default:
                 break;
         }
-        posts += `
+        post = ``;
+        post += `
         <div class="card" id="${result[i]["id"]}" style="display: flex; flex-direction: column;">
         <div class="card-image">
             <div style="float: left; width: 50%; padding:10px; text-align:center;">
@@ -292,11 +300,27 @@ const renderTrackPosts = async function (track) {
                 <p class="title is-4">${track.name}</p>
                 <p class="subtitle is-6">${track.album.artists[0].name}</p>
                 <a class = "button is-primary is-small" href="/track_page/index.html?id=${result[i]["spotify-id"]}" style = "margin-top: -18px;" >See Track Page</a>                       
-            </div>
+            </div>`;
+            if((await getProfile()).data.username != result[i].authorUsername){
+                post += `
+                    <div style="float: left; width: 50%; padding:5px;">
+                        <p class="title is-4">${result[i].authorFirstName} ${result[i].authorLastName}</p>
+                        <p class="subtitle is-6">@${result[i].authorUsername}</p><br>
+                    </div>`;
+            }
+            else{
+                post += `
+                    <div style="float: left; width: 40%; padding:5px;">
+                        <p class="title is-4">${result[i].authorFirstName} ${result[i].authorLastName}</p>
+                        <p class="subtitle is-6">@${result[i].authorUsername}</p><br>
+                    </div>
+                    <div style="float: left; width: 10%; padding:5px;">
+                        <a class="button" id="edit-post-${result[i].id}"><i class="fas fa-edit"></i></a>
+                        <a class="button" id="delete-post-${result[i].id}"><i class="fas fa-trash"></i></a>
+                    </div>`;
+            }
+            post += `
             <div style="float: left; width: 50%; padding:5px;">
-                <p class="title is-2">${result[i].authorFirstName} ${result[i].authorLastName}</p>
-                <p class="subtitle is-4">@${result[i].authorUsername}</p><br>
-
                 <div class="content">
                 <p class = "is-size-4">${result[i].review}</p>
                 <div class = "content" style = "margin-top: 90px;">
@@ -307,6 +331,50 @@ const renderTrackPosts = async function (track) {
             </div>
         </div>
     </div><br>`;
+    $("#track-reviews").append(post);
+        $(`#edit-post-${result[i].id}`).click(function() {
+            handleEditPost(result[i].id);
+        });
+        $(`#delete-post-${result[i].id}`).click(function() {
+            handleDeletePost(result[i].id, track);
+        });
     }
-    return posts;
+}
+
+const handleEditPost = async function (id){
+    let result = ((await axios({
+        method: 'get',
+        url: 'http://localhost:3000/tuits',
+        withCredentials: true,
+    })).data).filter(e => e["id"] == id);
+
+    $("#for-edit").attr("class", `${id}`);
+    $("#review").html(`${result[0].review}`);
+    $("#make_edit_button").attr("style", "display: relative;");
+    $("#make_post_button").attr("style", "display: none;");
+    $("#post_modal").attr("style", "display: block;");
+}
+
+const submitEdit = async function (track) {
+    let posttext = document.getElementById("review").value;
+    let postscore = $("input[name=rating]:checked", '#rating').val();
+    await axios({
+        method: 'put',
+        url: 'http://localhost:3000/tuits/' + $("#for-edit").attr("class"),
+        data: {
+            "review": posttext,
+            "rating": postscore
+        },
+        withCredentials: true,
+    });
+
+    await renderTrackPosts(track);
+}
+
+const handleDeletePost = async function(id, track) {
+    await axios({
+        method: 'delete',
+        url: 'http://localhost:3000/tuits/' + id
+    })
+    await renderTrackPosts(track);
 }
