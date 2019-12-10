@@ -383,8 +383,6 @@ const handleEditPost = async function (id){
     $("#make_edit_button").attr("style", "display: relative;");
     $("#make_post_button").attr("style", "display: none;");
     $("#post_modal").attr("style", "display: block;");
-
-
 }
 
 const submitEdit = async function (album) {
