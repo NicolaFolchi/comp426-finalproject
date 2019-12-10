@@ -9,15 +9,10 @@ let usrsDB = JSON.parse(usrsData);
 console.log("server is up and running");
 
 let express = require("express");
-
 // used to parse the request body
 let bodyParser = require("body-parser");
 // used for the creation of unique id's for tuiter posts
 const shortid = require('shortid');
-
-
-
-
 const bcrypt = require('bcryptjs');
 const session = require('express-session');
 const User = require('./models/user').User;
@@ -26,12 +21,6 @@ const session_middleware = require('./middlewares/session');
 const passport = require('passport');
 
 let app = express();
-
-// initPassport(
-//     passport,
-//     userID => usrsDB.find(user => user.username === userID),
-//     id => usrsDB.find(user => user.id === id)
-//     );
 
 let server = app.listen(3000, () => {
     console.log('we out heree');
@@ -113,7 +102,7 @@ app.post('/tuits', function (request, response) {
 // signing up process
 app.post("/users", async function (request, response) {
     // finding if username or email already exist on user database
-    User.find({$or:[{username: request.body.username}, {emailAddress: request.body.email}]}, async function (err, userd) {
+    User.find({ $or: [{ username: request.body.username }, { emailAddress: request.body.email }] }, async function (err, userd) {
         if (!userd.length) {
             try {
                 let username = request.body.username;
@@ -170,6 +159,7 @@ app.post('/login', function (request, response) {
                 console.log(userd[0]._id);
                 request.session.user_id = userd[0]._id;
                 request.session.user_username = userd[0].username;
+                request.session.user_obj = userd[0];
                 console.log(request.session.user_id);
                 return response.redirect('/')
                 // response.send("HOLA MUNDO HERMOSO");
@@ -180,33 +170,15 @@ app.post('/login', function (request, response) {
             response.status(500).send("something weird happened  :s");
         }
     })
-
-    // User.find(function (err, doc) {
-    //     console.log(doc);
-    // });
-
-    // let username = usrsDB.find(user => user.username === request.body.user);
-    // if (username != null) {
-    //     try {
-    //         // comparing our stored hashed password with the password the user is trying to log in with
-    //         if (await bcrypt.compare(request.body.password, username.password)) {
-    //             response.status(200).send('Success, you are now logged in');
-    //             User.find(function(err,doc){
-    //                 console.log(doc);
-    //             })
-
-    //         } else {
-    //             response.status(400).send('Failed to log in, password incorrect');
-    //         }
-    //     } catch {
-    //         response.status(500).send();
-    //     }
-    // }
-    // else {
-    //     return response.status(404).send('User not found');
-    // }
+});
+// sending logged in user info to front-end
+app.get('/getLoggedInUser', function (request, response) {
+    response.send(request.session.user_obj);
 });
 
+app.delete('/users', function (request, response){
+    User.findOneAndDelete(request.session.user_id);
+})
 // ------------------ SPOTIFY API INTEGRATION ---------------------------
 
 const request = require('request');
