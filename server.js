@@ -1,7 +1,3 @@
-if (process.env.NODE_ENV !== 'production') {
-    require('dotenv').config();
-}
-
 let fs = require("fs");
 let binData = fs.readFileSync("data.json");
 let usrsData = fs.readFileSync('users.json');
