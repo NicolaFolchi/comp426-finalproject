@@ -134,26 +134,30 @@ export const renderAlbumPage = async function() {
     $root.append(`
     <div id="post_modal" class="modal">
         <div class="modal-content">
+        <br>
             <div style="float: left; width: 50%; padding:5px;">
                 <img src="${album.images[0].url}">
             </div>
             <div style="float: left; width: 50%; padding:5px;">
-                <p class="title is-4">${album.name}</p>
-                <p class="subtitle is-6">${album.artists[0].name}</p>
-                <p class="subtitle is-6">Released: ${album.release_date}</p>
+                <p class="title is-2">${album.name}</p>
+                <p class="subtitle is-3">${album.artists[0].name}</p>
+                <p class="subtitle is-5">Released: ${album.release_date}</p>
 
                 <textarea id="review" class="textarea" placeholder="What are your thoughts?"></textarea>
-                <div class="select">
-                    <select required id="rating">
-                        <option value="" selected disabled hidden>--Rating--</option>
-                        <option value="0">0 Stars</option>
-                        <option value="1">1 Stars</option>
-                        <option value="2">2 Stars</option>
-                        <option value="3">3 Stars</option>
-                        <option value="4">4 Stars</option>
-                        <option value="5">5 Stars</option>
-                    </select>
-                </div>
+                <fieldset class="rating">
+                <input type="radio" id="star5" name="rating" value="5" /><label class = "full" for="star5" title="Awesome - 5 stars"></label>
+                <input type="radio" id="star4half" name="rating" value="4 and a half" /><label class="half" for="star4half" title="Pretty good - 4.5 stars"></label>
+                <input type="radio" id="star4" name="rating" value="4" /><label class = "full" for="star4" title="Pretty good - 4 stars"></label>
+                <input type="radio" id="star3half" name="rating" value="3 and a half" /><label class="half" for="star3half" title="Meh - 3.5 stars"></label>
+                <input type="radio" id="star3" name="rating" value="3" /><label class = "full" for="star3" title="Meh - 3 stars"></label>
+                <input type="radio" id="star2half" name="rating" value="2 and a half" /><label class="half" for="star2half" title="Kinda bad - 2.5 stars"></label>
+                <input type="radio" id="star2" name="rating" value="2" /><label class = "full" for="star2" title="Kinda bad - 2 stars"></label>
+                <input type="radio" id="star1half" name="rating" value="1 and a half" /><label class="half" for="star1half" title="Meh - 1.5 stars"></label>
+                <input type="radio" id="star1" name="rating" value="1" /><label class = "full" for="star1" title="Sucks big time - 1 star"></label>
+                <input type="radio" id="starhalf" name="rating" value="half" /><label class="half" for="starhalf" title="Sucks big time - 0.5 stars"></label>
+            </fieldset>
+                <br>
+                <br>
                 <button id="make_post_button" class="button is-success is-light">Submit</button>
                 <button id="cancel_post" class="button is-danger is-light">Cancel</textarea>
             </div>
@@ -205,10 +209,8 @@ export async function submitPost(id) {
         method: 'post',
         url: 'http://localhost:3000/tuits',
         data: {
-            "type": "album",
-            "spotify-id": id,
-            "review": posttext,
-            "rating": postscore
+            "type": "tweet",
+            "body": posttext
         },
         withCredentials: true,
     });
