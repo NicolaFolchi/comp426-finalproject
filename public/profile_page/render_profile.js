@@ -46,11 +46,10 @@ export const renderProfilePage = async function () {
     const $root = $("#root");
     $root.append(`
         <div class="container" id="profile_info" style="padding-top: 0.4in;">
-            <p class="title">Username: ${profile.username}</p>
-            <p class="subtitle">${profile.firstName} ${profile.lastName}</p>
-            <p>Email Address: ${profile.emailAddress}</p>
-            <p>Password: ${profile.password}</p>
+        <p class="title is-1">${profile.firstName} ${profile.lastName}</p>
+            <p class="subtitle is-3">@${profile.username}</p>
         </div>
+        <br>
         <button class="button" id="change_password_button">Change Password</button>
         <button class="button is-danger is-light" id="delete_profile">Delete Account</button>
         <br><br>
@@ -74,27 +73,72 @@ const renderUserPosts = async function (profile, token) {
     })).data).filter(e => e.authorUsername == profile.username);
     let posts = `<p class="title">Posts Made:</p>`;
     for (let i = 0; i < result.length; i++) {
+        let stars = ``;
+        switch (result[i].rating) {
+            case "0.5":
+            stars =`<i class="star fas fa-star-half"></i>`;
+            break;
+
+            case "1":
+            stars =`<i class="star fas fa-star"></i>`;
+            break;
+
+            case "1.5":
+            stars = `<i class="star fas fa-star"></i><i class="star fas fa-star-half"></i>`;
+            break;
+
+            case "2":
+            stars = `<i class="star fas fa-star"></i><i class="star fas fa-star"></i>`;
+            break;
+
+            case "2.5":
+            stars = `<i class="star fas fa-star"></i><i class="star fas fa-star"></i><i class="star fas fa-star-half"></i>`;
+            break;
+
+            case "3":
+                stars= `<i class="star fas fa-star"></i><i class="star fas fa-star"></i><i class="star fas fa-star"></i>`;
+                break;
+
+            case "3.5":
+                stars =`<i class="star fas fa-star"></i><i class="star fas fa-star"></i><i class="star fas fa-star"></i><i class="star fas fa-star-half"></i>`;
+                break;
+
+            case "4":
+                stars = `<i class="star fas fa-star"></i><i class="star fas fa-star"></i><i class="star fas fa-star"></i><i class="star fas fa-star"></i>`;
+                break;
+
+            case "4.5":
+                stars = `<i class="star fas fa-star"></i><i class="star fas fa-star"></i><i class="star fas fa-star"></i><i class="star fas fa-star"></i><i class="star fas fa-star-half"></i>`;
+                break;
+
+            case "5":
+                stars = `<i class="star fas fa-star"></i><i class="star fas fa-star"></i><i class="star fas fa-star"></i><i class="star fas fa-star"></i><i class="star fas fa-star"></i>`;
+                break;
+
+            default:
+                break;
+        }
         if (result[i]["type"] == "track") {
             let track = (await getTrack(result[i]["spotify-id"], token)).data;
             posts += `
-            <br>
             <div class="card" id="${result[i]["id"]}" style="width: 60%; margin: auto; display: flex; flex-direction: column;">
-                <div class="card-content">
-                    <div style="float: left; width: 50%; padding:5px; text-align:center;">
+                <div class="card-image">
+                    <div style="float: left; width: 50%; padding:10px; text-align:center;">
                         <img src="${track.album.images[0].url}">
-                        <a href="/track_page/index.html?id=${result[i]["spotify-id"]}">See Track Page</a>                        
+                        <p class="title is-4">${track.name}</p>
+                        <p class="subtitle is-6">${track.album.artists[0].name}</p>
+                        <a class = "button is-primary is-small" href="/track_page/index.html?id=${result[i]["spotify-id"]}" style = "margin-top: -18px;" >See Track Page</a>                       
                     </div>
                     <div style="float: left; width: 50%; padding:5px;">
-                        <p class="title is-4">${result[i].authorFirstName} ${result[i].authorLastName}</p>
-                        <p class="subtitle is-6">@${result[i].authorUsername}</p><br>
-                        <p class="title is-4">${track.name}</p>
-                        <p class="subtitle is-6">${track.artists[0].name}</p>
-                        <p class="subtitle is-6">Released: ${track.album.release_date}</p><br>
+                        <p class="title is-2">${result[i].authorFirstName} ${result[i].authorLastName}</p>
+                        <p class="subtitle is-4">@${result[i].authorUsername}</p><br>
 
-                        <div>
-                            <p>${result[i].rating} Stars</p>
-                            <p>${result[i].review}</p> <br>
-                            <p>${new Date(result[i]["createdAt"]).toLocaleTimeString()}  --  ${new Date(result[i]["createdAt"]).toLocaleDateString()}<p>
+                        <div class="content">
+                        <p class = "is-size-4">${result[i].review}</p>
+                        <div class = "content" style = "margin-top: 90px;">
+                        <p class = "is-size-4" id = "${result[i]["id"]}-rating">${stars}</p>
+                        <p class = "is-size-6 is-italic">${new Date(result[i]["createdAt"]).toLocaleTimeString()}  --  ${new Date(result[i]["createdAt"]).toLocaleDateString()}<p>
+                        </div>
                         </div>
                     </div>
                 </div>
@@ -103,23 +147,24 @@ const renderUserPosts = async function (profile, token) {
         else if (result[i]["type"] == "album") {
             let album = (await getAlbum(result[i]["spotify-id"], token)).data;
             posts += `
-            <div class="card" id="${result[i]["id"]}" style="width:60%; margin: auto; display: flex; flex-direction: column;">
-                <div class="card-content">
-                    <div style="float: left; width: 50%; padding:5px; text-align:center;">
-                        <img src="${album.images[0].url}"> 
-                        <a href="/album_page/index.html?id=${result[i]["spotify-id"]}">See Album Page</a>                       
-                    </div>
-                    <div style="float: left; width: 50%; padding:5px;">
-                        <p class="title is-4">${result[i].authorFirstName} ${result[i].authorLastName}</p>
-                        <p class="subtitle is-6">@${result[i].authorUsername}</p><br>
+            <div class="card" id="${result[i]["id"]}" style="width: 60%; margin: auto; display: flex; flex-direction: column;">
+                <div class="card-image">
+                    <div style="float: left; width: 50%; padding:10px; text-align:center;">
+                        <img src="${album.images[0].url}">
                         <p class="title is-4">${album.name}</p>
                         <p class="subtitle is-6">${album.artists[0].name}</p>
-                        <p class="subtitle is-6">Released: ${album.release_date}</p><br>
+                        <a class = "button is-primary is-small" href="/track_page/index.html?id=${result[i]["spotify-id"]}" style = "margin-top: -18px;" >See Track Page</a>                       
+                    </div>
+                    <div style="float: left; width: 50%; padding:5px;">
+                        <p class="title is-2">${result[i].authorFirstName} ${result[i].authorLastName}</p>
+                        <p class="subtitle is-4">@${result[i].authorUsername}</p><br>
 
                         <div class="content">
-                            <p>${result[i].rating} Stars</p>
-                            <p>${result[i].review}</p> <br>
-                            <p>${new Date(result[i]["createdAt"]).toLocaleTimeString()}  --  ${new Date(result[i]["createdAt"]).toLocaleDateString()}<p>
+                        <p class = "is-size-4">${result[i].review}</p>
+                        <div class = "content" style = "margin-top: 90px;">
+                        <p class = "is-size-4" id = "${result[i]["id"]}-rating">${stars}</p>
+                        <p class = "is-size-6 is-italic">${new Date(result[i]["createdAt"]).toLocaleTimeString()}  --  ${new Date(result[i]["createdAt"]).toLocaleDateString()}<p>
+                        </div>
                         </div>
                     </div>
                 </div>

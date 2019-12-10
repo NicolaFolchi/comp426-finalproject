@@ -323,23 +323,25 @@ const renderAlbumPosts = async function (album) {
         post = ``;
         post += `
             <div class="card" id="${result[i]["id"]}" style="width:60%; margin: auto; display: flex; flex-direction: column;">
-                <div class="card-content">
-                    <div style="float: left; width: 50%; padding:5px; text-align:center;">
+                <div class="card-image">
+                    <div style="float: left; width: 50%; padding:10px; text-align:center;">
                         <img src="${album.images[0].url}"> 
-                        <a href="/album_page/index.html?id=${result[i]["spotify-id"]}">See Album Page</a>                       
+                        <p class="title is-4">${album.name}</p>
+                            <p class="subtitle is-6">${album.artists[0].name}</p>
+                            <a class = "button is-primary is-small" href="/album_page/index.html?id=${result[i]["spotify-id"]}" style = "margin-top: -18px;" >See Album Page</a>                     
                     </div>`;
         if((await getProfile()).data.username != result[i].authorUsername){
             post += `
                 <div style="float: left; width: 50%; padding:5px;">
-                    <p class="title is-4">${result[i].authorFirstName} ${result[i].authorLastName}</p>
-                    <p class="subtitle is-6">@${result[i].authorUsername}</p><br>
+                    <p class="title is-2">${result[i].authorFirstName} ${result[i].authorLastName}</p>
+                    <p class="subtitle is-4">@${result[i].authorUsername}</p><br>
                 </div>`;
         }
         else{
             post += `
                 <div style="float: left; width: 40%; padding:5px;">
-                    <p class="title is-4">${result[i].authorFirstName} ${result[i].authorLastName}</p>
-                    <p class="subtitle is-6">@${result[i].authorUsername}</p><br>
+                    <p class="title is-2">${result[i].authorFirstName} ${result[i].authorLastName}</p>
+                    <p class="subtitle is-4">@${result[i].authorUsername}</p><br>
                 </div>
                 <div style="float: left; width: 10%; padding:5px;">
                     <a class="button" id="edit-post-${result[i].id}"><i class="fas fa-edit"></i></a>
@@ -348,15 +350,14 @@ const renderAlbumPosts = async function (album) {
         }
         post += `       
             <div style="float: left; width: 50%; padding:5px;">
-                <p class="title is-4">${album.name}</p>
-                <p class="subtitle is-6">${album.artists[0].name}</p>
-                <p class="subtitle is-6">Released: ${album.release_date}</p><br>
 
-                <div class="content">
-                    <p>${result[i].rating} Stars</p>
-                    <p>${result[i].review}</p> <br>
-                    <p>${new Date(result[i]["createdAt"]).toLocaleTimeString()}  --  ${new Date(result[i]["createdAt"]).toLocaleDateString()}<p>
-                </div>
+                            <div class="content">
+                                <p class = "is-size-4">${result[i].review}</p>
+                                <div class = "content" style = "margin-top: 90px;">
+                                <p class = "is-size-4" id = "${result[i]["id"]}-rating">${stars}</p>
+                                <p class = "is-size-6 is-italic">${new Date(result[i]["createdAt"]).toLocaleTimeString()}  --  ${new Date(result[i]["createdAt"]).toLocaleDateString()}<p>
+                                </div>
+                                </div>
             </div>
         </div>
         </div><br>`;
