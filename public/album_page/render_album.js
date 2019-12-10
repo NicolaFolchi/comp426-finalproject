@@ -57,20 +57,30 @@ export const renderAlbumPage = async function() {
         }
     }
     $root.append(`
-        <p>Released: ${album.release_date}</p>
-        <p>Average Rating: a lot</p> 
+    <nav class="level">
+      <div class="level-left">
+        <div class="level-item">
+          <p class="title">
+          Released: ${album.release_date}
+          </p>
+        </div>
+      </div>
+    
+      <div class="level-right">
+        <p class="level-item title"><strong>Average Rating: 5 </strong></p>
+      </div>
+    </nav>
+    <iframe src="https://open.spotify.com/embed/album/${album.id}" width="1050" height="80" frameborder="0" allowtransparency="true" allow="encrypted-media"></iframe>
     `);
     let tracks = `
     <table class="table is-striped is-fullwidth is-bordered">
         <tr>
-            <th>Index</th>
             <th>Track</th>
             <th>Length</th>
         </tr>`;
     for(let i = 0; i < album.tracks.items.length; i++){
         tracks += `
             <tr>
-                <td>${i+1}</td>
                 <td><a href="/track_page/index.html?id=${album.tracks.items[i].id}">${album.tracks.items[i].name}</a></td>
                 <td>${parseInt(album.tracks.items[i].duration_ms/60000)+":"+("0" + parseInt((album.tracks.items[i].duration_ms/1000) % 60)).slice(-2)}</td>
             </tr>
@@ -78,21 +88,22 @@ export const renderAlbumPage = async function() {
     }
     tracks += `</table>`;
     $root.append(tracks);
-    $root.append(`
-        <iframe src="https://open.spotify.com/embed/album/${album.id}" width="300" height="80" frameborder="0" allowtransparency="true" allow="encrypted-media"></iframe>
-        </div><br><br>
+    $root.append(`<nav class="level">
+    <div class="level-left">
+      <div class="level-item">
+      <button class="share button is-primary is-large">Share Album</button>
+      </div>
+    </div>
+  </nav>
     `)
 
     //------------------------- SHARE ALBUM ------------------------------
-    $root.append(`
-    <button class="share button">Share Album</button>
-    `);
     $(".share").on("click", renderEdit);
 
     //------------------ DISPLAY POSTS ABOUT ALBUM -----------------------
     $root.append(`
         <div class="container">
-            <p class="title">Relevant Posts</p>
+            <p class="title">Reviews</p>
         </div>
         <br>
     `);
