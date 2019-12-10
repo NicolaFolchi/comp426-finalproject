@@ -16,6 +16,11 @@ function login() {
   if (userpassword !== userConfirmPassword){
     return $message.html(`<span class="has-text-danger">Your passwords must match  >:(</span>`);
   }
+  
+  if (userpassword.length < 6){
+    return $message.html(`<span class="has-text-danger">Your password must be longer than 6 characters</span>`);
+  }
+  
   let data = { 
     "username": username,
     "password": userpassword ,

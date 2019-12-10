@@ -1,3 +1,7 @@
+if (process.env.NODE_ENV !== 'production') {
+    require('dotenv').config();
+}
+
 let fs = require("fs");
 let binData = fs.readFileSync("data.json");
 let usrsData = fs.readFileSync('users.json');
@@ -116,8 +120,6 @@ app.post("/users", async function (request, response) {
     User.find({$or:[{username: request.body.username}, {emailAddress: request.body.email}]}, async function (err, userd) {
         if (!userd.length) {
             try {
-                console.log(request.body.username);
-                console.log(request.body.email);
                 let username = request.body.username;
                 let password = await bcrypt.hash(request.body.password, 10);
                 // let password = request.body.password;
