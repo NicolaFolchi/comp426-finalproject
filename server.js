@@ -170,6 +170,10 @@ app.post('/login', function (request, response) {
             response.status(500).send("something weird happened  :s");
         }
     })
+    // User.find( {username: request.session.user_username}, function(err,usr){
+    //     console.log(usr);
+    //     console.log(request.session.user_username);
+    // })
 });
 // sending logged in user info to front-end
 app.get('/getLoggedInUser', function (request, response) {
@@ -177,7 +181,13 @@ app.get('/getLoggedInUser', function (request, response) {
 });
 
 app.delete('/users', function (request, response){
-    User.findOneAndDelete(request.session.user_id);
+    User.findByIdAndRemove({_id: request.session.user_id}, function(err){
+        if (err){
+            console.log(err);
+            return response.status(500).send();
+        }
+        return response.status(200).send()
+    });
 })
 // ------------------ SPOTIFY API INTEGRATION ---------------------------
 
