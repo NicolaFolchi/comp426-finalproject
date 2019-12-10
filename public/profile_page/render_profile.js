@@ -1,17 +1,18 @@
-$(function (){
+$(async function (){
     renderProfilePage();
+    profile = await getProfile();
+    updateProfileInfo();
 })
 
-let profile = {
-    "username": "he",
-    "password": "password",
-    "firstName": "hell",
-    "lastName": "wrfnw",
-    "emailAddress": "rklegerklg@fef"
-};
+let profile = {};
 
-export const getProfile = function() {
-    return profile;
+export const getProfile = async function() {
+    let result = await axios({
+        method: 'get',
+        url: 'http://localhost:3000/getLoggedInUser',
+    });
+    let prof = result.data;
+    return prof;
 }
 
 export const editProfile = function(new_prof) {

@@ -88,7 +88,7 @@ export const renderAlbumPage = async function() {
       </div>
     </div>
   </nav>
-    <iframe src="https://open.spotify.com/embed/album/${album.id}" width="1073" height="80" frameborder="0" allowtransparency="true" allow="encrypted-media"></iframe>
+    <iframe src="https://open.spotify.com/embed/album/${album.id}" width="100%" height="80" frameborder="0" allowtransparency="true" allow="encrypted-media"></iframe>
     `);
     let tracks = `
     <table class="table is-striped is-fullwidth is-bordered">
