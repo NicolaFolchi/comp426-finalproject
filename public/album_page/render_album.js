@@ -8,6 +8,7 @@ $(function (){
 // - make pretty
 // - make post button functional
 // - modal box for sharing album
+// - home button for album and track and profile pages
 // ###########################################
 
 export const renderAlbumPage = async function() {
