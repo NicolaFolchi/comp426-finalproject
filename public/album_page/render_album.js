@@ -99,7 +99,6 @@ export const renderAlbumPage = async function() {
 
     //------------------------- SHARE ALBUM ------------------------------
     $root.append(`
-    <button class="share button">Share Album</button>
     <div id="post_modal" class="modal">
         <div class="modal-content">
             <div style="float: left; width: 50%; padding:5px;">
