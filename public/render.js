@@ -1,5 +1,4 @@
 export const renderSite = function () {
-    const $root = $('#root');
     renderTweet();
     $("#fixedbutton").on("click", postTweet);
     $("#tweetbutton").on("click", typeTweet);
@@ -31,7 +30,7 @@ export const getAlbum = async function (id, token) {
     return result;
 }
 
-export const renderTrackPost = async function (id, token) {
+export const renderTrackResult = async function (id, token) {
     let track_json = await getTrack(id, token);
     let track = track_json.data;
     let post = `
@@ -48,10 +47,8 @@ export const renderTrackPost = async function (id, token) {
                         <p class="title is-4">${track.name}</p>
                         <p class="subtitle is-6">${track.album.name}</p>
                         <p class="subtitle is-6">${track.artists[0].name}</p>
+                        <p class="subtitle is-6">Average Rating: alskdfjlasf</p>
                     </div>
-                </div>
-                <div class="content">
-                    <p>I like this song</p>
                 </div>
             </div>
         </div>
@@ -61,7 +58,7 @@ export const renderTrackPost = async function (id, token) {
     $(".search_results").append(post);
 }
 
-export const renderAlbumPost = async function (id, token) {
+export const renderAlbumResult = async function (id, token) {
     let album_json = await getAlbum(id, token);
     let album = album_json.data;
     let post = `
@@ -77,10 +74,8 @@ export const renderAlbumPost = async function (id, token) {
                     <div class="media-content">
                         <p class="title is-4">${album.name}</p>
                         <p class="subtitle is-6">${album.artists[0].name}</p>
+                        <p class="subtitle is-6">Average Rating: alskdfjlasf</p>
                     </div>
-                </div>
-                <div class="content">
-                    <p>I like this album</p>
                 </div>
             </div>
         </div>
@@ -93,40 +88,7 @@ export const renderAlbumPost = async function (id, token) {
 export const makeSearch = async function () {
     let type = $("#search_type").val();
     let search_text = $("#search_text").val();
-    const auth = await axios({
-        method: 'get',
-        url: 'http://localhost:3000/getToken',
-        json: true
-    });
-    let token = auth["data"];
-    let search = await axios({
-        method: 'get',
-        url: `https://api.spotify.com/v1/search?q=${search_text}&type=${type}`,
-        headers: {
-            'Authorization': 'Bearer ' + token
-        },
-        json: true
-    });
-    $(".search_results").html("");
-    $(".search_results").append(`
-        <p class="title" style="margin-bottom: 20px;">Showing ${type} results for "${search_text}":</p>
-        <button class="button" id="home" style="margin-bottom: 20px;">Return to Home Page</button>
-    `)
-    if(type == "track"){
-        let search_body = search.data.tracks.items;
-        search_body.forEach(element => {
-            renderTrackPost(element.id, token);
-        });
-    }
-    else {
-        let search_body = search.data.albums.items;
-        search_body.forEach(element => {
-            renderAlbumPost(element.id, token);
-        });
-    }
-    $("#search_text").val("");
-    $("#search_type").val("");
-    $("#home").click(renderTweet);
+    document.location.href = `./search_page/index.html?q=${search_text}&t=${type}`;
 }
 
 async function renderTweet() {
@@ -144,7 +106,6 @@ async function renderTweet() {
         <a href="/album_page/index.html?id=6XYAPA3sDCNgBY5eMQt2vZ">Album</a>
         <a href="/track_page/index.html?id=0hNhlwnzMLzZSlKGDCuHOo">Track</a>
         <a href="/profile_page/index.html">Profile</a>
-        <div class="search_results"></div>
     `)
 
     // getting all tweets from the server
