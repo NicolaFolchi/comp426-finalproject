@@ -11,7 +11,7 @@
 
 <body>
     <div>
-        <nav class="navbar is-success is-fixed-top is-spaced" role="navigation" aria-label="main navigation">
+        <nav class="navbar is-primary is-fixed-top is-spaced" role="navigation" aria-label="main navigation">
             <div class="navbar-brand">
                 <a class="navbar-item" href="../index.html">
                     <h1 class="title" style="color: white;">Adagio</h1>
@@ -25,34 +25,35 @@
             </div>
             <div id="navbarBasicExample" class="navbar-menu">
                 <div class="navbar-start">
-                    <input type="text" class="input" id="search_text" placeholder="Search...">
-                    <div class="select">
-                        <select required id="search_type">
-                            <option value="" selected disabled hidden>--Select Type--</option>
-                            <option value="track">Track</option>
-                            <option value="album">Album</option>
-                        </select>
-                    </div>
-                    <button class="button is-link" id="make_search">
-                        <span class="icon is-small">
-                            <i class="fas fa-search"></i>
-                        </span>
-                    </button>
+                        <div class="profile_buttons">
+                                <a class="button" href="../login/index.html">Log In</a>
+                                <a class="button is-link" href="../signup/index.html"><strong>Sign Up</strong></a>
+                                <a class="button">Log Out</a>
+                                <a class="button is-link" href="../profile_page/index.html">
+                                    <span class="icon is-small">
+                                        <i class="far fa-user-circle fa-lg" style="color: white;"></i>
+                                    </span>
+                                </a>
+                            </div>
                 </div>
                 <div class="navbar-end">
-                    <div class="profile_buttons">
-                        <a class="button" href="../login/index.html">Log In</a>
-                        <a class="button is-link" href="../signup/index.html"><strong>Sign Up</strong></a>
-                        <a class="button">Log Out</a>
-                        <a class="button is-link" href="../profile_page/index.html">
+                        <input type="text" class="input" id="search_text" placeholder="Search...">
+                        <div class="select">
+                            <select required id="search_type">
+                                <option value="" selected disabled hidden>--Select Type--</option>
+                                <option value="album">Albums</option>
+                                <option value="track">Tracks</option>
+                            </select>
+                        </div>
+                        <button class="button is-link" id="make_search">
                             <span class="icon is-small">
-                                <i class="far fa-user-circle fa-lg" style="color: white;"></i>
+                                <i class="fas fa-search"></i>
                             </span>
-                        </a>
-                    </div>
+                        </button>
                 </div>
             </div>
         </nav>
+        <br>
         <div id="root" style="background-color:white; margin: auto; margin-top: 0.3in; width: 85%; height: 85%;">
         </div>
     </div>
