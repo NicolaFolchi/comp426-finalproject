@@ -47,7 +47,7 @@ export const renderTrackPage = async function () {
     <h1 class="title is-1">
     ${track.name}
     </h1>
-    <h2 class="subtitle is-2">
+    <h2 class="artist subtitle is-2">
     By ${track.artists[0].name}
     </h2>
     </div>
@@ -65,7 +65,7 @@ export const renderTrackPage = async function () {
     `);
     if (track.artists.length > 1) {
         for (let i = 1; i < track.artists.length; i++) {
-            $root.append(`, ${track.artists[i].name}`);
+            $(".artist").append(`, ${track.artists[i].name}`);
         }
     }
     $root.append(`
@@ -237,31 +237,76 @@ const renderTrackPosts = async function (track) {
     let avg_rating = sum / result.length;
     $("#avg-rating").html(avg_rating.toFixed(2));
 
-    let posts = ``;
+    let posts = `<p class="title">Reviews</p>`;
     for(let i = 0; i < result.length; i++){
-        posts += `
-            <br>
-            <div class="card" id="${result[i]["id"]}" style="width: 60%; margin: auto; display: flex; flex-direction: column;">
-                <div class="card-content">
-                    <div style="float: left; width: 50%; padding:5px; text-align:center;">
-                        <img src="${track.album.images[0].url}">
-                        <a href="/track_page/index.html?id=${result[i]["spotify-id"]}">See Track Page</a>                        
-                    </div>
-                    <div style="float: left; width: 50%; padding:5px;">
-                        <p class="title is-4">${result[i].authorFirstName} ${result[i].authorLastName}</p>
-                        <p class="subtitle is-6">@${result[i].authorUsername}</p><br>
-                        <p class="title is-4">${track.name}</p>
-                        <p class="subtitle is-6">${track.artists[0].name}</p>
-                        <p class="subtitle is-6">Released: ${track.album.release_date}</p><br>
+        let stars = ``;
+        switch (result[i].rating) {
+            case "0.5":
+            stars =`<i class="star fas fa-star-half"></i>`;
+            break;
 
-                        <div>
-                            <p>${result[i].rating} Stars</p>
-                            <p>${result[i].review}</p> <br>
-                            <p>${new Date(result[i]["createdAt"]).toLocaleTimeString()}  --  ${new Date(result[i]["createdAt"]).toLocaleDateString()}<p>
-                        </div>
-                    </div>
+            case "1":
+            stars =`<i class="star fas fa-star"></i>`;
+            break;
+
+            case "1.5":
+            stars = `<i class="star fas fa-star"></i><i class="star fas fa-star-half"></i>`;
+            break;
+
+            case "2":
+            stars = `<i class="star fas fa-star"></i><i class="star fas fa-star"></i>`;
+            break;
+
+            case "2.5":
+            stars = `<i class="star fas fa-star"></i><i class="star fas fa-star"></i><i class="star fas fa-star-half"></i>`;
+            break;
+
+            case "3":
+                stars= `<i class="star fas fa-star"></i><i class="star fas fa-star"></i><i class="star fas fa-star"></i>`;
+                break;
+
+            case "3.5":
+                stars =`<i class="star fas fa-star"></i><i class="star fas fa-star"></i><i class="star fas fa-star"></i><i class="star fas fa-star-half"></i>`;
+                break;
+
+            case "4":
+                stars = `<i class="star fas fa-star"></i><i class="star fas fa-star"></i><i class="star fas fa-star"></i><i class="star fas fa-star"></i>`;
+                break;
+
+            case "4.5":
+                stars = `<i class="star fas fa-star"></i><i class="star fas fa-star"></i><i class="star fas fa-star"></i><i class="star fas fa-star"></i><i class="star fas fa-star-half"></i>`;
+                break;
+
+            case "5":
+                stars = `<i class="star fas fa-star"></i><i class="star fas fa-star"></i><i class="star fas fa-star"></i><i class="star fas fa-star"></i><i class="star fas fa-star"></i>`;
+                break;
+
+            default:
+                break;
+        }
+        posts += `
+        <div class="card" id="${result[i]["id"]}" style="display: flex; flex-direction: column;">
+        <div class="card-image">
+            <div style="float: left; width: 50%; padding:10px; text-align:center;">
+                <img src="${track.album.images[0].url}"> 
+                <p class="title is-4">${track.name}</p>
+                <p class="subtitle is-6">${track.album.artists[0].name}</p>
+                <a class = "button is-primary is-small" href="/track_page/index.html?id=${result[i]["spotify-id"]}" style = "margin-top: -18px;" >See Track Page</a>                       
+            </div>
+            <div style="float: left; width: 50%; padding:5px;">
+                <p class="title is-2">${result[i].authorFirstName} ${result[i].authorLastName}</p>
+                <p class="subtitle is-4">@${result[i].authorUsername}</p><br>
+
+                <div class="content">
+                <p class = "is-size-4">${result[i].review}</p>
+                <div class = "content" style = "margin-top: 90px;">
+                <p class = "is-size-4" id = "${result[i]["id"]}-rating">${stars}</p>
+                <p class = "is-size-6 is-italic">${new Date(result[i]["createdAt"]).toLocaleTimeString()}  --  ${new Date(result[i]["createdAt"]).toLocaleDateString()}<p>
                 </div>
-            </div><br>`;
+                </div>
+            </div>
+        </div>
+    </div><br>`;
     }
     return posts;
 }

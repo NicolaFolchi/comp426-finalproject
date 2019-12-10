@@ -243,6 +243,22 @@ app.delete('/users', function (request, response) {
     });
 });
 
+// delete a post
+app.delete('/tuits/:postid', function (request, response) {
+    let tuitID = request.params.postid;
+    for (let i = 0; i < db.length; i++) {
+        if (db[i]['id'] == tuitID) {
+            db.splice(0, 1);
+            let data = JSON.stringify(db, null, 2);
+            fs.writeFile("data.json", data, function (err, result) {
+                if (err) console.log('error', err);
+            });
+            response.status(200).send();
+            break;
+        }
+    }
+});
+
 app.post('/logout', function (request, response) {
     response.sendFile(__dirname + '/public/index.html'); // not working on app
     // killing the cookie session

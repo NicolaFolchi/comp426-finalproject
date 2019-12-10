@@ -270,6 +270,51 @@ const renderAlbumPosts = async function (album) {
 
     let post = ``;
     for (let i = 0; i < result.length; i++) {
+        let stars = ``;
+        switch (result[i].rating) {
+            case "0.5":
+            stars =`<i class="star fas fa-star-half"></i>`;
+            break;
+
+            case "1":
+            stars =`<i class="star fas fa-star"></i>`;
+            break;
+
+            case "1.5":
+            stars = `<i class="star fas fa-star"></i><i class="star fas fa-star-half"></i>`;
+            break;
+
+            case "2":
+            stars = `<i class="star fas fa-star"></i><i class="star fas fa-star"></i>`;
+            break;
+
+            case "2.5":
+            stars = `<i class="star fas fa-star"></i><i class="star fas fa-star"></i><i class="star fas fa-star-half"></i>`;
+            break;
+
+            case "3":
+                stars= `<i class="star fas fa-star"></i><i class="star fas fa-star"></i><i class="star fas fa-star"></i>`;
+                break;
+
+            case "3.5":
+                stars =`<i class="star fas fa-star"></i><i class="star fas fa-star"></i><i class="star fas fa-star"></i><i class="star fas fa-star-half"></i>`;
+                break;
+
+            case "4":
+                stars = `<i class="star fas fa-star"></i><i class="star fas fa-star"></i><i class="star fas fa-star"></i><i class="star fas fa-star"></i>`;
+                break;
+
+            case "4.5":
+                stars = `<i class="star fas fa-star"></i><i class="star fas fa-star"></i><i class="star fas fa-star"></i><i class="star fas fa-star"></i><i class="star fas fa-star-half"></i>`;
+                break;
+
+            case "5":
+                stars = `<i class="star fas fa-star"></i><i class="star fas fa-star"></i><i class="star fas fa-star"></i><i class="star fas fa-star"></i><i class="star fas fa-star"></i>`;
+                break;
+
+            default:
+                break;
+        }
         post = ``;
         post += `
             <div class="card" id="${result[i]["id"]}" style="width:60%; margin: auto; display: flex; flex-direction: column;">
