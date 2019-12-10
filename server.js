@@ -65,6 +65,8 @@ app.post('/tuits', function (request, response) {
     // adding needed properties to my tuits
     request.body['id'] = shortid.generate();
     request.body['author'] = request.session.user_username;
+    request.body['authorFirstName'] = request.session.user_firstName;
+    request.body['authorLastName'] = request.session.user_lastName;
     request.body['isLiked'] = false;
     request.body['retweetCount'] = 0;
     request.body['replyCount'] = 0;
@@ -159,6 +161,8 @@ app.post('/login', function (request, response) {
                 console.log(userd[0]._id);
                 request.session.user_id = userd[0]._id;
                 request.session.user_username = userd[0].username;
+                request.session.user_firstName = userd[0].firstName;
+                request.session.user_lastName = userd[0].lastName;
                 request.session.user_obj = userd[0];
                 console.log(request.session.user_id);
                 return response.redirect('/')
@@ -182,7 +186,7 @@ app.get('/getLoggedInUser', function (request, response) {
 
 app.delete('/users', function (request, response) {
     // redirecting to home
-    response.sendFile(__dirname + '/public/index.html');
+    response.sendFile(__dirname + '/public/index.html'); // not working on app
     // deleting the user on the db
     User.findByIdAndRemove({ _id: request.session.user_id }, function (err) {
         if (err) {
@@ -202,7 +206,7 @@ app.delete('/users', function (request, response) {
 });
 
 app.post('/logout', function(request, response){
-    response.sendFile(__dirname + '/public/index.html');
+    response.sendFile(__dirname + '/public/index.html'); // not working on app
     // killing the cookie session
     request.session.destroy(function (err) {
         if (err) {
