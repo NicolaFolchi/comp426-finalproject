@@ -150,7 +150,7 @@ export const renderTrackPage = async function () {
         $("#rating").prop("selectedIndex", 0);
     });
     $("#make_post_button").click(async function(){
-        await submitPost();
+        await submitPost(id);
         $("#post_modal").attr("style", "display: none;");
         $("#review").val("");
         $("#rating").prop("selectedIndex", 0);
@@ -170,7 +170,7 @@ export function makePost() {
     $("#post_modal").attr("style", "display: block;");
 }
 
-export async function submitPost() {
+export async function submitPost(id) {
     let posttext = document.getElementById("review").value;
     let e = document.getElementById("rating");
     let postscore = e.options[e.selectedIndex].value;
@@ -181,8 +181,10 @@ export async function submitPost() {
         method: 'post',
         url: 'http://localhost:3000/tuits',
         data: {
-            "type": "tweet",
-            "body": posttext
+            "type": "track",
+            "spotify-id": id,
+            "review": posttext,
+            "rating": postscore
         },
         withCredentials: true,
     });
