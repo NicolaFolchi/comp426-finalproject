@@ -1,6 +1,43 @@
 [
   {
     "type": "tweet",
+    "body": "meh",
+    "id": "osnWXRih",
+    "author": "test7",
+    "isLiked": false,
+    "retweetCount": 0,
+    "replyCount": 0,
+    "likeCount": 0,
+    "someLikes": 0,
+    "createdAt": "2019-12-10T15:10:11.257Z"
+  },
+  {
+    "type": "reply",
+    "parent": "kIeXcIFt",
+    "body": "ayeeeee it is workingggggg<br><strong>Reply to:</strong> @test7<p>dope as shiiiitttt</p>",
+    "id": "DhS3wDBJ",
+    "author": "test7",
+    "isLiked": false,
+    "retweetCount": 0,
+    "replyCount": 0,
+    "likeCount": 0,
+    "someLikes": 0,
+    "createdAt": "2019-12-10T05:20:59.202Z"
+  },
+  {
+    "type": "tweet",
+    "body": "dope as shiiiitttt",
+    "id": "kIeXcIFt",
+    "author": "test7",
+    "isLiked": false,
+    "retweetCount": 0,
+    "replyCount": 1,
+    "likeCount": 0,
+    "someLikes": 0,
+    "createdAt": "2019-12-10T05:20:45.178Z"
+  },
+  {
+    "type": "tweet",
     "body": "asdf",
     "id": "BRwpQKFq",
     "author": "aaaa",

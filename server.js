@@ -201,6 +201,18 @@ app.delete('/users', function (request, response) {
     });
     
 });
+
+app.post('/logout', function(request, response){
+    response.sendFile(__dirname + '/public/index.html');
+    // killing the cookie session
+    request.session.destroy(function (err) {
+        if (err) {
+            console.log(err);
+            return response.status(500).send()
+        }
+        return response.status(200).send();
+    });
+} )
 // ------------------ SPOTIFY API INTEGRATION ---------------------------
 
 const request = require('request');
