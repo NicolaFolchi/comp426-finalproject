@@ -174,11 +174,27 @@ app.post('/login', function (request, response) {
             response.status(500).send("something weird happened  :s");
         }
     })
-    // User.find( {username: request.session.user_username}, function(err,usr){
-    //     console.log(usr);
-    //     console.log(request.session.user_username);
-    // })
 });
+
+// updating post user information of a specific post
+app.put('/tuits/:postid', function(request, response){
+    let tuitID = request.params.postid;
+    for (let i = 0; i < db.length; i++) {
+        if (db[i]['id'] == tuitID) {
+            let previousEntry = db[i];
+            previousEntry['review'] = request.body['review'];
+            previousEntry['rating'] = request.body['rating'];
+
+            let data = JSON.stringify(db, null, 2);
+            fs.writeFile("data.json", data, function (err, result) {
+                if (err) console.log('error', err);
+            });
+            response.status(200).send();
+            break;
+        }
+    }
+});
+
 // sending logged in user info to front-end
 app.get('/getLoggedInUser', function (request, response) {
     response.send(request.session.user_obj);

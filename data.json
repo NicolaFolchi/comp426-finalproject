@@ -2,6 +2,8 @@
   {
     "type": "tweet",
     "body": "i like this song",
+    "rating": 2,
+    "review": "sucked balls",
     "id": "RJmYfLol",
     "author": "9999",
     "isLiked": false,
