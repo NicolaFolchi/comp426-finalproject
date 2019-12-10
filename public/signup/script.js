@@ -8,16 +8,27 @@ function login() {
 
   let username = $("#userarea").val();
   let userpassword = $("#passwordarea").val();
+  let userConfirmPassword = $("#confirmpasswordarea").val();
   let fName = $("#fname").val();
   let lName = $("#lname").val();
   let email = $("#email").val();
+
+  if (userpassword !== userConfirmPassword){
+    return $message.html(`<span class="has-text-danger">Your passwords must match  >:(</span>`);
+  }
+  
+  if (userpassword.length < 6){
+    return $message.html(`<span class="has-text-danger">Your password must be longer than 6 characters</span>`);
+  }
+  
   let data = { 
-    "user": username,
+    "username": username,
     "password": userpassword ,
     "fName": fName,
     "lName": lName,
     "email": email
   };
+
 
   $.ajax({
     url: 'http://localhost:3000/users',
@@ -41,7 +52,7 @@ function login() {
         }, 2000);
       } else {
         console.log(data);
-        $message.html(`<span class="has-text-danger">Something went wrong and you were not logged in. We got the error "${data.responseText}"  :(</span>`);
+        $message.html(`<span class="has-text-danger">Something went wrong and you were not registered. We got the error "${data.responseText}"</span>`);
 
       }
     }

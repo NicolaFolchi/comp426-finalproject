@@ -29,18 +29,35 @@ export const renderAlbumPage = async function() {
     //----------------------- DISPLAY ALBUM INFO ----------------------------
     const $root = $("#root");
     $root.append(`
+        <section class="hero is-primary">
+        <div class="hero-body">
         <div class="container">
-        <img src="${album.images[0].url}" style="height: 40%; width: 40%;">
-        <p class="title">${album.name}</p>
-        <p class="subtitle">Artist(s): ${album.artists[0].name}
+        <h1 class="title">
+        ${album.name}
+        </h1>
+        <h2 class="subtitle">
+        By ${album.artists[0].name}
+        </h2>
+        </div>
+        </div>
+        </section>
+        <br>
+        <div class = "media">
+        <div class = "media-content">
+        <div class = "content">
+        <figure class = "image">
+        <img class= "is=centered" src="${album.images[0].url}" style="height: 45%; width: 45%;">
+        </figure>
+        </div>
+        </div>
+        </div>
     `);
     if(album.artists.length > 1){
         for(let i = 1; i < album.artists.length; i++){
-            $root.append(`, ${album.artists[i].name}`);
+            $(".subtitle").append(`, ${album.artists[i].name}`);
         }
     }
     $root.append(`
-        </p>
         <p>Released: ${album.release_date}</p>
         <p>Average Rating: a lot</p> 
     `);

@@ -18,4 +18,24 @@ Content-Type: application/json
     "user": "Nico",
     "password": "hola"
 }
+###
+
+GET http://localhost:3000/getToken
+Content-Type: application/json
+
+###
+
+POST http://localhost:3000/login
+Content-Type: application/json
+
+{
+    "user": "1273",
+    "password": ""
+}
+
+###
+
+GET http://localhost:3000/tuits
+Content-Type: application/json
+withCredentials: true
 
