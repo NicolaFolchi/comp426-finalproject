@@ -1,4 +1,4 @@
-$(function (){
+$(function () {
     renderProfilePage();
     $("#log-out-button").click(handleLogOut);
     $("#make_search").click(searchButtonClick);
@@ -12,7 +12,7 @@ export const searchButtonClick = async function () {
     document.location.href = `../search_page/index.html?q=${search_text}&t=${type}`;
 }
 
-export const getProfile = async function() {
+export const getProfile = async function () {
     let result = await axios({
         method: 'get',
         url: 'http://localhost:3000/getLoggedInUser',
@@ -20,12 +20,12 @@ export const getProfile = async function() {
     return result;
 }
 
-export const editProfile = function(new_prof) {
+export const editProfile = function (new_prof) {
     profile = new_prof;
     updateProfileInfo();
 }
 
-export const renderProfilePage = async function(){
+export const renderProfilePage = async function () {
     const auth = await axios({
         method: 'get',
         url: 'http://localhost:3000/getToken',
@@ -35,7 +35,7 @@ export const renderProfilePage = async function(){
 
     let result = await getProfile();
     let profile = result.data;
-    if(profile.username == null) {
+    if (profile.username == null) {
         $("#logged-out-buttons").attr("style", "display: relative;");
         $("#logged-in-buttons").attr("style", "display: none;");
     }
@@ -73,8 +73,8 @@ const renderUserPosts = async function (profile, token) {
         withCredentials: true,
     })).data).filter(e => e.authorUsername == profile.username);
     let posts = `<p class="title">Posts Made:</p>`;
-    for(let i = 0; i < result.length; i++){
-        if(result[i]["type"] == "track"){
+    for (let i = 0; i < result.length; i++) {
+        if (result[i]["type"] == "track") {
             let track = (await getTrack(result[i]["spotify-id"], token)).data;
             posts += `
             <br>
@@ -100,7 +100,7 @@ const renderUserPosts = async function (profile, token) {
                 </div>
             </div><br>`;
         }
-        else if(result[i]["type"] == "album"){
+        else if (result[i]["type"] == "album") {
             let album = (await getAlbum(result[i]["spotify-id"], token)).data;
             posts += `
             <div class="card" id="${result[i]["id"]}" style="width:60%; margin: auto; display: flex; flex-direction: column;">
@@ -155,57 +155,62 @@ export const handleChangePassClick = function (profile) {
             <p class="pass_change_error" style="display: none; color: red;"></p>
         </div>
     `);
-    $("#submit_pass_change").click(function (){
+    $("#submit_pass_change").click(function () {
         handleSubmitPassChange(profile);
     });
     $("#cancel_pass_change").click(handleCancelPassChange)
 }
 
-export const handleSubmitPassChange = async function(profile) {
-    alert("begin")
-    alert("next")
+export const handleSubmitPassChange = async function (profile) {
     // if($("#cur_pass").val() != user.password){
     //     alert("if")
     //     $(".pass_change_error").html("Current password does not match");
     //     $(".pass_change_error").attr("style", "display: relative; color: red;");
     //     return false;
     // }
-    if ($("#new_pass").val() != $("#confirm_pass").val()){
-        $(".pass_change_error").html("New passwords do not match");
-        $(".pass_change_error").attr("style", "display: relative; color: red;");
-        return false;
-    }
-    else{
-        alert("else")
-        let result = await axios({
-            method: 'post',
-            url: 'http://localhost:3000/users',
-            previousPassword: $("#cur_pass").val(),
-            newPassword: $("#new_pass").val(),
-            username: profile.username
-        });
-        if(result.status == 400){
-            $(".pass_change_error").html("Current password does not match");
+    $(".pass_change_error").attr("style", "display: none; color: red;");
+    profile = (await getProfile()).data;
+    let test = true;
+    let result = await axios({
+        method: 'post',
+        url: 'http://localhost:3000/changePassword',
+        data: {
+            "previousPassword": $("#cur_pass").val(),
+            "newPassword": $("#new_pass").val(),
+            "username": profile.username
+        }
+    }).catch(function (error) {
+        test = false;
+    });
+    if (test) {
+        if ($("#new_pass").val() != $("#confirm_pass").val()) {
+            $(".pass_change_error").html("New passwords do not match");
             $(".pass_change_error").attr("style", "display: relative; color: red;");
             return false;
         }
-        else{
+        else {
             $("#change_password_form").replaceWith(`<button class="button" id="change_password_button">Change Password</button>`);
             $("#change_password_button").click(handleChangePassClick);
             $(".pass_change_error").attr("style", "display: none; color: red;");
             $(".successful_pass_change").attr("style", "display: relative; color: #48c774;")
+            updateProfileInfo();
             return true;
         }
     }
+    else {
+        $(".pass_change_error").html("Current password does not match");
+        $(".pass_change_error").attr("style", "display: relative; color: red;");
+        return false;
+    }
 }
-        
+
 export const handleCancelPassChange = function () {
     $("#change_password_form").replaceWith(`<button class="button" id="change_password_button">Change Password</button>`);
     $("#change_password_button").click(handleChangePassClick);
 }
 
 export const handleDeleteProfileClick = async function () {
-    if(confirm("Are you sure you want to delete your account?")){
+    if (confirm("Are you sure you want to delete your account?")) {
         alert("Profile Deleted");
         await axios({
             method: 'delete',
