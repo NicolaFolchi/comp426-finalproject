@@ -64,33 +64,33 @@ app.post('/tuits', function (request, response) {
 
     // adding needed properties to my tuits
     request.body['id'] = shortid.generate();
-    request.body['author'] = request.session.user_username;
+    request.body['authorUsername'] = request.session.user_username;
     request.body['authorFirstName'] = request.session.user_firstName;
     request.body['authorLastName'] = request.session.user_lastName;
-    request.body['isLiked'] = false;
-    request.body['retweetCount'] = 0;
-    request.body['replyCount'] = 0;
-    request.body['likeCount'] = 0;
-    request.body['someLikes'] = 0;
+    // request.body['isLiked'] = false;
+    // request.body['retweetCount'] = 0;
+    // request.body['replyCount'] = 0;
+    // request.body['likeCount'] = 0;
+    // request.body['someLikes'] = 0;
     request.body['createdAt'] = (new Date());
 
 
     // CHECK FOR TYPE OF POST, IF RETWEET/REPLY THEN INCREASE PARENT RETWEET/REPLY COUNT
-    if (request.body['type'] == 'retweet') {
-        for (let i = 0; i < db.length; i++) {
-            if (db[i]['id'] == request.body['parent']) {
-                db[i]['retweetCount'] += 1;
-            }
-        }
-    }
+    // if (request.body['type'] == 'retweet') {
+    //     for (let i = 0; i < db.length; i++) {
+    //         if (db[i]['id'] == request.body['parent']) {
+    //             db[i]['retweetCount'] += 1;
+    //         }
+    //     }
+    // }
 
-    if (request.body['type'] == 'reply') {
-        for (let i = 0; i < db.length; i++) {
-            if (db[i]['id'] == request.body['parent']) {
-                db[i]['replyCount'] += 1;
-            }
-        }
-    }
+    // if (request.body['type'] == 'reply') {
+    //     for (let i = 0; i < db.length; i++) {
+    //         if (db[i]['id'] == request.body['parent']) {
+    //             db[i]['replyCount'] += 1;
+    //         }
+    //     }
+    // }
     // adding as first element to json file
     db.unshift(request.body);
     let data = JSON.stringify(db, null, 2);
