@@ -1,5 +1,27 @@
 [
   {
+    "type": "track",
+    "spotify-id": "2IDMCaW8K2nrFOoR5UANUo",
+    "review": "come onnn 🔥🔥🔥🔥",
+    "rating": "5",
+    "id": "_qz1Dv5V",
+    "authorUsername": "NicolaF",
+    "authorFirstName": "Nicola",
+    "authorLastName": "Folchi",
+    "createdAt": "2019-12-10T20:41:04.403Z"
+  },
+  {
+    "type": "track",
+    "spotify-id": "3jbT1Y5MoPwEIpZndDDwVq",
+    "review": "some dope stuff",
+    "rating": "5",
+    "id": "VcaGQXw8",
+    "authorUsername": "NicolaF",
+    "authorFirstName": "Nicola",
+    "authorLastName": "Folchi",
+    "createdAt": "2019-12-10T20:35:59.718Z"
+  },
+  {
     "type": "tweet",
     "body": "i like this song",
     "rating": 2,
