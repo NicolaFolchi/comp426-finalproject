@@ -38,10 +38,50 @@ export const renderTrackPage = async function () {
         <iframe src="https://open.spotify.com/embed/track/${track.id}" width="300" height="80" frameborder="0" allowtransparency="true" allow="encrypted-media"></iframe>
     `);
 
-    //------------------------- SHARE ALBUM ------------------------------
+    //------------------------- SHARE TRACK ------------------------------
     $root.append(`
-        <button class="button">Share Track</button>
+        <button class="button share">Share Track</button>
+        <div id="post_modal" class="modal">
+        <div class="modal-content">
+            <div style="float: left; width: 50%; padding:5px;">
+                <img src="${track.album.images[0].url}">
+            </div>
+            <div style="float: left; width: 50%; padding:5px;">
+                <p class="title is-4">${track.name}</p>
+                <p class="subtitle is-6">${track.artists[0].name}</p>
+                <p class="subtitle is-6">Released: ${track.album.release_date}</p>
+
+                <textarea id="review" class="textarea" placeholder="What are your thoughts?"></textarea>
+                <div class="select">
+                    <select required id="rating">
+                        <option value="" selected disabled hidden>--Rating--</option>
+                        <option value="0">0 Stars</option>
+                        <option value="1">1 Stars</option>
+                        <option value="2">2 Stars</option>
+                        <option value="3">3 Stars</option>
+                        <option value="4">4 Stars</option>
+                        <option value="5">5 Stars</option>
+                    </select>
+                </div>
+                <button id="make_post_button" class="button is-success is-light">Submit</button>
+                <button id="cancel_post" class="button is-danger is-light">Cancel</textarea>
+            </div>
+        </div>
+    </div>
     `);
+    window.onclick = function(event) {
+        if (event.target.id == "post_modal") {
+            $("#post_modal").attr("style", "display: none;")
+            $("#review").val("");
+            $("#rating").prop("selectedIndex", 0);
+        }
+    }
+    $("#cancel_post").click(function() {
+        $("#post_modal").attr("style", "display: none;");
+        $("#review").val("");
+        $("#rating").prop("selectedIndex", 0);
+    });
+    $(".share").on("click", makePost);
 
     //------------------ DISPLAY POSTS ABOUT ALBUM -----------------------
     $root.append(`
@@ -50,6 +90,10 @@ export const renderTrackPage = async function () {
         </div>
         <br>
     `);
+}
+
+export function makePost() {
+    $("#post_modal").attr("style", "display: block;");
 }
 
 export const getTrack = async function (id, token) {

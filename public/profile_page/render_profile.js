@@ -57,12 +57,15 @@ export const handleChangePassClick = function () {
                 Current Password: <input type="text" id="cur_pass"><br>
                 New Password: <input type="password" id="new_pass"><br>
                 Confirm New Password: <input type="password" id="confirm_pass"><br>
-                <input type="submit" id="submit_pass_change" value="Submit">
+                <button class="button" id="submit_pass_change">Submit</button>
+                <button class="button is-danger is-light" id="cancel_pass_change">Cancel</button>
             <form>
+            <p class="successful_pass_change" style="visibility: hidden; color: #48c774">Password changed successfully</p>
             <p class="pass_change_error" style="visibility: hidden; color: red;"></p>
         </div>
     `);
     $("#submit_pass_change").click(handleSubmitPassChange);
+    $("#cancel_pass_change").click(handleCancelPassChange)
 }
 
 export const handleSubmitPassChange = function() {
@@ -87,8 +90,14 @@ export const handleSubmitPassChange = function() {
         editProfile(new_profile);
         $("#change_password_form").replaceWith(`<button class="button" id="change_password_button">Change Password</button>`);
         $("#change_password_button").click(handleChangePassClick);
+        $(".successful_pass_change").attr("style", "visibility: visible; color: #48c774;")
         return true;
     }
+}
+
+export const handleCancelPassChange = function () {
+    $("#change_password_form").replaceWith(`<button class="button" id="change_password_button">Change Password</button>`);
+    $("#change_password_button").click(handleChangePassClick);
 }
 
 export const handleDeleteProfileClick = function () {

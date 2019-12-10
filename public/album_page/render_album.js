@@ -7,7 +7,6 @@ $(function (){
 // - relevant posts
 // - make pretty
 // - make post button functional
-// - modal box for sharing album
 // - home button for album and track and profile pages
 // ###########################################
 
@@ -87,8 +86,47 @@ export const renderAlbumPage = async function() {
     //------------------------- SHARE ALBUM ------------------------------
     $root.append(`
     <button class="share button">Share Album</button>
+    <div id="post_modal" class="modal">
+        <div class="modal-content">
+            <div style="float: left; width: 50%; padding:5px;">
+                <img src="${album.images[0].url}">
+            </div>
+            <div style="float: left; width: 50%; padding:5px;">
+                <p class="title is-4">${album.name}</p>
+                <p class="subtitle is-6">${album.artists[0].name}</p>
+                <p class="subtitle is-6">Released: ${album.release_date}</p>
+
+                <textarea id="review" class="textarea" placeholder="What are your thoughts?"></textarea>
+                <div class="select">
+                    <select required id="rating">
+                        <option value="" selected disabled hidden>--Rating--</option>
+                        <option value="0">0 Stars</option>
+                        <option value="1">1 Stars</option>
+                        <option value="2">2 Stars</option>
+                        <option value="3">3 Stars</option>
+                        <option value="4">4 Stars</option>
+                        <option value="5">5 Stars</option>
+                    </select>
+                </div>
+                <button id="make_post_button" class="button is-success is-light">Submit</button>
+                <button id="cancel_post" class="button is-danger is-light">Cancel</textarea>
+            </div>
+        </div>
+    </div>
     `);
-    $(".share").on("click", renderEdit);
+    window.onclick = function(event) {
+        if (event.target.id == "post_modal") {
+            $("#post_modal").attr("style", "display: none;")
+            $("#review").val("");
+            $("#rating").prop("selectedIndex", 0);
+        }
+    }
+    $("#cancel_post").click(function() {
+        $("#post_modal").attr("style", "display: none;");
+        $("#review").val("");
+        $("#rating").prop("selectedIndex", 0);
+    });
+    $(".share").on("click", makePost);
 
     //------------------ DISPLAY POSTS ABOUT ALBUM -----------------------
     $root.append(`
@@ -100,31 +138,13 @@ export const renderAlbumPage = async function() {
 }
 
 
-export function renderEdit() {
-    $(".button").replaceWith(`
-    <div class = "editform">
-    <textarea class="textarea" id="reviewtext" placeholder="Write a review"></textarea>
-    <div class="select">
-    <select id="reviewscore">
-    <option>0</option>
-    <option>1</option>
-    <option>2</option>
-    <option>3</option>
-    <option>4</option>
-    <option>5</option>
-    </select>
-    </div>
-    <div><button class="submit button">Submit</button><button class="cancel button">Cancel</button></div>
-    </div>`);
-    $(".cancel").on("click", cancelPost);
-    $(".submit").on("click", submitPost);
-
-
+export function makePost() {
+    $("#post_modal").attr("style", "display: block;");
 }
 
 export function cancelPost(){
     $(".editform").replaceWith(`<button class="share button">Share Album</button>`)
-    $(".share").on("click", renderEdit);
+    $(".share").on("click", makePost);
 }
 
 export async function submitPost() {
@@ -145,7 +165,7 @@ export async function submitPost() {
     });
 
     $(".editform").replaceWith(`<button class="share button">Share Album</button>`)
-    $(".share").on("click", renderEdit);
+    $(".share").on("click", makePost);
 }
 
 export const getAlbum = async function(id, token) {
