@@ -7,14 +7,14 @@ export const renderSite = function () {
     $("#log-out-button").click(handleLogOut);
 }
 
-export const getProfile = async function() {
+export const getProfile = async function () {
     let result = await axios({
         method: 'get',
         url: 'http://localhost:3000/getLoggedInUser',
     });
     return result;
 }
- 
+
 export const handleLogOut = async function () {
     await axios({
         method: 'post',
@@ -119,7 +119,7 @@ async function renderTweet() {
 
     let prof = await getProfile();
     let profile = prof.data;
-    if(profile.username == null) {
+    if (profile.username == null) {
         $("#logged-out-buttons").attr("style", "display: relative;");
         $("#logged-in-buttons").attr("style", "display: none;");
     }
@@ -141,170 +141,202 @@ async function renderTweet() {
     // alert(result[0]["spotify-id"])
     // dynamically rendering all of the 50 newest tweets with their respective card provided by bulma
     let tweets = `<div id="tweets">`;
-    for (let i = 0; i < 20; i++) {
-        // if I created this tweet, then:
-        // if (result.data[i]["isMine"] == true) {
-        //     tweets += `
-        //     <br>
-        //     <div class="card" id="${result.data[i]["id"]}">
-        //         <div class="card-content">
-        //             <div class="media">
-        //             <div class="media-left">
-        //                 <figure class="image is-48x48">
-        //                 <img src="https://bulma.io/images/placeholders/96x96.png" alt="Placeholder image">
-        //                 </figure>
-        //             </div>
-        //             <div class="media-content">
-        //                 <p class="title is-4">${result.data[i]["author"]}</p>
-        //                 <p class="subtitle is-6">@${result.data[i]["author"]}</p>
-        //             </div>
-        //         </div>
+    if (profile.username == null) {
+        tweets = `
+            <div class="notification" style="vertical-align:center;">
+            If you want to browse through Adagio's feed then please log in  :)
+            </div>
+            <div class="card" style="display: flex; flex-direction: column;">
+                <div class="card-image">
+                    <div style="float: left; width: 50%; padding:10px; text-align:center;">
+                        <img src="https://i.scdn.co/image/ab67616d0000b2738940ac99f49e44f59e6f7fb3"> 
+                        <p class="title is-4">Flower Boy</p>
+                        <p class="subtitle is-6">Tyler, The Creator</p>
+                        <a class = "button is-primary is-small" href="/album_page/index.html?id=2nkto6YNI4rUYTLqEwWJ3o" style = "margin-top: -18px;" >See Album Page</a>                       
+                    </div>
+                    <div style="float: left; width: 50%; padding:5px;">
+                        <p class="title is-2">Shawn Hendrix</p>
+                        <p class="subtitle is-4">@sHendrix</p><br>
 
-        //         <div class="content">
-        //             ${result.data[i]["body"]}
-        //             <br>
-        //             <p>${new Date(result.data[i]["createdAt"]).toLocaleDateString()}<p>
-        //         </div>
-        //         <footer class="card-footer">
-        //                 <a class="card-footer-item myLikeButtons" data-id="${result.data[i]["id"]}" data-likeStatus="${result.data[i]["isLiked"]}">Like ${result.data[i]["likeCount"]}</a>
-        //                 <a class="card-footer-item myRetweetButtons" data-id="${result.data[i]["id"]}" data-text="${result.data[i]["body"]}">Retweet ${result.data[i]["retweetCount"]} </a>
-        //                 <a class="card-footer-item myReplyButtons" data-id="${result.data[i]["id"]}" data-text="${result.data[i]["body"]}">Reply ${result.data[i]["replyCount"]}</a>
-        //                 <a  class="card-footer-item myEditButtons" data-id="${result.data[i]["id"]}" data-text="${result.data[i]["body"]}">Edit</a>
-        //                 <a class="card-footer-item myDeleteButtons" data-id="${result.data[i]["id"]}">Delete</a>
-        //         </footer>
-        //     </div>`;
-        // } else { 
+                        <div class="content">
+                        <p class = "is-size-4">Tyler Creator easily puts out his best album yet, and one of the best albums of the year. 
+                            This album may not filled with the hardest beats or the most insane rap flows,
+                                    but it is very catchy has a great sound to it. Awesome record 🔥🔥</p>
+                        <div class = "content" style = "margin-top: 90px;">
+                        <p class = "is-size-4"><i class="star fas fa-star"></i><i class="star fas fa-star"></i><i class="star fas fa-star"></i><i class="star fas fa-star"></i><i class="star fas fa-star-half"></i></p>
+                        <p class = "is-size-6 is-italic">6:06:59 PM  --  12/10/2019<p>
+                        </div>
+                        </div>
+                    </div>
+                </div>
+            </div>`
+            
+    } else {
+        for (let i = 0; i < 20; i++) {
+            // if I created this tweet, then:
+            // if (result.data[i]["isMine"] == true) {
+            //     tweets += `
+            //     <br>
+            //     <div class="card" id="${result.data[i]["id"]}">
+            //         <div class="card-content">
+            //             <div class="media">
+            //             <div class="media-left">
+            //                 <figure class="image is-48x48">
+            //                 <img src="https://bulma.io/images/placeholders/96x96.png" alt="Placeholder image">
+            //                 </figure>
+            //             </div>
+            //             <div class="media-content">
+            //                 <p class="title is-4">${result.data[i]["author"]}</p>
+            //                 <p class="subtitle is-6">@${result.data[i]["author"]}</p>
+            //             </div>
+            //         </div>
+
+            //         <div class="content">
+            //             ${result.data[i]["body"]}
+            //             <br>
+            //             <p>${new Date(result.data[i]["createdAt"]).toLocaleDateString()}<p>
+            //         </div>
+            //         <footer class="card-footer">
+            //                 <a class="card-footer-item myLikeButtons" data-id="${result.data[i]["id"]}" data-likeStatus="${result.data[i]["isLiked"]}">Like ${result.data[i]["likeCount"]}</a>
+            //                 <a class="card-footer-item myRetweetButtons" data-id="${result.data[i]["id"]}" data-text="${result.data[i]["body"]}">Retweet ${result.data[i]["retweetCount"]} </a>
+            //                 <a class="card-footer-item myReplyButtons" data-id="${result.data[i]["id"]}" data-text="${result.data[i]["body"]}">Reply ${result.data[i]["replyCount"]}</a>
+            //                 <a  class="card-footer-item myEditButtons" data-id="${result.data[i]["id"]}" data-text="${result.data[i]["body"]}">Edit</a>
+            //                 <a class="card-footer-item myDeleteButtons" data-id="${result.data[i]["id"]}">Delete</a>
+            //         </footer>
+            //     </div>`;
+            // } else { 
             let stars = ``;
-                switch (result[i].rating) {
-                    case "0.5":
-                    stars =`<i class="star fas fa-star-half"></i>`;
+            switch (result[i].rating) {
+                case "0.5":
+                    stars = `<i class="star fas fa-star-half"></i>`;
                     break;
 
-                    case "1":
-                    stars =`<i class="star fas fa-star"></i>`;
+                case "1":
+                    stars = `<i class="star fas fa-star"></i>`;
                     break;
 
-                    case "1.5":
+                case "1.5":
                     stars = `<i class="star fas fa-star"></i><i class="star fas fa-star-half"></i>`;
                     break;
 
-                    case "2":
+                case "2":
                     stars = `<i class="star fas fa-star"></i><i class="star fas fa-star"></i>`;
                     break;
 
-                    case "2.5":
+                case "2.5":
                     stars = `<i class="star fas fa-star"></i><i class="star fas fa-star"></i><i class="star fas fa-star-half"></i>`;
                     break;
 
-                    case "3":
-                        stars= `<i class="star fas fa-star"></i><i class="star fas fa-star"></i><i class="star fas fa-star"></i>`;
-                        break;
+                case "3":
+                    stars = `<i class="star fas fa-star"></i><i class="star fas fa-star"></i><i class="star fas fa-star"></i>`;
+                    break;
 
-                    case "3.5":
-                        stars =`<i class="star fas fa-star"></i><i class="star fas fa-star"></i><i class="star fas fa-star"></i><i class="star fas fa-star-half"></i>`;
-                        break;
+                case "3.5":
+                    stars = `<i class="star fas fa-star"></i><i class="star fas fa-star"></i><i class="star fas fa-star"></i><i class="star fas fa-star-half"></i>`;
+                    break;
 
-                    case "4":
-                        stars = `<i class="star fas fa-star"></i><i class="star fas fa-star"></i><i class="star fas fa-star"></i><i class="star fas fa-star"></i>`;
-                        break;
+                case "4":
+                    stars = `<i class="star fas fa-star"></i><i class="star fas fa-star"></i><i class="star fas fa-star"></i><i class="star fas fa-star"></i>`;
+                    break;
 
-                    case "4.5":
-                        stars = `<i class="star fas fa-star"></i><i class="star fas fa-star"></i><i class="star fas fa-star"></i><i class="star fas fa-star"></i><i class="star fas fa-star-half"></i>`;
-                        break;
+                case "4.5":
+                    stars = `<i class="star fas fa-star"></i><i class="star fas fa-star"></i><i class="star fas fa-star"></i><i class="star fas fa-star"></i><i class="star fas fa-star-half"></i>`;
+                    break;
 
-                    case "5":
-                        stars = `<i class="star fas fa-star"></i><i class="star fas fa-star"></i><i class="star fas fa-star"></i><i class="star fas fa-star"></i><i class="star fas fa-star"></i>`;
-                        break;
+                case "5":
+                    stars = `<i class="star fas fa-star"></i><i class="star fas fa-star"></i><i class="star fas fa-star"></i><i class="star fas fa-star"></i><i class="star fas fa-star"></i>`;
+                    break;
 
-                    default:
-                        break;
-                }
-            if(result[i]["type"] == "track"){
+                default:
+                    break;
+            }
+            if (result[i]["type"] == "track") {
                 let track = (await getTrack(result[i]["spotify-id"], token)).data;
                 tweets += `
-                <br>
-                <div class="card" id="${result[i]["id"]}" style="display: flex; flex-direction: column;">
-                    <div class="card-image">
-                        <div style="float: left; width: 50%; padding:10px; text-align:center;">
-                            <img src="${track.album.images[0].url}"> 
-                            <p class="title is-4">${track.name}</p>
-                            <p class="subtitle is-6">${track.album.artists[0].name}</p>
-                            <a class = "button is-primary is-small" href="/track_page/index.html?id=${result[i]["spotify-id"]}" style = "margin-top: -18px;" >See Track Page</a>                       
-                        </div>
-                        <div style="float: left; width: 50%; padding:5px;">
-                            <p class="title is-2">${result[i].authorFirstName} ${result[i].authorLastName}</p>
-                            <p class="subtitle is-4">@${result[i].authorUsername}</p><br>
-    
-                            <div class="content">
-                            <p class = "is-size-4">${result[i].review}</p>
-                            <div class = "content" style = "margin-top: 90px;">
-                            <p class = "is-size-4" id = "${result[i]["id"]}-rating">${stars}</p>
-                            <p class = "is-size-6 is-italic">${new Date(result[i]["createdAt"]).toLocaleTimeString()}  --  ${new Date(result[i]["createdAt"]).toLocaleDateString()}<p>
+                    <br>
+                    <div class="card" id="${result[i]["id"]}" style="display: flex; flex-direction: column;">
+                        <div class="card-image">
+                            <div style="float: left; width: 50%; padding:10px; text-align:center;">
+                                <img src="${track.album.images[0].url}"> 
+                                <p class="title is-4">${track.name}</p>
+                                <p class="subtitle is-6">${track.album.artists[0].name}</p>
+                                <a class = "button is-primary is-small" href="/track_page/index.html?id=${result[i]["spotify-id"]}" style = "margin-top: -18px;" >See Track Page</a>                       
                             </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>`;
-            }
-            else if(result[i]["type"] == "album"){
-                let album = (await getAlbum(result[i]["spotify-id"], token)).data;
-                tweets += `
-                <br>
-                <div class="card" id="${result[i]["id"]}" style="display: flex; flex-direction: column;">
-                    <div class="card-image">
-                        <div style="float: left; width: 50%; padding:10px; text-align:center;">
-                            <img src="${album.images[0].url}"> 
-                            <p class="title is-4">${album.name}</p>
-                            <p class="subtitle is-6">${album.artists[0].name}</p>
-                            <a class = "button is-primary is-small" href="/album_page/index.html?id=${result[i]["spotify-id"]}" style = "margin-top: -18px;" >See Album Page</a>                       
-                        </div>
-                        <div style="float: left; width: 50%; padding:5px;">
-                            <p class="title is-2">${result[i].authorFirstName} ${result[i].authorLastName}</p>
-                            <p class="subtitle is-4">@${result[i].authorUsername}</p><br>
-    
-                            <div class="content">
+                            <div style="float: left; width: 50%; padding:5px;">
+                                <p class="title is-2">${result[i].authorFirstName} ${result[i].authorLastName}</p>
+                                <p class="subtitle is-4">@${result[i].authorUsername}</p><br>
+        
+                                <div class="content">
                                 <p class = "is-size-4">${result[i].review}</p>
                                 <div class = "content" style = "margin-top: 90px;">
                                 <p class = "is-size-4" id = "${result[i]["id"]}-rating">${stars}</p>
                                 <p class = "is-size-6 is-italic">${new Date(result[i]["createdAt"]).toLocaleTimeString()}  --  ${new Date(result[i]["createdAt"]).toLocaleDateString()}<p>
                                 </div>
                                 </div>
+                            </div>
                         </div>
-                    </div>
-                </div>`;
-                
+                    </div>`;
             }
-        // tweets += `
-        //     <br>
-        //     <div class="card" id="${result.data[i]["id"]}">
-        //         <div class="card-content">
-        //             <div class="media">
-        //             <div class="media-left">
-        //                 <figure class="image is-48x48">
-        //                 <img src="https://bulma.io/images/placeholders/96x96.png" alt="Placeholder image">
-        //                 </figure>
-        //             </div>
-        //             <div class="media-content" id="author${result.data[i]["id"]}">
-        //                 <p class="title is-4">${result.data[i]["author"]}</p>
-        //                 <p class="subtitle is-6">@${result.data[i]["author"]}</p>
-        //             </div>
-        //         </div>
+            else if (result[i]["type"] == "album") {
+                let album = (await getAlbum(result[i]["spotify-id"], token)).data;
+                tweets += `
+                    <br>
+                    <div class="card" id="${result[i]["id"]}" style="display: flex; flex-direction: column;">
+                        <div class="card-image">
+                            <div style="float: left; width: 50%; padding:10px; text-align:center;">
+                                <img src="${album.images[0].url}"> 
+                                <p class="title is-4">${album.name}</p>
+                                <p class="subtitle is-6">${album.artists[0].name}</p>
+                                <a class = "button is-primary is-small" href="/album_page/index.html?id=${result[i]["spotify-id"]}" style = "margin-top: -18px;" >See Album Page</a>                       
+                            </div>
+                            <div style="float: left; width: 50%; padding:5px;">
+                                <p class="title is-2">${result[i].authorFirstName} ${result[i].authorLastName}</p>
+                                <p class="subtitle is-4">@${result[i].authorUsername}</p><br>
+        
+                                <div class="content">
+                                    <p class = "is-size-4">${result[i].review}</p>
+                                    <div class = "content" style = "margin-top: 90px;">
+                                    <p class = "is-size-4" id = "${result[i]["id"]}-rating">${stars}</p>
+                                    <p class = "is-size-6 is-italic">${new Date(result[i]["createdAt"]).toLocaleTimeString()}  --  ${new Date(result[i]["createdAt"]).toLocaleDateString()}<p>
+                                    </div>
+                                    </div>
+                            </div>
+                        </div>
+                    </div>`;
 
-        //         <div class="content">
-        //             ${result.data[i]["body"]}
-                    
-        //             <br>
-        //             <p>${new Date(result.data[i]["createdAt"]).toLocaleTimeString()}  --  ${new Date(result.data[i]["createdAt"]).toLocaleDateString()}<p>
-        //         </div>
-        //         <footer class="card-footer">
-        //                 <a class="card-footer-item myLikeButtons ${result.data[i]["isLiked"]}" id="likeButton${result.data[i]["id"]}" data-id="${result.data[i]["id"]}" data-likeStatus="${result.data[i]["isLiked"]}">Like ${result.data[i]["likeCount"]}</a>
-        //                 <a class="card-footer-item myRetweetButtons" data-id="${result.data[i]["id"]}" data-text="${result.data[i]["body"]}">Retweet ${result.data[i]["retweetCount"]} </a>
-        //                 <a class="card-footer-item myReplyButtons" data-id="${result.data[i]["id"]}" data-text="${result.data[i]["body"]}">Reply ${result.data[i]["replyCount"]}</a>
-        //         </footer>
-        //     </div>`;
-        // }
-        // here I append each generated tweet to a div variable that would then be appended to the root
-        tweets += `</div>`;
+            }
+            // tweets += `
+            //     <br>
+            //     <div class="card" id="${result.data[i]["id"]}">
+            //         <div class="card-content">
+            //             <div class="media">
+            //             <div class="media-left">
+            //                 <figure class="image is-48x48">
+            //                 <img src="https://bulma.io/images/placeholders/96x96.png" alt="Placeholder image">
+            //                 </figure>
+            //             </div>
+            //             <div class="media-content" id="author${result.data[i]["id"]}">
+            //                 <p class="title is-4">${result.data[i]["author"]}</p>
+            //                 <p class="subtitle is-6">@${result.data[i]["author"]}</p>
+            //             </div>
+            //         </div>
+
+            //         <div class="content">
+            //             ${result.data[i]["body"]}
+
+            //             <br>
+            //             <p>${new Date(result.data[i]["createdAt"]).toLocaleTimeString()}  --  ${new Date(result.data[i]["createdAt"]).toLocaleDateString()}<p>
+            //         </div>
+            //         <footer class="card-footer">
+            //                 <a class="card-footer-item myLikeButtons ${result.data[i]["isLiked"]}" id="likeButton${result.data[i]["id"]}" data-id="${result.data[i]["id"]}" data-likeStatus="${result.data[i]["isLiked"]}">Like ${result.data[i]["likeCount"]}</a>
+            //                 <a class="card-footer-item myRetweetButtons" data-id="${result.data[i]["id"]}" data-text="${result.data[i]["body"]}">Retweet ${result.data[i]["retweetCount"]} </a>
+            //                 <a class="card-footer-item myReplyButtons" data-id="${result.data[i]["id"]}" data-text="${result.data[i]["body"]}">Reply ${result.data[i]["replyCount"]}</a>
+            //         </footer>
+            //     </div>`;
+            // }
+            // here I append each generated tweet to a div variable that would then be appended to the root
+            tweets += `</div>`;
+        }
     }
     $root.append(tweets);
     // listen for all of the buttons on each tweet 
