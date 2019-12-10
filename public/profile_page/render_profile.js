@@ -26,6 +26,13 @@ export const editProfile = function(new_prof) {
 }
 
 export const renderProfilePage = async function(){
+    const auth = await axios({
+        method: 'get',
+        url: 'http://localhost:3000/getToken',
+        json: true
+    });
+    let token = auth["data"];
+
     let result = await getProfile();
     let profile = result.data;
     if(profile.username == null) {
@@ -38,7 +45,7 @@ export const renderProfilePage = async function(){
     }
     const $root = $("#root");
     $root.append(`
-        <div class="container" id="profile_info">
+        <div class="container" id="profile_info" style="padding-top: 0.4in;">
             <p class="title">Username: ${profile.username}</p>
             <p class="subtitle">${profile.firstName} ${profile.lastName}</p>
             <p>Email Address: ${profile.emailAddress}</p>
@@ -47,12 +54,79 @@ export const renderProfilePage = async function(){
         <button class="button" id="change_password_button">Change Password</button>
         <button class="button is-danger is-light" id="delete_profile">Delete Account</button>
         <br><br>
-        <div class="container" id="user_posts">
-            <p class="title">Posts Made:</p>
+        <div class="container" id="user_posts" style="text-align: center;">
         </div>
     `)
-    $("#change_password_button").click(handleChangePassClick);
+
+    $("#user_posts").append(await renderUserPosts(profile, token));
+
+    $("#change_password_button").click(function () {
+        handleChangePassClick(profile);
+    });
     $("#delete_profile").click(handleDeleteProfileClick);
+}
+
+const renderUserPosts = async function (profile, token) {
+    let result = ((await axios({
+        method: 'get',
+        url: 'http://localhost:3000/tuits',
+        withCredentials: true,
+    })).data).filter(e => e.authorUsername == profile.username);
+    let posts = `<p class="title">Posts Made:</p>`;
+    for(let i = 0; i < result.length; i++){
+        if(result[i]["type"] == "track"){
+            let track = (await getTrack(result[i]["spotify-id"], token)).data;
+            posts += `
+            <br>
+            <div class="card" id="${result[i]["id"]}" style="width: 60%; margin: auto; display: flex; flex-direction: column;">
+                <div class="card-content">
+                    <div style="float: left; width: 50%; padding:5px; text-align:center;">
+                        <img src="${track.album.images[0].url}">
+                        <a href="/track_page/index.html?id=${result[i]["spotify-id"]}">See Track Page</a>                        
+                    </div>
+                    <div style="float: left; width: 50%; padding:5px;">
+                        <p class="title is-4">${result[i].authorFirstName} ${result[i].authorLastName}</p>
+                        <p class="subtitle is-6">@${result[i].authorUsername}</p><br>
+                        <p class="title is-4">${track.name}</p>
+                        <p class="subtitle is-6">${track.artists[0].name}</p>
+                        <p class="subtitle is-6">Released: ${track.album.release_date}</p><br>
+
+                        <div>
+                            <p>${result[i].rating} Stars</p>
+                            <p>${result[i].review}</p> <br>
+                            <p>${new Date(result[i]["createdAt"]).toLocaleTimeString()}  --  ${new Date(result[i]["createdAt"]).toLocaleDateString()}<p>
+                        </div>
+                    </div>
+                </div>
+            </div><br>`;
+        }
+        else if(result[i]["type"] == "album"){
+            let album = (await getAlbum(result[i]["spotify-id"], token)).data;
+            posts += `
+            <div class="card" id="${result[i]["id"]}" style="width:60%; margin: auto; display: flex; flex-direction: column;">
+                <div class="card-content">
+                    <div style="float: left; width: 50%; padding:5px; text-align:center;">
+                        <img src="${album.images[0].url}"> 
+                        <a href="/album_page/index.html?id=${result[i]["spotify-id"]}">See Album Page</a>                       
+                    </div>
+                    <div style="float: left; width: 50%; padding:5px;">
+                        <p class="title is-4">${result[i].authorFirstName} ${result[i].authorLastName}</p>
+                        <p class="subtitle is-6">@${result[i].authorUsername}</p><br>
+                        <p class="title is-4">${album.name}</p>
+                        <p class="subtitle is-6">${album.artists[0].name}</p>
+                        <p class="subtitle is-6">Released: ${album.release_date}</p><br>
+
+                        <div class="content">
+                            <p>${result[i].rating} Stars</p>
+                            <p>${result[i].review}</p> <br>
+                            <p>${new Date(result[i]["createdAt"]).toLocaleTimeString()}  --  ${new Date(result[i]["createdAt"]).toLocaleDateString()}<p>
+                        </div>
+                    </div>
+                </div>
+            </div><br>`;
+        }
+    }
+    return posts;
 }
 
 const updateProfileInfo = async function () {
@@ -67,52 +141,64 @@ const updateProfileInfo = async function () {
     `);
 }
 
-export const handleChangePassClick = function () {
+export const handleChangePassClick = function (profile) {
     $("#change_password_button").replaceWith(`
         <div id="change_password_form" style="border: solid; padding:5px;">
             <form>
                 Current Password: <input type="text" id="cur_pass"><br>
                 New Password: <input type="password" id="new_pass"><br>
                 Confirm New Password: <input type="password" id="confirm_pass"><br>
-                <button class="button" id="submit_pass_change">Submit</button>
+                <a class="button" id="submit_pass_change">Submit</a>
                 <button class="button is-danger is-light" id="cancel_pass_change">Cancel</button>
             <form>
-            <p class="successful_pass_change" style="visibility: hidden; color: #48c774">Password changed successfully</p>
-            <p class="pass_change_error" style="visibility: hidden; color: red;"></p>
+            <p class="successful_pass_change" style="display: none; color: #48c774">Password changed successfully</p>
+            <p class="pass_change_error" style="display: none; color: red;"></p>
         </div>
     `);
-    $("#submit_pass_change").click(handleSubmitPassChange);
+    $("#submit_pass_change").click(function (){
+        handleSubmitPassChange(profile);
+    });
     $("#cancel_pass_change").click(handleCancelPassChange)
 }
 
-export const handleSubmitPassChange = async function() {
-    let user = (await getProfile()).data;
-    if($("#cur_pass").val() != user.password){
-        $(".pass_change_error").html("Current password does not match");
-        $(".pass_change_error").attr("style", "visibility: visible; color: red;");
-        return false;
-    }
-    else if ($("#new_pass").val() != $("#confirm_pass").val()){
+export const handleSubmitPassChange = async function(profile) {
+    alert("begin")
+    alert("next")
+    // if($("#cur_pass").val() != user.password){
+    //     alert("if")
+    //     $(".pass_change_error").html("Current password does not match");
+    //     $(".pass_change_error").attr("style", "display: relative; color: red;");
+    //     return false;
+    // }
+    if ($("#new_pass").val() != $("#confirm_pass").val()){
         $(".pass_change_error").html("New passwords do not match");
-        $(".pass_change_error").attr("style", "visibility: visible; color: red;");
+        $(".pass_change_error").attr("style", "display: relative; color: red;");
         return false;
     }
     else{
-        // let new_profile = {
-        //     "username": "he",
-        //     "password": $("#new_pass").val(),
-        //     "firstName": "hell",
-        //     "lastName": "wrfnw",
-        //     "emailAddress": "rklegerklg@fef"
-        // };
-        // editProfile(new_profile);
-        $("#change_password_form").replaceWith(`<button class="button" id="change_password_button">Change Password</button>`);
-        $("#change_password_button").click(handleChangePassClick);
-        $(".successful_pass_change").attr("style", "visibility: visible; color: #48c774;")
-        return true;
+        alert("else")
+        let result = await axios({
+            method: 'post',
+            url: 'http://localhost:3000/users',
+            previousPassword: $("#cur_pass").val(),
+            newPassword: $("#new_pass").val(),
+            username: profile.username
+        });
+        if(result.status == 400){
+            $(".pass_change_error").html("Current password does not match");
+            $(".pass_change_error").attr("style", "display: relative; color: red;");
+            return false;
+        }
+        else{
+            $("#change_password_form").replaceWith(`<button class="button" id="change_password_button">Change Password</button>`);
+            $("#change_password_button").click(handleChangePassClick);
+            $(".pass_change_error").attr("style", "display: none; color: red;");
+            $(".successful_pass_change").attr("style", "display: relative; color: #48c774;")
+            return true;
+        }
     }
 }
-
+        
 export const handleCancelPassChange = function () {
     $("#change_password_form").replaceWith(`<button class="button" id="change_password_button">Change Password</button>`);
     $("#change_password_button").click(handleChangePassClick);
@@ -135,4 +221,28 @@ export const handleLogOut = async function () {
         url: 'http://localhost:3000/logout'
     });
     document.location.href = '../index.html';
+}
+
+export const getTrack = async function (id, token) {
+    const result = await axios({
+        method: 'get',
+        url: `https://api.spotify.com/v1/tracks/${id}`,
+        headers: {
+            'Authorization': 'Bearer ' + token
+        },
+        json: true
+    });
+    return result;
+}
+
+export const getAlbum = async function (id, token) {
+    const result = await axios({
+        method: 'get',
+        url: `https://api.spotify.com/v1/albums/${id}`,
+        headers: {
+            'Authorization': 'Bearer ' + token
+        },
+        json: true
+    });
+    return result;
 }
