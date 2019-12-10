@@ -84,15 +84,9 @@ const renderUserPosts = async function (profile, token) {
                         <img src="${track.album.images[0].url}">
                         <a href="/track_page/index.html?id=${result[i]["spotify-id"]}">See Track Page</a>                        
                     </div>
-                    <div style="float: left; width: 40%; padding:5px;">
+                    <div style="float: left; width: 50%; padding:5px;">
                         <p class="title is-4">${result[i].authorFirstName} ${result[i].authorLastName}</p>
                         <p class="subtitle is-6">@${result[i].authorUsername}</p><br>
-                    </div>
-                    <div style="float: left; width: 10%; padding:5px;">
-                        <a class="button" id="edit-post-${result[i].id}"><i class="fas fa-edit"></i></a>
-                        <a class="button" id="delete-post-${result[i].id}"><i class="fas fa-trash"></i></a>
-                    </div>
-                    <div style="float: left; width: 50%; padding:5px; text-align:center;">
                         <p class="title is-4">${track.name}</p>
                         <p class="subtitle is-6">${track.artists[0].name}</p>
                         <p class="subtitle is-6">Released: ${track.album.release_date}</p><br>
@@ -105,7 +99,6 @@ const renderUserPosts = async function (profile, token) {
                     </div>
                 </div>
             </div><br>`;
-            
         }
         else if (result[i]["type"] == "album") {
             let album = (await getAlbum(result[i]["spotify-id"], token)).data;
@@ -116,15 +109,13 @@ const renderUserPosts = async function (profile, token) {
                         <img src="${album.images[0].url}"> 
                         <a href="/album_page/index.html?id=${result[i]["spotify-id"]}">See Album Page</a>                       
                     </div>
-                    <div style="float: left; width: 40%; padding:5px;">
+                    <div style="float: left; width: 50%; padding:5px;">
                         <p class="title is-4">${result[i].authorFirstName} ${result[i].authorLastName}</p>
                         <p class="subtitle is-6">@${result[i].authorUsername}</p><br>
-                    </div>
-                    <div style="float: left; width: 10%; padding:5px;">
-                        <a class="button" id="edit-post-${result[i].id}"><i class="fas fa-edit"></i></a>
-                        <a class="button" id="delete-post-${result[i].id}"><i class="fas fa-trash"></i></a>
-                    </div>
-                    <div style="float: left; width: 50%; padding:5px; text-align:center;">
+                        <p class="title is-4">${album.name}</p>
+                        <p class="subtitle is-6">${album.artists[0].name}</p>
+                        <p class="subtitle is-6">Released: ${album.release_date}</p><br>
+
                         <div class="content">
                             <p>${result[i].rating} Stars</p>
                             <p>${result[i].review}</p> <br>
@@ -259,44 +250,4 @@ export const getAlbum = async function (id, token) {
         json: true
     });
     return result;
-}
-
-const handleEditPost = async function (id){
-    let result = ((await axios({
-        method: 'get',
-        url: 'http://localhost:3000/tuits',
-        withCredentials: true,
-    })).data).filter(e => e["id"] == id);
-
-    $("#for-edit").attr("class", `${id}`);
-    $("#review").html(`${result[0].review}`);
-    $("#make_edit_button").attr("style", "display: relative;");
-    $("#make_post_button").attr("style", "display: none;");
-    $("#post_modal").attr("style", "display: block;");
-
-    alert("Edit");
-}
-
-const submitEdit = async function (album) {
-    let posttext = document.getElementById("review").value;
-    let postscore = $("input[name=rating]:checked", '#rating').val();
-    await axios({
-        method: 'put',
-        url: 'http://localhost:3000/tuits/' + $("#for-edit").attr("class"),
-        data: {
-            "review": posttext,
-            "rating": postscore
-        },
-        withCredentials: true,
-    });
-
-    await renderAlbumPosts(album);
-}
-
-const handleDeletePost = async function(id, album) {
-    await axios({
-        method: 'delete',
-        url: 'http://localhost:3000/tuits/' + id
-    })
-    await renderAlbumPosts(album);
 }

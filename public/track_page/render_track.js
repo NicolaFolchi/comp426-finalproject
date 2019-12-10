@@ -242,7 +242,12 @@ const renderTrackPosts = async function (track) {
         sum += parseFloat(result[i].rating);
     };
     let avg_rating = sum / result.length;
-    $("#avg-rating").html(avg_rating.toFixed(2));
+    if(!isNaN(avg_rating)){
+        $("#avg-rating").html(avg_rating.toFixed(2));
+    }
+    else{
+        $("#avg-rating").html("No Ratings");
+    }
 
     let post = ``;
     for(let i = 0; i < result.length; i++){
