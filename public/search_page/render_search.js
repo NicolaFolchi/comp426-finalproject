@@ -32,7 +32,7 @@ export const renderTrackResult = async function (id, token) {
     let track = track_json.data;
     let post = `
     <div class = "container">
-    <a href="/album_page/index.html?id=${id}">
+    <a href="/track_page/index.html?id=${id}">
     <div class="card" style="width: 38%; margin: auto;">
         <div class="card-image">
             <figure class="image is-marginless">

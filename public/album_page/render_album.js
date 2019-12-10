@@ -173,7 +173,7 @@ export const renderAlbumPage = async function() {
         $("#rating").prop("selectedIndex", 0);
     });
     $("#make_post_button").click(async function(){
-        await submitPost();
+        await submitPost(id);
         $("#post_modal").attr("style", "display: none;");
         $("#review").val("");
         $("#rating").prop("selectedIndex", 0);
@@ -194,7 +194,7 @@ export function makePost() {
     $("#post_modal").attr("style", "display: block;");
 }
 
-export async function submitPost() {
+export async function submitPost(id) {
     let posttext = document.getElementById("review").value;
     let e = document.getElementById("rating");
     let postscore = e.options[e.selectedIndex].value;
