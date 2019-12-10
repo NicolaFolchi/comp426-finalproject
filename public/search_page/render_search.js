@@ -31,26 +31,26 @@ export const renderTrackResult = async function (id, token) {
     let track_json = await getTrack(id, token);
     let track = track_json.data;
     let post = `
-        <a href="/track_page/index.html?id=${id}">
-        <div class="card" style="width: 55%;">
-            <div class="card-image">
-                <figure class="image">
-                    <img src="${track.album.images[0].url}" style="height: 50%; width: 50%;">
-                </figure>
-            </div>
-            <div class="card-content">
-                <div class="media">
-                    <div class="media-content">
-                        <p class="title is-4">${track.name}</p>
-                        <p class="subtitle is-6">${track.album.name}</p>
-                        <p class="subtitle is-6">${track.artists[0].name}</p>
-                        <p class="subtitle is-6">Average Rating: alskdfjlasf</p>
-                    </div>
+    <div class = "container">
+    <a href="/album_page/index.html?id=${id}">
+    <div class="card" style="width: 38%; margin: auto;">
+        <div class="card-image">
+            <figure class="image is-marginless">
+                <img src="${track.album.images[0].url}" style="height: 100%; width: 100%;">
+            </figure>
+        </div>
+        <div class="card-content">
+            <div class="media">
+                <div class="media-content">
+                    <p class="title is-4">${track.name}</p>
+                    <p class="subtitle is-6">${track.album.artists[0].name}</p>
                 </div>
             </div>
         </div>
-        </a>
-        <br>
+    </div>
+    </a>
+    </div>
+    <br>
     `;
     $("#root").append(post);
 }
@@ -59,11 +59,12 @@ export const renderAlbumResult = async function (id, token) {
     let album_json = await getAlbum(id, token);
     let album = album_json.data;
     let post = `
+        <div class = "container">
         <a href="/album_page/index.html?id=${id}">
-        <div class="card" style="width: 55%;">
+        <div class="card" style="width: 38%; margin: auto;">
             <div class="card-image">
-                <figure class="image">
-                    <img src="${album.images[0].url}" style="height: 50%; width: 50%;">
+                <figure class="image is-marginless">
+                    <img src="${album.images[0].url}" style="height: 100%; width: 100%;">
                 </figure>
             </div>
             <div class="card-content">
@@ -71,12 +72,12 @@ export const renderAlbumResult = async function (id, token) {
                     <div class="media-content">
                         <p class="title is-4">${album.name}</p>
                         <p class="subtitle is-6">${album.artists[0].name}</p>
-                        <p class="subtitle is-6">Average Rating: alskdfjlasf</p>
                     </div>
                 </div>
             </div>
         </div>
         </a>
+        </div>
         <br>
     `;
     $("#root").append(post);
@@ -93,9 +94,10 @@ export const makeSearch = async function (token, query, type) {
     });
     const $root = $('#root');
     $root.html("");
+    var searchquery = query.replace(/%20/g, " ");
     $root.append(`
-        <p class="title" style="margin-bottom: 20px;">Showing ${type} results for "${query}":</p>
-        <button class="button" id="home" style="margin-bottom: 20px;">Return to Home Page</button>
+        <p class="title" style="margin-bottom: 20px;">Showing ${type} results for "${searchquery}":</p>
+        <button class="button is-primary" id="home" style="margin-bottom: 20px;">Return to Home Page</button>
     `)
     if(type == "track"){
         let search_body = search.data.tracks.items;
