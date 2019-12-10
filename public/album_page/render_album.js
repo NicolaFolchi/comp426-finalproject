@@ -144,17 +144,17 @@ export const renderAlbumPage = async function() {
                 <p class="subtitle is-5">Released: ${album.release_date}</p>
 
                 <textarea id="review" class="textarea" placeholder="What are your thoughts?"></textarea>
-                <fieldset class="rating">
+                <fieldset id="rating">
                 <input type="radio" id="star5" name="rating" value="5" /><label class = "full" for="star5" title="Awesome - 5 stars"></label>
-                <input type="radio" id="star4half" name="rating" value="4 and a half" /><label class="half" for="star4half" title="Pretty good - 4.5 stars"></label>
+                <input type="radio" id="star4half" name="rating" value="4.5" /><label class="half" for="star4half" title="Pretty good - 4.5 stars"></label>
                 <input type="radio" id="star4" name="rating" value="4" /><label class = "full" for="star4" title="Pretty good - 4 stars"></label>
-                <input type="radio" id="star3half" name="rating" value="3 and a half" /><label class="half" for="star3half" title="Meh - 3.5 stars"></label>
+                <input type="radio" id="star3half" name="rating" value="3.5" /><label class="half" for="star3half" title="Meh - 3.5 stars"></label>
                 <input type="radio" id="star3" name="rating" value="3" /><label class = "full" for="star3" title="Meh - 3 stars"></label>
-                <input type="radio" id="star2half" name="rating" value="2 and a half" /><label class="half" for="star2half" title="Kinda bad - 2.5 stars"></label>
+                <input type="radio" id="star2half" name="rating" value="2.5" /><label class="half" for="star2half" title="Kinda bad - 2.5 stars"></label>
                 <input type="radio" id="star2" name="rating" value="2" /><label class = "full" for="star2" title="Kinda bad - 2 stars"></label>
-                <input type="radio" id="star1half" name="rating" value="1 and a half" /><label class="half" for="star1half" title="Meh - 1.5 stars"></label>
+                <input type="radio" id="star1half" name="rating" value="1.5" /><label class="half" for="star1half" title="Meh - 1.5 stars"></label>
                 <input type="radio" id="star1" name="rating" value="1" /><label class = "full" for="star1" title="Sucks big time - 1 star"></label>
-                <input type="radio" id="starhalf" name="rating" value="half" /><label class="half" for="starhalf" title="Sucks big time - 0.5 stars"></label>
+                <input type="radio" id="starhalf" name="rating" value="0.5" /><label class="half" for="starhalf" title="Sucks big time - 0.5 stars"></label>
             </fieldset>
                 <br>
                 <br>
@@ -200,8 +200,7 @@ export function makePost() {
 
 export async function submitPost(id) {
     let posttext = document.getElementById("review").value;
-    let e = document.getElementById("rating");
-    let postscore = e.options[e.selectedIndex].value;
+    let postscore = $("input[name=rating]:checked", '#rating').val();
 
     console.log(posttext, postscore);
 
@@ -209,8 +208,10 @@ export async function submitPost(id) {
         method: 'post',
         url: 'http://localhost:3000/tuits',
         data: {
-            "type": "tweet",
-            "body": posttext
+            "type": "album",
+            "spotify-id": id,
+            "review": posttext,
+            "rating": postscore
         },
         withCredentials: true,
     });

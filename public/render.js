@@ -146,7 +146,7 @@ async function renderTweet() {
     // alert(result[0]["spotify-id"])
     // dynamically rendering all of the 50 newest tweets with their respective card provided by bulma
     let tweets = `<div id="tweets">`;
-    for (let i = 0; i < 2; i++) {
+    for (let i = 0; i < 20; i++) {
         // if I created this tweet, then:
         // if (result.data[i]["isMine"] == true) {
         //     tweets += `
@@ -205,7 +205,7 @@ async function renderTweet() {
                     </div>
                 </div>`;
             }
-            else{
+            else if(result[i]["type"] == "album"){
                 let album = (await getAlbum(result[i]["spotify-id"], token)).data;
                 tweets += `
                 <br>

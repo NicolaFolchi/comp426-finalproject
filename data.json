@@ -1,5 +1,16 @@
 [
   {
+    "type": "album",
+    "spotify-id": "6XYAPA3sDCNgBY5eMQt2vZ",
+    "review": "this is a 3 star album",
+    "rating": "3",
+    "id": "gnh-ytjf",
+    "authorUsername": "1111",
+    "authorFirstName": "1",
+    "authorLastName": "1",
+    "createdAt": "2019-12-10T17:45:33.445Z"
+  },
+  {
     "type": "track",
     "spotify-id": "0hNhlwnzMLzZSlKGDCuHOo",
     "review": "this is a very good song",
