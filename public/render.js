@@ -234,7 +234,7 @@ async function renderTweet() {
                             <img src="${track.album.images[0].url}"> 
                             <p class="title is-4">${track.name}</p>
                             <p class="subtitle is-6">${track.album.artists[0].name}</p>
-                            <a class = "button is-primary is-small" href="/album_page/index.html?id=${result[i]["spotify-id"]}" style = "margin-top: -18px;" >See Track Page</a>                       
+                            <a class = "button is-primary is-small" href="/track_page/index.html?id=${result[i]["spotify-id"]}" style = "margin-top: -18px;" >See Track Page</a>                       
                         </div>
                         <div style="float: left; width: 50%; padding:5px;">
                             <p class="title is-2">${result[i].authorFirstName} ${result[i].authorLastName}</p>

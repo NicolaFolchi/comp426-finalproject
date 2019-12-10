@@ -171,8 +171,14 @@ export const renderTrackPage = async function () {
     $("#track-reviews").append(await renderTrackPosts(track));
 }
 
-export function makePost() {
-    $("#post_modal").attr("style", "display: block;");
+export async function makePost() {
+    if((await getProfile()).data.username == null){
+        alert("You must login to make posts");
+        document.location.href = "../login/index.html";
+    }
+    else{
+        $("#post_modal").attr("style", "display: block;");
+    }
 }
 
 export async function submitPost(track, id) {

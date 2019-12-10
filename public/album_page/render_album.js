@@ -124,7 +124,7 @@ export const renderAlbumPage = async function () {
     $root.append(`<nav class="level">
     <div class="level-left">
       <div class="level-item">
-      <button class="share button is-primary is-large">Share Album</button>
+      <a class="share button is-primary is-large">Share Album</a>
       </div>
     </div>
   </nav>
@@ -195,8 +195,13 @@ export const renderAlbumPage = async function () {
 }
 
 
-export function makePost() {
-    $("#post_modal").attr("style", "display: block;");
+export async function makePost() {
+    if((await getProfile()).data.username == null){
+        document.location.href = "../login/index.html";
+    }
+    else{
+        $("#post_modal").attr("style", "display: block;");
+    }
 }
 
 export async function submitPost(album, id) {
