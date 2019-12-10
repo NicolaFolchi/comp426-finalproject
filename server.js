@@ -199,7 +199,6 @@ app.delete('/users', function (request, response) {
         }
         return response.status(200).send();
     });
-    
 });
 // ------------------ SPOTIFY API INTEGRATION ---------------------------
 

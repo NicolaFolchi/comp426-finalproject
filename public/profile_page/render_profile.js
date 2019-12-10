@@ -19,12 +19,12 @@ export const renderProfilePage = async function(){
     let result = await getProfile();
     let profile = result.data;
     if(profile.username == null) {
-        $("#logged-out-buttons").attr("style", "display: in-line;");
+        $("#logged-out-buttons").attr("style", "display: relative;");
         $("#logged-in-buttons").attr("style", "display: none;");
     }
     else {
         $("#logged-out-buttons").attr("style", "display: none;");
-        $("#logged-in-buttons").attr("style", "display: in-line;");
+        $("#logged-in-buttons").attr("style", "display: relative;");
     }
     const $root = $("#root");
     $root.append(`
@@ -115,6 +115,6 @@ export const handleDeleteProfileClick = async function () {
             method: 'delete',
             url: 'http://localhost:3000/users',
         });
-        location.reload();
+        document.location.href = '../index.html';
     }
 }
