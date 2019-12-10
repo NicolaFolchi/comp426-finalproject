@@ -35,28 +35,26 @@ export const renderAlbumPage = async function() {
     //----------------------- DISPLAY ALBUM INFO ----------------------------
     const $root = $("#root");
     $root.append(`
-        <section class="hero is-primary">
-        <div class="hero-body">
+    <br>
         <div class="container">
-        <h1 class="title">
+        <h1 class="title is-1">
         ${album.name}
         </h1>
-        <h2 class="subtitle">
+        <h2 class="subtitle is-2">
         By ${album.artists[0].name}
         </h2>
         </div>
-        </div>
-        </section>
         <br>
         <div class = "media">
         <div class = "media-content">
         <div class = "content">
         <figure class = "image">
-        <img class= "is=centered" src="${album.images[0].url}" style="height: 45%; width: 45%;">
+        <img class= "is-centered" src="${album.images[0].url}" style="height: 45%; width: 45%;">
         </figure>
         </div>
         </div>
         </div>
+        <br>
     `);
     if(album.artists.length > 1){
         for(let i = 1; i < album.artists.length; i++){
@@ -65,29 +63,44 @@ export const renderAlbumPage = async function() {
     }
     $root.append(`
     <nav class="level">
-      <div class="level-left">
-        <div class="level-item">
-          <p class="title">
-          Released: ${album.release_date}
-          </p>
-        </div>
+    <div class="level-item has-text-centered">
+      <div>
+        <p class="heading">Average Rating</p>
+        <p class="title">5</p>
       </div>
-    
-      <div class="level-right">
-        <p class="level-item title"><strong>Average Rating: 5 </strong></p>
+    </div>
+    <div class="level-item has-text-centered">
+      <div>
+        <p class="heading">Popularity</p>
+        <p class="title">${album.popularity}</p>
       </div>
-    </nav>
-    <iframe src="https://open.spotify.com/embed/album/${album.id}" width="1050" height="80" frameborder="0" allowtransparency="true" allow="encrypted-media"></iframe>
+    </div>
+    <div class="level-item has-text-centered">
+      <div>
+        <p class="heading">Tracks</p>
+        <p class="title">${album.tracks.items.length}</p>
+      </div>
+    </div>
+    <div class="level-item has-text-centered">
+      <div>
+        <p class="heading">Release Date</p>
+        <p class="title">${album.release_date}</p>
+      </div>
+    </div>
+  </nav>
+    <iframe src="https://open.spotify.com/embed/album/${album.id}" width="1073" height="80" frameborder="0" allowtransparency="true" allow="encrypted-media"></iframe>
     `);
     let tracks = `
     <table class="table is-striped is-fullwidth is-bordered">
         <tr>
+            <th>Index</th>
             <th>Track</th>
             <th>Length</th>
         </tr>`;
     for(let i = 0; i < album.tracks.items.length; i++){
         tracks += `
             <tr>
+                <td>${i+1}</td>
                 <td><a href="/track_page/index.html?id=${album.tracks.items[i].id}">${album.tracks.items[i].name}</a></td>
                 <td>${parseInt(album.tracks.items[i].duration_ms/60000)+":"+("0" + parseInt((album.tracks.items[i].duration_ms/1000) % 60)).slice(-2)}</td>
             </tr>
