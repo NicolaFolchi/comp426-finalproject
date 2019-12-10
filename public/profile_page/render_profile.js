@@ -1,10 +1,6 @@
-$(async function (){
+$(function (){
     renderProfilePage();
-    profile = await getProfile();
-    updateProfileInfo();
 })
-
-let profile = {};
 
 export const getProfile = async function() {
     let result = await axios({
@@ -21,6 +17,7 @@ export const editProfile = function(new_prof) {
 }
 
 export const renderProfilePage = async function(){
+    let profile = await getProfile();
     const $root = $("#root");
     $root.append(`
         <div class="container" id="profile_info">
@@ -40,7 +37,8 @@ export const renderProfilePage = async function(){
     $("#delete_profile").click(handleDeleteProfileClick);
 }
 
-const updateProfileInfo = function () {
+const updateProfileInfo = async function () {
+    let profile = await getProfile();
     $("#profile_info").replaceWith(`
         <div class="container" id="profile_info">
             <p class="title">Username: ${profile.username}</p>
@@ -101,8 +99,13 @@ export const handleCancelPassChange = function () {
     $("#change_password_button").click(handleChangePassClick);
 }
 
-export const handleDeleteProfileClick = function () {
+export const handleDeleteProfileClick = async function () {
     if(confirm("Are you sure you want to delete your account?")){
         alert("Profile Deleted");
+        let result = await axios({
+            method: 'delete',
+            url: 'http://localhost:3000/users',
+        });
+        updateProfileInfo();
     }
 }

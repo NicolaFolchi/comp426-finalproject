@@ -1,5 +1,6 @@
 [
   {
+    "username": "Seashore",
     "password": "$2a$10$.CQ5fm1KJ8q0sE6RN/0AiOQ/P/1LejSScry40tMQ4EacnukC.AuMK",
     "firstName": "Connor",
     "lastName": "Schorer",
