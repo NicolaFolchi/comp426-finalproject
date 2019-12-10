@@ -1,14 +1,23 @@
 $(function (){
     renderProfilePage();
+    $("#log-out-button").click(handleLogOut);
+    $("#make_search").click(searchButtonClick);
+    $("#search_text").val("");
+    $("#search_type").val('track');
 })
+
+export const searchButtonClick = async function () {
+    let type = $("#search_type").val();
+    let search_text = $("#search_text").val();
+    document.location.href = `../search_page/index.html?q=${search_text}&t=${type}`;
+}
 
 export const getProfile = async function() {
     let result = await axios({
         method: 'get',
         url: 'http://localhost:3000/getLoggedInUser',
     });
-    let prof = result.data;
-    return prof;
+    return result;
 }
 
 export const editProfile = function(new_prof) {
@@ -17,7 +26,16 @@ export const editProfile = function(new_prof) {
 }
 
 export const renderProfilePage = async function(){
-    let profile = await getProfile();
+    let result = await getProfile();
+    let profile = result.data;
+    if(profile.username == null) {
+        $("#logged-out-buttons").attr("style", "display: relative;");
+        $("#logged-in-buttons").attr("style", "display: none;");
+    }
+    else {
+        $("#logged-out-buttons").attr("style", "display: none;");
+        $("#logged-in-buttons").attr("style", "display: relative;");
+    }
     const $root = $("#root");
     $root.append(`
         <div class="container" id="profile_info">
@@ -38,7 +56,7 @@ export const renderProfilePage = async function(){
 }
 
 const updateProfileInfo = async function () {
-    let profile = await getProfile();
+    let profile = (await getProfile()).data;
     $("#profile_info").replaceWith(`
         <div class="container" id="profile_info">
             <p class="title">Username: ${profile.username}</p>
@@ -67,8 +85,9 @@ export const handleChangePassClick = function () {
     $("#cancel_pass_change").click(handleCancelPassChange)
 }
 
-export const handleSubmitPassChange = function() {
-    if($("#cur_pass").val() != getProfile().password){
+export const handleSubmitPassChange = async function() {
+    let user = (await getProfile()).data;
+    if($("#cur_pass").val() != user.password){
         $(".pass_change_error").html("Current password does not match");
         $(".pass_change_error").attr("style", "visibility: visible; color: red;");
         return false;
@@ -79,14 +98,14 @@ export const handleSubmitPassChange = function() {
         return false;
     }
     else{
-        let new_profile = {
-            "username": "he",
-            "password": $("#new_pass").val(),
-            "firstName": "hell",
-            "lastName": "wrfnw",
-            "emailAddress": "rklegerklg@fef"
-        };
-        editProfile(new_profile);
+        // let new_profile = {
+        //     "username": "he",
+        //     "password": $("#new_pass").val(),
+        //     "firstName": "hell",
+        //     "lastName": "wrfnw",
+        //     "emailAddress": "rklegerklg@fef"
+        // };
+        // editProfile(new_profile);
         $("#change_password_form").replaceWith(`<button class="button" id="change_password_button">Change Password</button>`);
         $("#change_password_button").click(handleChangePassClick);
         $(".successful_pass_change").attr("style", "visibility: visible; color: #48c774;")
@@ -100,15 +119,20 @@ export const handleCancelPassChange = function () {
 }
 
 export const handleDeleteProfileClick = async function () {
-    let prof = await getProfile();
-    alert(prof)
     if(confirm("Are you sure you want to delete your account?")){
         alert("Profile Deleted");
         await axios({
             method: 'delete',
             url: 'http://localhost:3000/users',
         });
-        alert(prof)
-        updateProfileInfo();
+        document.location.href = '../index.html';
     }
+}
+
+export const handleLogOut = async function () {
+    await axios({
+        method: 'post',
+        url: 'http://localhost:3000/logout'
+    });
+    document.location.href = '../index.html';
 }

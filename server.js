@@ -203,7 +203,6 @@ app.delete('/users', function (request, response) {
         }
         return response.status(200).send();
     });
-    
 });
 
 app.post('/logout', function(request, response){

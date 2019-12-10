@@ -1,5 +1,8 @@
 $(function (){
     renderAlbumPage();
+    $("#make_search").click(searchButtonClick);
+    $("#search_text").val("");
+    $("#search_type").val('track');
 })
 
 // ################# TO DO ###################
@@ -10,6 +13,12 @@ $(function (){
 // - home button for album and track and profile pages
 // ###########################################
 
+export const searchButtonClick = async function () {
+    let type = $("#search_type").val();
+    let search_text = $("#search_text").val();
+    document.location.href = `../search_page/index.html?q=${search_text}&t=${type}`;
+}
+
 export const renderAlbumPage = async function() {
     //--------------------------- AUTHENTICATION ----------------------------
     const result = await axios({
@@ -18,6 +27,17 @@ export const renderAlbumPage = async function() {
         json: true
     });
     let token = result["data"];
+
+    let prof = await getProfile();
+    let profile = prof.data;
+    if(profile.username == null) {
+        $("#logged-out-buttons").attr("style", "display: relative;");
+        $("#logged-in-buttons").attr("style", "display: none;");
+    }
+    else {
+        $("#logged-out-buttons").attr("style", "display: none;");
+        $("#logged-in-buttons").attr("style", "display: relative;");
+    }
 
     //--------------------------- GET ALBUM ---------------------------------
     let id = location.search.substring(4);
@@ -200,6 +220,14 @@ export const getAlbum = async function(id, token) {
             'Authorization': 'Bearer ' + token
         },
         json: true
+    });
+    return result;
+}
+
+export const getProfile = async function() {
+    let result = await axios({
+        method: 'get',
+        url: 'http://localhost:3000/getLoggedInUser',
     });
     return result;
 }

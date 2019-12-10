@@ -26,30 +26,34 @@
             </div>
             <div id="navbarBasicExample" class="navbar-menu">
                 <div class="navbar-start">
-                        <div class="profile_buttons">
-                                <a class="button" href="../login/index.html">Log In</a>
-                                <a class="button is-link" href="../signup/index.html"><strong>Sign Up</strong></a>
-                                <a class="button">Log Out</a>
-                                <a class="button is-link" href="../profile_page/index.html">
-                                    <span class="icon is-small">
-                                        <i class="far fa-user-circle fa-lg" style="color: white;"></i>
-                                    </span>
-                                </a>
-                            </div>
+                    <input type="text" class="input" id="search_text" placeholder="Search...">
+                    <div class="select">
+                        <select required id="search_type">
+                            <option value="track" selected>Tracks</option>
+                            <option value="album">Albums</option>
+                        </select>
+                    </div>
+                    <button class="button is-link" id="make_search">
+                        <span class="icon is-small">
+                            <i class="fas fa-search"></i>
+                        </span>
+                    </button>
                 </div>
                 <div class="navbar-end">
-                        <input type="text" class="input" id="search_text" placeholder="Search...">
-                        <div class="select">
-                            <select required id="search_type">
-                                <option value="album" selected>Albums</option>
-                                <option value="track">Tracks</option>
-                            </select>
+                    <div class="profile_buttons" style="padding-left: 5px;">
+                        <div id="logged-out-buttons" style="visibility: visible;">
+                            <a class="button" href="../login/index.html">Log In</a>
+                            <a class="button is-link" href="../signup/index.html"><strong>Sign Up</strong></a>
                         </div>
-                        <button class="button is-link" id="make_search">
-                            <span class="icon is-small">
-                                <i class="fas fa-search"></i>
-                            </span>
-                        </button>
+                        <div id="logged-in-buttons" style="visibility: hidden;">
+                            <a class="button" id="log-out-button">Log Out</a>
+                            <a class="button is-link" href="../profile_page/index.html">
+                                <span class="icon is-small">
+                                    <i class="far fa-user-circle fa-lg" style="color: white;"></i>
+                                </span>
+                            </a>
+                        </div>
+                    </div>
                 </div>
             </div>
         </nav>

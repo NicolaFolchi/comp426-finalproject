@@ -1,40 +1,27 @@
 [
   {
     "type": "tweet",
-    "body": "meh",
-    "id": "osnWXRih",
-    "author": "test7",
+    "body": "i like this song",
+    "id": "RJmYfLol",
+    "author": "9999",
     "isLiked": false,
     "retweetCount": 0,
     "replyCount": 0,
     "likeCount": 0,
     "someLikes": 0,
-    "createdAt": "2019-12-10T15:10:11.257Z"
-  },
-  {
-    "type": "reply",
-    "parent": "kIeXcIFt",
-    "body": "ayeeeee it is workingggggg<br><strong>Reply to:</strong> @test7<p>dope as shiiiitttt</p>",
-    "id": "DhS3wDBJ",
-    "author": "test7",
-    "isLiked": false,
-    "retweetCount": 0,
-    "replyCount": 0,
-    "likeCount": 0,
-    "someLikes": 0,
-    "createdAt": "2019-12-10T05:20:59.202Z"
+    "createdAt": "2019-12-10T15:08:54.210Z"
   },
   {
     "type": "tweet",
-    "body": "dope as shiiiitttt",
-    "id": "kIeXcIFt",
-    "author": "test7",
+    "body": "f",
+    "id": "aYzi87-8",
+    "author": "9999",
     "isLiked": false,
     "retweetCount": 0,
-    "replyCount": 1,
+    "replyCount": 0,
     "likeCount": 0,
     "someLikes": 0,
-    "createdAt": "2019-12-10T05:20:45.178Z"
+    "createdAt": "2019-12-10T05:21:35.971Z"
   },
   {
     "type": "tweet",

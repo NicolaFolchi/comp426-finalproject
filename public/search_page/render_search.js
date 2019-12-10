@@ -92,6 +92,16 @@ export const makeSearch = async function (token, query, type) {
         },
         json: true
     });
+    let prof = await getProfile();
+    let profile = prof.data;
+    if(profile.username == null) {
+        $("#logged-out-buttons").attr("style", "display: relative;");
+        $("#logged-in-buttons").attr("style", "display: none;");
+    }
+    else {
+        $("#logged-out-buttons").attr("style", "display: none;");
+        $("#logged-in-buttons").attr("style", "display: relative;");
+    }
     const $root = $('#root');
     $root.html("");
     var searchquery = query.replace(/%20/g, " ");
@@ -112,7 +122,7 @@ export const makeSearch = async function (token, query, type) {
         });
     }
     $("#search_text").val("");
-    $("#search_type").val("");
+    $("#search_type").val('track');
     $("#home").click(function(){ document.location.href = "../index.html" });
 }
 
@@ -139,4 +149,12 @@ export const searchButtonClick = async function () {
     let type = $("#search_type").val();
     let search_text = $("#search_text").val();
     document.location.href = `./index.html?q=${search_text}&t=${type}`;
+}
+
+export const getProfile = async function() {
+    let result = await axios({
+        method: 'get',
+        url: 'http://localhost:3000/getLoggedInUser',
+    });
+    return result;
 }
