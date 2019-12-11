@@ -143,9 +143,11 @@ async function renderTweet() {
     let tweets = `<div id="tweets">`;
     if (profile.username == null) {
         tweets = `
+        
             <div class="notification is-danger" style="vertical-align:center;">
             Welcome to Adagio! To see posts from all users, please log in.
             </div>
+            <div class= "hero is-fullheight">
             <div class="card" style="display: flex; flex-direction: column;">
                 <div class="card-image">
                     <div style="float: left; width: 50%; padding:10px; text-align:center;">
@@ -169,8 +171,8 @@ async function renderTweet() {
                         </div>
                     </div>
                 </div>
-            </div>`
-            
+            </div>
+        </div>`
     } else {
         for (let i = 0; i < 20; i++) {
             // if I created this tweet, then:

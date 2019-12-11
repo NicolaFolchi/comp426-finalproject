@@ -258,7 +258,7 @@ app.delete('/tuits/:postid', function (request, response) {
         }
     }
 });
-
+ 
 app.post('/logout', function (request, response) {
     response.sendFile(__dirname + '/public/index.html'); // not working on app
     // killing the cookie session

@@ -17,7 +17,7 @@ export const searchButtonClick = async function () {
     let type = $("#search_type").val();
     let search_text = $("#search_text").val();
     document.location.href = `../search_page/index.html?q=${search_text}&t=${type}`;
-}
+} 
 
 export const renderAlbumPage = async function () {
     //--------------------------- AUTHENTICATION ----------------------------
