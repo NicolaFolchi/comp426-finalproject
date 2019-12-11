@@ -12,3 +12,4 @@ TODOS
 - <del>add better styling throughout the app
 - <del>put relevant posts about the albums and tracks on their pages
 - <del>establish signup input rules</del>
+- Re-write the this readme file with information about how to utilize the application
