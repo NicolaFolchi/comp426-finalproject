@@ -170,7 +170,9 @@ async function renderTweet() {
                 </div>
             </div>`
     } else {
-        for (let i = 0; i < 20; i++) {
+        let maxPosts = result.length;
+        if(maxPosts > 20) { maxPosts = 20; }
+        for (let i = 0; i < maxPosts; i++) {
             let stars = ``;
             switch (result[i].rating) {
                 case "0.5":
@@ -276,42 +278,8 @@ async function renderTweet() {
         }
     }
     $root.append(tweets);
-    // listen for all of the buttons on each tweet 
-    $(".myEditButtons").on("click", editArea);
-    $(".myDeleteButtons").on("click", deleteTweet);
-    $(".myLikeButtons").on("click", likeToggle);
-    $(".myReplyButtons").on("click", replyArea);
-    $(".myRetweetButtons").on("click", retweetArea);
 }
 
-async function retweetTweet(event) {
-    // through this data attr I get the ID of the clicked card/tweet
-    let x = event.target.getAttribute("data-card");
-    // Getting the specific tweet to be then appended to the retweet
-    const retweet = await axios({
-        method: 'get',
-        url: 'http://localhost:3000/tuits/' + x,
-        withCredentials: true,
-    });
-
-    // getting the value of whatever the user wrote on the text area
-    let message = $("#myretweetarea").val();
-    let link = "http://localhost:3000/tuits";
-    const result = await axios({
-        method: 'post',
-        url: link,
-        withCredentials: true,
-        data: {
-            "type": "retweet",
-            "parent": x,
-            // appending to the retweet whatever the user wants to comment plus the previous tweet body and author
-            "body": `${message}<br><strong>Retweet from:</strong> @${retweet.data["author"]}<p>${retweet.data["body"]}</p>`
-        },
-    });
-    // clearing the body so we then render the 50 newest tweets
-    document.getElementById("root").innerHTML = '';
-    renderTweet();
-}
 $(function () {
     renderSite();
 });
