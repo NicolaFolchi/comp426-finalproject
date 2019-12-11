@@ -3,6 +3,7 @@ $(function () {
     $("#make_search").click(searchButtonClick);
     $("#search_text").val("");
     $("#search_type").val('track');
+    $("#log-out-button").click(handleLogOut);
 })
 
 // ################# TO DO ###################
@@ -407,4 +408,12 @@ const handleDeletePost = async function(id, album) {
         url: 'http://localhost:3000/tuits/' + id
     })
     await renderAlbumPosts(album);
+}
+
+export const handleLogOut = async function () {
+    await axios({
+        method: 'post',
+        url: 'http://localhost:3000/logout'
+    });
+    document.location.href = '../index.html';
 }

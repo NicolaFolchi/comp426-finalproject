@@ -3,6 +3,7 @@ $(function () {
     $("#make_search").click(searchButtonClick);
     $("#search_text").val("");
     $("#search_type").val('track');
+    $("#log-out-button").click(handleLogOut);
 })
 
 export const searchButtonClick = async function () {
@@ -383,4 +384,12 @@ const handleDeletePost = async function(id, track) {
         url: 'http://localhost:3000/tuits/' + id
     })
     await renderTrackPosts(track);
+}
+
+export const handleLogOut = async function () {
+    await axios({
+        method: 'post',
+        url: 'http://localhost:3000/logout'
+    });
+    document.location.href = '../index.html';
 }

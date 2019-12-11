@@ -1,6 +1,7 @@
 $(function() {
     renderSearch();
     $("#make_search").click(searchButtonClick);
+    $("#log-out-button").click(handleLogOut);
 })
 
 export const getAlbum = async function(id, token) {
@@ -157,4 +158,12 @@ export const getProfile = async function() {
         url: 'http://localhost:3000/getLoggedInUser',
     });
     return result;
+}
+
+export const handleLogOut = async function () {
+    await axios({
+        method: 'post',
+        url: 'http://localhost:3000/logout'
+    });
+    document.location.href = '../index.html';
 }
