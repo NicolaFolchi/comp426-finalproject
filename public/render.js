@@ -292,10 +292,3 @@ $(document).ready(function () {
         $(".navbar-menu").toggleClass("is-active");
     });
 });
-
-
-  // --- TODO --- 
-  // Learn a way to update html without having to re-render all tweets (maybe JSON)
-  // Create your own server so the application does not depend on the university's
-    // Create a login/register authentication to add new users to the app
-  // Add a profile tab where you can see your own tweets
