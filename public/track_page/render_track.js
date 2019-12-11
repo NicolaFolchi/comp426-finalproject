@@ -179,7 +179,6 @@ export const renderTrackPage = async function () {
 
 export async function makePost() {
     if((await getProfile()).data.username == null){
-        alert("You must login to make posts");
         document.location.href = "../login/index.html";
     }
     else{
