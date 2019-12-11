@@ -143,8 +143,8 @@ async function renderTweet() {
     let tweets = `<div id="tweets">`;
     if (profile.username == null) {
         tweets = `
-            <div class="notification" style="vertical-align:center;">
-            If you want to browse through Adagio's feed then please log in  :)
+            <div class="notification is-danger" style="vertical-align:center;">
+            Welcome to Adagio! To see posts from all users, please log in.
             </div>
             <div class="card" style="display: flex; flex-direction: column;">
                 <div class="card-image">
@@ -155,14 +155,14 @@ async function renderTweet() {
                         <a class = "button is-primary is-small" href="/album_page/index.html?id=2nkto6YNI4rUYTLqEwWJ3o" style = "margin-top: -18px;" >See Album Page</a>                       
                     </div>
                     <div style="float: left; width: 50%; padding:5px;">
-                        <p class="title is-2">Shawn Hendrix</p>
-                        <p class="subtitle is-4">@sHendrix</p><br>
+                        <p class="title is-2">Future Hendrix</p>
+                        <p class="subtitle is-4">@fHendrix</p><br>
 
                         <div class="content">
-                        <p class = "is-size-4">Tyler Creator easily puts out his best album yet, and one of the best albums of the year. 
+                        <p class = "is-size-6" style = "margin-top: -10px;">Tyler Creator easily puts out his best album yet, and one of the best albums of the year. 
                             This album may not filled with the hardest beats or the most insane rap flows,
-                                    but it is very catchy has a great sound to it. Awesome record 🔥🔥</p>
-                        <div class = "content" style = "margin-top: 90px;">
+                                    but it is very catchy and has a great sound to it. Awesome record 🔥🔥</p>
+                        <div class = "content" style = "margin-top: 35px;">
                         <p class = "is-size-4"><i class="star fas fa-star"></i><i class="star fas fa-star"></i><i class="star fas fa-star"></i><i class="star fas fa-star"></i><i class="star fas fa-star-half"></i></p>
                         <p class = "is-size-6 is-italic">6:06:59 PM  --  12/10/2019<p>
                         </div>
