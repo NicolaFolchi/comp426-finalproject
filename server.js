@@ -1,12 +1,6 @@
 let fs = require("fs");
 let binData = fs.readFileSync("data.json");
-let usrsData = fs.readFileSync('users.json');
 let db = JSON.parse(binData);
-let usrsDB = JSON.parse(usrsData);
-
-// console.log(db);
-
-console.log("server is up and running");
 
 let express = require("express");
 // used to parse the request body
@@ -22,10 +16,6 @@ const passport = require('passport');
 
 let app = express();
 
-let server = app.listen(3000, () => {
-    console.log('we out heree');
-});
-
 // this allows me to have express look into a folder 'public' and retrieve static files (html, imgs)
 app.use(express.static("public"));
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -37,8 +27,6 @@ app.use(session({
     resave: false,
     saveUninitialized: false
 }));
-app.use(passport.initialize());
-app.use(passport.session());
 
 // sending all of our posts data
 app.get('/tuits', function (request, response) {
@@ -67,30 +55,8 @@ app.post('/tuits', function (request, response) {
     request.body['authorUsername'] = request.session.user_username;
     request.body['authorFirstName'] = request.session.user_firstName;
     request.body['authorLastName'] = request.session.user_lastName;
-    // request.body['isLiked'] = false;
-    // request.body['retweetCount'] = 0;
-    // request.body['replyCount'] = 0;
-    // request.body['likeCount'] = 0;
-    // request.body['someLikes'] = 0;
     request.body['createdAt'] = (new Date());
 
-
-    // CHECK FOR TYPE OF POST, IF RETWEET/REPLY THEN INCREASE PARENT RETWEET/REPLY COUNT
-    // if (request.body['type'] == 'retweet') {
-    //     for (let i = 0; i < db.length; i++) {
-    //         if (db[i]['id'] == request.body['parent']) {
-    //             db[i]['retweetCount'] += 1;
-    //         }
-    //     }
-    // }
-
-    // if (request.body['type'] == 'reply') {
-    //     for (let i = 0; i < db.length; i++) {
-    //         if (db[i]['id'] == request.body['parent']) {
-    //             db[i]['replyCount'] += 1;
-    //         }
-    //     }
-    // }
     // adding as first element to json file
     db.unshift(request.body);
     let data = JSON.stringify(db, null, 2);
@@ -133,11 +99,6 @@ app.post("/users", async function (request, response) {
                         response.status(201).send();
                     }
                 })
-                // User.find(function (err, doc) {
-                // console.log(doc);
-                // });
-                // console.log(userd);
-
             } catch {
                 // server issue :/
                 response.status(500).send();
@@ -167,7 +128,6 @@ app.post('/login', function (request, response) {
                 request.session.user_obj = userd[0];
                 console.log(request.session.user_id);
                 return response.redirect('/')
-                // response.send("HOLA MUNDO HERMOSO");
             } else {
                 response.status(400).send('Failed to log in, password incorrect');
             }
@@ -301,3 +261,7 @@ app.get('/getToken', function (req, res) {
 
 app.use('/app', session_middleware);
 app.use('/app', router_app);
+
+let server = app.listen(3000, () => {
+    console.log('we out heree');
+});
