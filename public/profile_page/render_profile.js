@@ -177,11 +177,9 @@ const renderUserPosts = async function (profile, token) {
 const updateProfileInfo = async function () {
     let profile = (await getProfile()).data;
     $("#profile_info").replaceWith(`
-        <div class="container" id="profile_info">
-            <p class="title">Username: ${profile.username}</p>
-            <p class="subtitle">${profile.firstName} ${profile.lastName}</p>
-            <p>Email Address: ${profile.emailAddress}</p>
-            <p>Password: ${profile.password}</p>
+        <div class="container" id="profile_info" style="padding-top: 0.4in;">
+            <p class="title is-1">${profile.firstName} ${profile.lastName}</p>
+            <p class="subtitle is-3">@${profile.username}</p>
         </div>
     `);
 }
