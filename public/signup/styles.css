@@ -27,7 +27,7 @@
   width: 100%;
   font-size: 1rem;
   margin-bottom: 1.75rem;
-  padding: 0.25rem 0;
+  /* padding: 0.25rem 0; */
   border: none;
   border-bottom: 1px solid #dbdbdb;
   transition: all .5s;
