@@ -1,5 +1,82 @@
 [
   {
+    "type": "album",
+    "spotify-id": "31KbO7WnDp2AjPdmRTJzdf",
+    "review": "Give this a listen if you haven't!!!! 🔥🔥🔥🔥🔥",
+    "rating": "5",
+    "id": "D0xh-7JC",
+    "authorUsername": "richardH",
+    "authorFirstName": "Richard",
+    "authorLastName": "Hendrix",
+    "createdAt": "2019-12-12T20:41:09.973Z"
+  },
+  {
+    "type": "album",
+    "spotify-id": "0FgZKfoU2Br5sHOfvZKTI9",
+    "review": "meh 😐",
+    "rating": "2.5",
+    "id": "F4zi34EQ",
+    "authorUsername": "bobS",
+    "authorFirstName": "Bob",
+    "authorLastName": "Smith",
+    "createdAt": "2019-12-12T20:37:40.219Z"
+  },
+  {
+    "type": "album",
+    "spotify-id": "0eZRIt3Ht1IuMXsr0QR8OY",
+    "review": "classic 🔥🔥🔥🔥",
+    "rating": "4",
+    "id": "ZCo8cp4k",
+    "authorUsername": "bobS",
+    "authorFirstName": "Bob",
+    "authorLastName": "Smith",
+    "createdAt": "2019-12-12T20:35:36.071Z"
+  },
+  {
+    "type": "album",
+    "spotify-id": "3HNnxK7NgLXbDoxRZxNWiR",
+    "review": "Not a huge fan of this one...",
+    "rating": "1.5",
+    "id": "QytI9eEf",
+    "authorUsername": "shayandolikhani",
+    "authorFirstName": "shayan",
+    "authorLastName": "dolikhani",
+    "createdAt": "2019-12-11T23:00:45.936Z"
+  },
+  {
+    "type": "track",
+    "spotify-id": "57vxBYXtHMk6H1aD29V7PU",
+    "review": "Great new track from the Weeknd that has me looking forward to his next album!",
+    "rating": "4",
+    "id": "al-21JMC",
+    "authorUsername": "shayandolikhani",
+    "authorFirstName": "shayan",
+    "authorLastName": "dolikhani",
+    "createdAt": "2019-12-11T22:59:56.859Z"
+  },
+  {
+    "type": "track",
+    "spotify-id": "0N3W5peJUQtI4eyR6GJT5O",
+    "review": "classic!",
+    "rating": "5",
+    "id": "dUC_zoZw",
+    "authorUsername": "shayandolikhani",
+    "authorFirstName": "shayan",
+    "authorLastName": "dolikhani",
+    "createdAt": "2019-12-11T22:59:17.252Z"
+  },
+  {
+    "type": "track",
+    "spotify-id": "6K4t31amVTZDgR3sKmwUJJ",
+    "review": "One of my favorite songs!",
+    "rating": "3.5",
+    "id": "2DTSRweB",
+    "authorUsername": "shayandolikhani",
+    "authorFirstName": "shayan",
+    "authorLastName": "dolikhani",
+    "createdAt": "2019-12-11T22:58:29.735Z"
+  },
+  {
     "type": "track",
     "spotify-id": "5aJshF6mtr7SsztEMhAvZv",
     "review": "TEMAZO",
