@@ -1,6 +1,6 @@
 # Adagio
 
-> A web aplication developed for sharing music and music reviews with friends. This platform allows both casual music listeners and music enthusiasts to share, rate, and review songs and albums with friends. For those who want to find more music to listen to, Adagio lets you see what your friends and others recommend. Adagio was developed by Nicola Folchi, Connor Schorer and Shayan Dolikhani, and was also part of our final project for COMP 426: Modern Web Programming.
+A web aplication developed for sharing music and music reviews with friends. This platform allows both casual music listeners and music enthusiasts to share, rate, and review songs and albums with friends. For those who want to find more music to listen to, Adagio lets you see what your friends and others recommend. Adagio was developed by Nicola Folchi, Connor Schorer and Shayan Dolikhani, and was also part of our final project for COMP 426: Modern Web Programming.
 
 ## Getting Started
 
