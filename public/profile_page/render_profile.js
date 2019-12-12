@@ -188,7 +188,7 @@ export const handleChangePassClick = function (profile) {
     $("#change_password_button").replaceWith(`
         <div id="change_password_form" style="border: solid; padding:5px;">
             <form>
-                Current Password: <input type="text" id="cur_pass"><br>
+                Current Password: <input type="password" id="cur_pass"><br>
                 New Password: <input type="password" id="new_pass"><br>
                 Confirm New Password: <input type="password" id="confirm_pass"><br>
                 <a class="button" id="submit_pass_change">Submit</a>
