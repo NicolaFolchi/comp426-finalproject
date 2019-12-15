@@ -8,11 +8,13 @@ let bodyParser = require("body-parser");
 // used for the creation of unique id's for tuiter posts
 const shortid = require('shortid');
 const bcrypt = require('bcryptjs');
+// used for the management of user sessions throughout the app
 const session = require('express-session');
+// importing the user schema for mongoDB
 const User = require('./models/user').User;
 const router_app = require('./routes_app');
 const session_middleware = require('./middlewares/session');
-const passport = require('passport');
+
 
 let app = express();
 
@@ -23,6 +25,7 @@ app.use(bodyParser.json());
 
 
 app.use(session({
+    // need to generate a new secret for each session -- PENDING
     secret: 'swofhigryaefqwn',
     resave: false,
     saveUninitialized: false
@@ -64,7 +67,6 @@ app.post('/tuits', function (request, response) {
         if (err) console.log('error', err);
     });
 
-    // console.log(reply);
     response.send(reply);
 });
 // signing up process
@@ -75,7 +77,6 @@ app.post("/users", async function (request, response) {
             try {
                 let username = request.body.username;
                 let password = await bcrypt.hash(request.body.password, 10);
-                // let password = request.body.password;
                 let fName = request.body.fName;
                 let lName = request.body.lName;
                 let email = request.body.email;
@@ -112,21 +113,20 @@ app.post("/users", async function (request, response) {
 
 // login process and user authorization
 app.post('/login', function (request, response) {
-
+    // searching for a user on our db that matches the input
     User.find({ username: request.body.username }, async function (err, userd) {
         if (!userd.length) {
             return response.status(404).send('User not found');
         }
         try {
             if (await bcrypt.compare(request.body.password, userd[0].password)) {
-                console.log(userd[0]._id);
                 request.session.user_id = userd[0]._id;
                 request.session.user_username = userd[0].username;
                 request.session.user_firstName = userd[0].firstName;
                 request.session.user_lastName = userd[0].lastName;
                 request.session.user_password = userd[0].password;
                 request.session.user_obj = userd[0];
-                console.log(request.session.user_id);
+                console.log('session key: ' + request.session.user_id);
                 return response.redirect('/')
             } else {
                 response.status(400).send('Failed to log in, password incorrect');
@@ -156,7 +156,7 @@ app.put('/tuits/:postid', function (request, response) {
     }
 });
 
-//updating user data on DB
+//updating user passord data on DB
 app.post('/changePassword', async function (request, response) {
     try {
         let newEncryptedPassword = await bcrypt.hash(request.body.newPassword, 10);
@@ -181,7 +181,7 @@ app.post('/changePassword', async function (request, response) {
 app.get('/getLoggedInUser', function (request, response) {
     response.send(request.session.user_obj);
 });
-
+// deleting a user from our app
 app.delete('/users', function (request, response) {
     // redirecting to home
     response.sendFile(__dirname + '/public/index.html'); // not working on app
@@ -218,7 +218,7 @@ app.delete('/tuits/:postid', function (request, response) {
         }
     }
 });
- 
+
 app.post('/logout', function (request, response) {
     response.sendFile(__dirname + '/public/index.html'); // not working on app
     // killing the cookie session
