@@ -3,7 +3,7 @@ export const renderSite = function () {
     $("#make_search").click(makeSearch);
     $("#log-out-button").click(handleLogOut);
 }
-
+// function that gets the logged in user data
 export const getProfile = async function () {
     let result = await axios({
         method: 'get',
@@ -116,6 +116,7 @@ async function renderTweet() {
 
     let prof = await getProfile();
     let profile = prof.data;
+    // getting rid of "log in" buttons if user is logged in
     if (profile.username == null) {
         $("#logged-out-buttons").attr("style", "display: relative;");
         $("#logged-in-buttons").attr("style", "display: none;");
@@ -136,8 +137,9 @@ async function renderTweet() {
     })).data;
     // alert(result[0].type)
     // alert(result[0]["spotify-id"])
-    // dynamically rendering all of the 50 newest tweets with their respective card provided by bulma
+    // dynamically rendering all of the 20 newest tweets with their respective card provided by bulma
     let tweets = `<div id="tweets">`;
+    // renders public home page
     if (profile.username == null) {
         tweets = `
             <div class="notification is-danger" style="vertical-align:center;">
@@ -271,7 +273,6 @@ async function renderTweet() {
                             </div>
                         </div>
                     </div>`;
-
             }
             // here I append each generated tweet to a div variable that would then be appended to the root
             tweets += `</div>`;
