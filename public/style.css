@@ -11,7 +11,7 @@ h1.title {
 }
 
 body {
-    background: #fdfbf3;
+    background: linear-gradient(90deg, #fff6e4, #fbffeb)
 }
 
 @media screen and (min-width: 1024px){ /* for desktop mode */
