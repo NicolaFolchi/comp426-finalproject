@@ -3,6 +3,14 @@ fieldset, label { margin: 0; padding: 0; }
 body{ margin: 20px; }
 h1 { font-size: 1.5em; }
 
+html {
+    background: #fdfbf3;
+}
+
+#root {
+  background: #fdfbf3 !important;
+}
+
 .modal {
     display: none; /* Hidden by default */
     position: fixed; /* Stay in place */
