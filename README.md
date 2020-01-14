@@ -4,7 +4,7 @@ A web aplication developed for sharing music and music reviews with friends. Thi
 
 ## Getting Started
 
-These instructions will get you a copy of the project up and running on your local machine. In the future you will be able to access Adagio online, as we are currently working on deploying our official site. First you should clone our repository to your desired computer folder.
+These instructions will guide you to have a copy of Adagio up and running on your local machine. In the future you will be able to access Adagio online, as we are currently working on deploying our official site. First you should clone our repository to your desired computer folder.
 
 ### Prerequisites
 
