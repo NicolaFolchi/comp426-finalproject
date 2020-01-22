@@ -33,7 +33,7 @@ npm will automatically install of our dependencies for you and you should be rea
 
 ## Run Adagio
 
-To launch adagion in your browser, simply type on your project terminal:
+To launch adagio in your browser, simply type on your project terminal:
 
 ```
 node server.js
