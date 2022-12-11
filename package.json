@@ -9,7 +9,7 @@
     "browser-sync": "^2.26.7",
     "bulma": "^0.8.0",
     "dotenv": "^8.2.0",
-    "express": "^4.17.1",
+    "express": "^4.17.3",
     "express-flash": "0.0.2",
     "express-session": "^1.17.0",
     "jquery": "^3.4.1",
